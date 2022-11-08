@@ -9,18 +9,18 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 # EXECUTA LOCALMENTE
-# HOST="127.0.0.1"
-# USER="c35camundadb"	
-# PASS="iC7@hdDF"
-# DB="c35camundadb"
-# PORT=33306
-
-#EXECUTA NO DOCKER
-HOST="isp.cett.dev.br"
-USER="c35camundadb"
+HOST="127.0.0.1"
+USER="c35camundadb"	
 PASS="iC7@hdDF"
 DB="c35camundadb"
-PORT=3306
+PORT=33306
+
+#EXECUTA NO DOCKER
+# HOST="isp.cett.dev.br"
+# USER="c35camundadb"
+# PASS="iC7@hdDF"
+# DB="c35camundadb"
+# PORT=3306
 
 #FUNÇÃO PARA VERIFICAR IDS HORAS E VAGAS
 #@login_required(login_url='/')
@@ -310,6 +310,12 @@ def load_eixos(request):
     eixos = Eixos.objects.filter(escola=escola_id,status="ATIVO").all()
     return render(request, 'ajax/ajax_load_eixos.html', {'eixos': eixos})
 
+@login_required(login_url='/')
+def load_municipios(request):
+    id_escola = request.GET.get('escola_id')
+    municipios = Udepi_municipio.objects.filter(escola_id=id_escola)
+    return render(request, 'ajax/ajax_load_municipio.html', {'municipios': municipios})
+
 
 @login_required(login_url='/')
 def load_funcoes_filter(request):
@@ -486,6 +492,7 @@ def cadastrar_metas(request):
     escolas_cad = Metas_escolas.objects.filter(tipo=0)
     modalidade = Metas_modalidade.objects.all()
     lancamentos = Metas_efg.objects.all()
+    municipios = Udepi_municipio.objects.filter(escola_id=39)
     anos = Metas_efg.objects.raw("Select id,ano from Turmas_planejado_orcado GROUP BY ano")
     mod = Metas_efg.objects.raw("Select id,modalidade_id from Turmas_planejado_orcado GROUP BY modalidade_id")
     trimestre = Metas_efg.objects.raw("Select id,trimestre from Turmas_planejado_orcado GROUP BY trimestre")
@@ -505,7 +512,8 @@ def cadastrar_metas(request):
     'cursos_cad':cursos_cad,
     'tipos_cad':tipos_cad,
     'eixos':eixos,
-    'cursos':cursos})
+    'cursos':cursos,
+    'municipios':municipios})
 
 @login_required(login_url='/')
 def cad_metas(request):

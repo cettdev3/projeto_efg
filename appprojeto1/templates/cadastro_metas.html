@@ -242,6 +242,16 @@
           </div>
 
           <div class="col-md-4 form-group">
+            <label for="basicInput"><b>MUNICÍPIO:</b></label>
+            <select class="form-control" id="municipio" name="municipio" required>
+
+              {% for municipio in municipios %}
+              <option value="{{municipio.id}}">{{municipio.municipio}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-md-4 form-group">
             <label for="basicInput"><b>TIPO DE CURSO:</b></label>
             <select class="form-control" id="tipo" name="tipo"> required
               {% for tipo in tipos %}
@@ -669,6 +679,7 @@
         const url = "/ajax/ajax_load_cht";
         const url_eixos = '/ajax/ajax_load_eixos';
         const url_cursos = "/ajax/ajax_load_cursos";
+        const url_municipio = "/ajax/ajax_load_municipio";
 
         escola = $(this).val();
         tipo_curso = document.getElementById('tipo').value
@@ -700,6 +711,14 @@
             success: function(data){
                 $("#cht_ajax").html(data);
                 calcular()
+            }
+        });
+
+        $.ajax({
+            url : url_municipio,
+            data: {'escola_id': escola},
+            success: function(data){
+                $("#municipio").html(data);
             }
         });
     });
