@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+{% load django_tables2%}
+{% load render_table from django_tables2 %}
+
+{% block title %} Divisão de metas por Escola {% endblock %}
+{% block content %}
+<div class="page-heading">
+    <h3>Divisão de metas por escola</h3>
+</div>
+<div class="card">
+    <div class="card-header">
+        <div class="d-md-flex justify-content-between">
+            <h4 class="card-title">
+                Cadastro de metas
+            </h4>
+            <div class="d-flex justify-content-end gap-1">
+                <a class="btn btn-success" href="{% url 'DivisaoDeMetasCreateView' %}">
+                    <i class="fas fa-plus "></i>
+                    <spam>
+                        Adicionar
+                    </spam>
+                </a>
+                <!--
+                -->
+                <a class="btn btn-primary" href="{% export_url 'xlsx' %}">
+                    <i class="fas fa-file-export "></i>
+                    <spam>
+                        Exportar
+                    </spam>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        {% crispy filter.form filter.form.helper %}
+        <div class="table-responsive">
+            {% render_table table %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

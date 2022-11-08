@@ -1,0 +1,84 @@
+{% extends "index.html" %} {% block content %}
+<div class="page-heading">
+  <h3>Solicitação de inclusão de curso</h3>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">
+      Escola Solicita Inclusão de Curso que já existe no portfolio do CETT
+    </h4>
+  </div>
+
+  <div class="card-body">
+
+    <div class="column">
+      <div>
+        <form name="Form" id="Form" class="form-control" method="post" action="/realizar-solicitacao" data-funcoes-url="{% url 'ajax_load_funcoes' %}">
+          {% csrf_token %}
+        <div class="form-group">
+          <label for="basicInput">Eixo do Curso</label>
+          <select class="form-control" id="basicInput" name="basicInput">
+            <option selected>SELECIONE UM EIXO</option>
+            {% for iten in eixos %}
+            <option value="{{iten.id}}">{{iten.nome}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="basicInput">Curso Solicitado</label>
+          <select class="form-control" id="qualificacoes_id_eixos" name="qualificacoes_id_eixos">
+            <option selected>SELECIONE UM CURSO</option>
+            {% for iten2 in qualificacoes %}
+            <option value="{{iten2.id_eixos}}">{{iten2.nome}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label for="basicInput">Modalidade</label>
+            <select class="form-control" id="modalidade" name="modalidade">
+              <option>Presencial</option>
+              <option>Online</option>
+              <option>Ead</option>
+            </select>
+          </div>
+          <div class="col-md-6 form-group">
+            <label for="basicInput">Tipo do curso</label>
+            <select class="form-control" id="tipo" name="tipo">
+              <option>Capacitação</option>
+              <option>Qualificação</option>
+              <option>Técnico</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="basicInput">Justificativa</label>
+          <textarea
+            type="Text"
+            class="form-control"
+            id="justificativa"
+            name="justificativa"
+            placeholder="Justifique o motivo pelo qual você quer esse curso."
+            rows="4"
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Cadastrar</button>
+      </form>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    $("#basicInput").change(function(){
+        const url = $('#Form').attr("data-funcoes-url");
+        setorId = $(this).val();
+        $.ajax({
+            url : url,
+            data: {'id_eixos': setorId},
+            success: function(data){
+                $("#qualificacoes_id_eixos").html(data);
+            }
+        });
+    });
+</script>
+  {% endblock content %}
+</div>

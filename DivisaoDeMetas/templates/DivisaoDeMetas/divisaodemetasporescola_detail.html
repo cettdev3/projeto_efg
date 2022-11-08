@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %} Divisão de metas por Escola {% endblock %}
+{% block content %}
+
+<div class="page-heading">
+    <h3>Divisão de metas por escola</h3>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">
+            Detalhe da meta
+        </h4>
+    </div>
+
+    <div class="card-body">
+        {% if form %}
+        {% csrf_token %}
+        {% crispy form %}
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

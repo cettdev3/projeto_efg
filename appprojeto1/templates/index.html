@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+{% load static %}
+{% load bootstrap5 %}
+
+{% if 'use_i18n'|bootstrap_setting %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% endif %}
+
+{% load bootstrap_icons %}
+{% load fontawesome_5 %}
+<html lang="{{ LANGUAGE_CODE|default:'pt_br' }}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Home</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+
+  {{ form.media.css }}
+  {% bootstrap_css %}
+
+  <link rel="stylesheet" href={% static "assets/css/bootstrap.css" %} />
+  <link rel="stylesheet" href={% static "assets/vendors/iconly/bold.css" %} />
+  <link rel="stylesheet" href={% static "assets/vendors/perfect-scrollbar/perfect-scrollbar.css" %} />
+  <link rel="stylesheet" href={% static "assets/vendors/bootstrap-icons/bootstrap-icons.css" %} />
+  <link rel="stylesheet" href={% static "assets/css/app.css" %} />
+  <link rel="stylesheet" href={% static "assets/extensions/simple-datatables/style.css" %} />
+  <link rel="stylesheet" href={% static "assets/css/pages/simple-datatables.css" %} />
+
+  {% fontawesome_5_static %}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <style>
+    h4 {
+      color: #000000
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div id="sidebar" class="active">
+      <div class="sidebar-wrapper active">
+        <div class="sidebar-header">
+          <div class="d-flex justify-content-between">
+            <div class="logo">
+              <a href="/"><img style="height: 120px;" src={% static "assets/images/marca.svg" %} alt="Logo"
+                  srcset="" /></a>
+            </div>
+            <div class="toggler">
+              <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-menu">
+
+          <ul class="menu">
+
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-hexagon-fill"></i>
+                <span>Planejamento</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a href="/cadastrar-metas">Incluir Metas Analíticas</a>
+                </li>
+                <li class="submenu-item">
+                  <a href="/cadastrar-metas-sinteticas">Incluir Metas Sintético</a>
+                </li>
+                <li class="submenu-item">
+                  <a href="/orcamento-plano-trabalho">Orçamento de Plano de Trabalho</a>
+                </li>
+
+                <li class="submenu-item">
+                  <a href="/cadastrar-curso">Cadastrar Curso</a>
+                </li>
+
+                <li class="submenu-item">
+                  <a href="{% url 'DivisaoDeMetasList' %}">Divisão de Metas</a>
+                </li>
+
+                <li class="submenu-item" style="display: none;">
+                  <a href="/cadastrar-curso-escola">Cadastro de Curso / Escola</a>
+                </li>
+
+
+
+            </li>
+
+          </ul>
+          </ul>
+          <ul class="menu">
+
+
+
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-hexagon-fill"></i>
+                <span>Processos</span>
+              </a>
+              <ul class="submenu">
+
+                <li class="submenu-item">
+                  <a href="/eixos">Solicitar inclusão de curso na grade da escolas</a>
+                </li>
+
+            </li>
+
+            <li class="submenu-item">
+              <a href="/solicitacaodeturmas/form">Solicitação de abertura de turmas</a>
+            </li>
+
+          </ul>
+          <br>
+          <a href="/logout" style="width: 100%;" type="submit" class="btn btn-success">Deslogar</a>
+          </ul>
+
+        </div>
+        <button class="sidebar-toggler btn x">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+    </div>
+    <div id="main">
+      <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+          <i class="bi bi-justify fs-3"></i>
+        </a>
+      </header>
+
+
+      {% block content %}
+
+      {% endblock content %}
+
+    </div>
+  </div>
+</body>
+
+<script src={% static "assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js" %}></script>
+<!-- <script src={% static "assets/js/bootstrap.bundle.min.js" %}></script> -->
+<script src={% static "assets/vendors/apexcharts/apexcharts.js" %}></script>
+<script src={% static "assets/js/pages/dashboard.js" %}></script>
+<script src={% static "assets/extensions/simple-datatables/umd/simple-datatables.js" %}></script>
+<script src={% static "assets/js/pages/simple-datatables.js" %}></script>
+<script src={% static "assets/js/main.js" %}></script>
+<!-- <script src={% static "assets/js/bootstrap.js" %}></script> -->
+<script src={% static "assets/js/app.js" %}></script>
+<script src={% static "assets/js/apagar_meta.js" %}></script>
+
+{{ form.media.js }}
+{% bootstrap_javascript %}
+
+<script type="text/javascript">
+  $("#basicInput").change(function () {
+    const url = $('#Form').attr("data-funcoes-url");
+    setorId = $(this).val();
+
+    $.ajax({
+      url: url,
+      data: {
+        'basicInput': setorId
+      },
+      success: function (data) {
+        $("#qualificacoes_id_eixos").html(data);
+      }
+    });
+  });
+</script>
+
+</body>
+
+</html>

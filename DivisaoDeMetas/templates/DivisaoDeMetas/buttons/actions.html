@@ -1,0 +1,19 @@
+{% load fontawesome_5 %}
+<div class="dropdown">
+  <a class="btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fas fa-ellipsis-v"></i>
+  </a>
+
+  {% if table %}
+  <ul class="dropdown-menu">
+      {% for key, value in actions.items %}
+        <li>
+          <a class="d-flex dropdown-item gap-2" href="{% url value.route_url pk=record.id %}">
+            <i>{% fa5_icon value.icon %}</i>
+            <spam>{{ value.text }}</spam>
+          </a>
+        </li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+</div>
