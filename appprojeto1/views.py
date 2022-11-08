@@ -9,18 +9,18 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 # EXECUTA LOCALMENTE
-HOST="127.0.0.1"
-USER="c35camundadb"	
-PASS="iC7@hdDF"
-DB="c35camundadb"
-PORT=33306
-
-#EXECUTA NO DOCKER
-# HOST="isp.cett.dev.br"
-# USER="c35camundadb"
+# HOST="127.0.0.1"
+# USER="c35camundadb"	
 # PASS="iC7@hdDF"
 # DB="c35camundadb"
-# PORT=3306
+# PORT=33306
+
+#EXECUTA NO DOCKER
+HOST="isp.cett.dev.br"
+USER="c35camundadb"
+PASS="iC7@hdDF"
+DB="c35camundadb"
+PORT=3306
 
 #FUNÇÃO PARA VERIFICAR IDS HORAS E VAGAS
 #@login_required(login_url='/')
