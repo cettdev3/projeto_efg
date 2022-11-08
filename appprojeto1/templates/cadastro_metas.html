@@ -3,8 +3,6 @@
 
 <style>
   #myInput {
-  background-image: url('/css/searchicon.png'); /* Add a search icon to input */
-  background-position: 10px 12px; /* Position the search icon */
   background-repeat: no-repeat; /* Do not repeat the icon image */
   width: 100%; /* Full-width */
   font-size: 16px; /* Increase font-size */
@@ -13,16 +11,19 @@
   margin-bottom: 12px; /* Add some space below the input */
 }
 
+
+
 #myTable {
   border-collapse: collapse; /* Collapse borders */
-  width: 100%; /* Full-width */
+  width:100%; /* Full-width */
   border: 1px solid #ddd; /* Add a grey border */
 
 }
 
 #myTable th, #myTable td {
-  text-align: left; /* Left-align text */
-  padding: 12px; /* Add padding */
+  text-align: center; /* Left-align text */
+  padding: 10px; /* Add padding */
+  overflow-wrap: break-word;
 }
 
 #myTable tr {
@@ -32,8 +33,9 @@
 
 #myTable tr.header, #myTable tr:hover {
   /* Add a grey background color to the table header and on hover */
-  background-color: #f1f1f1;
+  background-color: #00f36d6c;
 }
+
 @media screen and (max-width: 1280px) {
     .myTable {
         border: 0px;
@@ -69,13 +71,76 @@
         text-transform: uppercase;
         float: left;
     }
-    .myTable button,a{
+    .myTable button, btn_voltar{
       width: 100%;
       margin-bottom: 10px;
     }
 }
-    </style>
 
+#myTable2 {
+  border-collapse: collapse; /* Collapse borders */
+  width:100%; /* Full-width */
+  border: 1px solid #ddd; /* Add a grey border */
+
+}
+
+#myTable2 th, #myTable2 td {
+  text-align: center; /* Left-align text */
+  padding: 10px; /* Add padding */
+  overflow-wrap: break-word;
+}
+
+#myTable2 tr {
+  /* Add a bottom border to all table rows */
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable2 tr.header, #myTable2 tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #00f36d6c;
+}
+
+@media screen and (max-width: 1280px) {
+    .myTable2 {
+        border: 0px;
+    }
+    .myTable2 caption {
+        font-size: 22px;
+    }
+    .myTable2 thead {
+        display: none;
+    }
+    .TamyTable2ble tr {
+        margin-bottom: 8px;
+        border-bottom: 4px solid #ddd;
+        display: block;
+        
+    }
+    .myTable2 th, .table td {
+        font-size: 12px;
+        
+    }
+    .myTable2 td {
+        display: block;
+        border-bottom: 1px solid #ddd;
+        
+        
+    }
+    .myTable2  td:last-child {
+        border-bottom: 0px;
+    }
+    .myTable2 td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: left;
+    }
+    .myTable2 button, btn_voltar{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+}
+</style>
 <div class="page-heading">
   <h3>Cadastrar Metas Analíticas - EFG</h3>
 </div>
@@ -466,11 +531,13 @@
                 <th scope="col">Vagas Totais</th>
                 <th scope="col">Início/Fim</th>
                 <th scope="col">Carga Horária</th>
+                <th scope="col">Município</th>
                 <th scope="col">Ação</th>
             </tr>
         </thead>
         <tbody>
           {% for lancamento in lancamentos %}
+
             <tr>
                 <td>{{lancamento.diretoria}}</td>
                 <td>{{lancamento.escola.escola}}</td>
@@ -481,6 +548,7 @@
                 <td>{{lancamento.vagas_totais}}</td>
                 <td>{{lancamento.previsao_inicio|date:"d/m/Y"}}<br>{{lancamento.previsao_fim|date:"d/m/Y"}}</td>
                 <td>{{lancamento.carga_horaria}}</td>
+                <td>{{lancamento.udepi.municipio}}</td>
                 <td><a href="editar-meta/{{lancamento.id}}" class="changeSelected btn icon btn-primary"><i class="bi bi-pencil"></i>
                 </a>
              <button type="button" onclick='insereTexto("{{lancamento.id}}","{{lancamento.vagas_totais}}","{{lancamento.carga_horaria}}","{{lancamento.escola.id}}","{{lancamento.tipo_curso.id}}","{{lancamento.ano}}")' class="btn icon btn-danger" data-bs-toggle="modal"

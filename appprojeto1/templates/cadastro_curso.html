@@ -138,7 +138,7 @@
       margin-bottom: 10px;
     }
 }
-    </style>
+</style>
 <div class="page-heading">
   <h3>Cadastrar Cursos por Escola - EFG</h3>
 </div>
@@ -164,7 +164,7 @@
           {% endfor %} {% endif %}
 
           <div class="row">
-            <div class="col-md-6 form-group">
+            <div class="col-md-4 form-group">
               <label for="basicInput"><b>Escola:</b></label>
               <select class="form-control" id="escola" name="escola">
                 {% for escola in escolas %}
@@ -173,8 +173,8 @@
               </select>
             </div>
 
-            <div class="col-md-6 form-group">
-              <label for="basicInput">TIPO DE CURSO:</label>
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>TIPO DE CURSO:</b></label>
               <select class="form-control" id="tipo" name="tipo">
                 {% for tipo_curso in tipos %}
                 <option value="{{tipo_curso.id}}">{{tipo_curso.tipo}}</option>
@@ -183,7 +183,31 @@
             </div>
 
             <div class="col-md-4 form-group">
-              <label for="basicInput"><b>Eixo:</b></label>
+              <label for="basicInput"><b>MODALIDADE:</b></label>
+              <select class="form-control" id="modalidade" name="modalidade">
+                {% for modalidade in modalidades %}
+                <option value="{{modalidade.id}}">{{modalidade.modalidade}}</option>
+                {% endfor %}     
+              </select>
+            </div>
+
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>ESCOLARIDADE</b></label>
+              <select class="form-control" id="escolaridade" name="escolaridade">
+                <option value="ENSINO FUNDAMENTAL COMPLETO">ENSINO FUNDAMENTAL COMPLETO</option>
+                <option value="ENSINO MÉDIO COMPLETO">ENSINO MÉDIO COMPLETO</option>
+                <option value="SEM EXIGÊNCIA DE ESCOLARIDADE">SEM EXIGÊNCIA DE ESCOLARIDADE</option>
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>IDADE MÍNIMA:</b></label>
+              <input type="number" class="form-control" id="idade_min" name="idade_min">
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>EIXO:</b></label>
               <select class="form-control" id="eixo" name="eixo">
                 {% for eixo in eixos_inicial %}
                 <option value="{{eixo.id}}">{{eixo.nome}}</option>
@@ -192,7 +216,7 @@
             </div>
 
             <div class="col-md-4 form-group">
-              <label for="basicInput"><b>Curso:</b></label>
+              <label for="basicInput"><b>CURSO:</b></label>
               <input type="text" class="form-control" id="curso" name="curso">
             </div>
 
@@ -200,7 +224,7 @@
           
 
             <div class="col-md-4 form-group">
-              <label for="basicInput"><b>Status:</b></label>
+              <label for="basicInput"><b>STATUS:</b></label>
               <select class="form-control" id="status" name="status">
                 <option value="ATIVO">ATIVO</option> 
                 <option value="INATIVO">INATIVO</option>  
@@ -293,6 +317,8 @@
                                     <th>Tipo</th>
                                     <th>Eixo</th>
                                     <th>Curso</th>
+                                    <th>Id. Min</th>
+                                    <th>Escolaridade</th>
                                     <th>Status</th>
                                     <th>Ação</th>
                                     <th>On/Off</th>
@@ -306,6 +332,8 @@
                                             <td>{{curso.tipo.tipo}}</td>
                                             <td>{{curso.eixos.nome}}</td>
                                             <td>{{curso.curso}}</td>
+                                            <td>{{curso.idade_min}}</td>
+                                            <td>{{curso.escolaridade}}</td>
                                             {% if curso.status == "ATIVO" %}
                                             <td ><a  style="width: 100%;" class="btn btn-success btn-icon-split">
                                               <span id="status{{info.id}}" class="text">{{curso.status}}</span>
@@ -316,6 +344,7 @@
                                               <span  id="status{{info.id}}" class="text">{{curso.status}}</span>
                                           </a></td>
                                             {% endif %}
+                                           
                                             <td>
                                             
                                               <button
@@ -328,6 +357,7 @@
                                                 <i class="bi bi-trash"></i>
                                               </button>
                                             </td>
+                                          
                                             <td>
                                               {% if curso.status == "ATIVO" %}
                                               <button

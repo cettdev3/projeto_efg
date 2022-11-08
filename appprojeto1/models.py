@@ -129,8 +129,8 @@ class Cadastrar_curso(models.Model):
     curso = models.CharField(max_length=255)
     modalidade = models.ForeignKey(Metas_modalidade,on_delete=models.CASCADE)
     status = models.CharField(max_length=255)
-    
-    
+    escolaridade = models.CharField(max_length=255)
+    idade_min = models.IntegerField()
     class Meta:
         db_table = 'cursos'
 
@@ -187,7 +187,8 @@ class Metas_efg(models.Model):
     situacao = models.IntegerField(default=0, choices=SITUACAO)
     num_edital = models.IntegerField(default=0)
     udepi = models.ForeignKey(Udepi_municipio,on_delete=models.CASCADE)
-    escolaridade = models.CharField(max_length=255)
+
+   
 
 
     class Meta:
