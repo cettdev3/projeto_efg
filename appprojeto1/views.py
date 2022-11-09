@@ -919,8 +919,9 @@ def cadastrar_curso(request):
     tipo_cursos = Cadastrar_curso.objects.raw('Select * from cursos group by tipo_id')
     eixos_curso = Cadastrar_curso.objects.raw('Select * from cursos group by eixos_id')
     modalidade = Metas_modalidade.objects.all()
+    escolas = Metas_escolas.objects.filter(tipo=0)
     eixos_inicial = Eixos.objects.filter(escola_id=39)
-    return render(request,'cadastro_curso.html',{"cursos":cursos,'tipos':tipos,'eixos':eixos,'escolas':escolas_cursos,'tipo_curso':tipo_cursos,'eixos_curso':eixos_curso,'eixos_inicial':eixos_inicial,'modalidades':modalidade})
+    return render(request,'cadastro_curso.html',{"cursos":cursos,'tipos':tipos,'eixos':eixos,'escolas_cursos':escolas_cursos,'tipo_curso':tipo_cursos,'eixos_curso':eixos_curso,'eixos_inicial':eixos_inicial,'modalidades':modalidade,'escolas':escolas})
 
 @login_required(login_url='/')
 def cad_novo_curso(request):
@@ -931,7 +932,9 @@ def cad_novo_curso(request):
     status = request.POST['status']
     modalidade = request.POST['modalidade']
     escolaridade = request.POST['escolaridade']
-    cadCurso = Cadastrar_curso.objects.create(escola_id=escola,tipo_id=tipo,eixos_id=eixos,curso=curso,status=status,modalidade_id=modalidade,escolaridade=escolaridade)
+    carga_horaria = request.POST['carga_horaria']
+    idade_minima = request.POST['idade_min']
+    cadCurso = Cadastrar_curso.objects.create(escola_id=escola,tipo_id=tipo,eixos_id=eixos,curso=curso,status=status,modalidade_id=modalidade,escolaridade=escolaridade,carga_horaria=carga_horaria,idade_min=idade_minima)
 
     messages.success(request,'Curso cadastrado!')
     return redirect('/cadastrar-curso')
