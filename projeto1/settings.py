@@ -114,26 +114,26 @@ WSGI_APPLICATION = 'projeto1.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'c35camundadb',
-        'USER': 'c35camundadb',
-        'HOST': 'isp.cett.dev.br',
-        'PASSWORD': 'iC7@hdDF',
-        'PORT': '3306',
-
-        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-    },
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'c35camundadb',
     #     'USER': 'c35camundadb',
-    #     'HOST': '127.0.0.1',
+    #     'HOST': 'isp.cett.dev.br',
     #     'PASSWORD': 'iC7@hdDF',
-    #     'PORT': '33306',
+    #     'PORT': '3306',
 
     #     'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
     # },
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'c35camundadb',
+        'USER': 'c35camundadb',
+        'HOST': '127.0.0.1',
+        'PASSWORD': 'iC7@hdDF',
+        'PORT': '33306',
+
+        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+    },
     
     # 'siga': {
     #     'ENGINE': 'django.db.backends.mysql',

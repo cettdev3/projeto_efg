@@ -9,18 +9,18 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 # EXECUTA LOCALMENTE
-# HOST="127.0.0.1"
-# USER="c35camundadb"	
-# PASS="iC7@hdDF"
-# DB="c35camundadb"
-# PORT=33306
-
-#EXECUTA NO DOCKER
-HOST="isp.cett.dev.br"
-USER="c35camundadb"
+HOST="127.0.0.1"
+USER="c35camundadb"	
 PASS="iC7@hdDF"
 DB="c35camundadb"
-PORT=3306
+PORT=33306
+
+#EXECUTA NO DOCKER
+# HOST="isp.cett.dev.br"
+# USER="c35camundadb"
+# PASS="iC7@hdDF"
+# DB="c35camundadb"
+# PORT=3306
 
 #FUNÇÃO PARA VERIFICAR IDS HORAS E VAGAS
 #@login_required(login_url='/')
@@ -501,6 +501,7 @@ def cadastrar_metas(request):
     tipos_cad = Metas_efg.objects.raw("Select id,tipo_curso_id from Turmas_planejado_orcado GROUP BY tipo_curso_id")
     eixos = Eixos.objects.filter(escola=39)
     cursos =  Cadastrar_curso.objects.filter(escola=39,tipo=0,modalidade=1,eixos=17,status="ATIVO").all()
+
     return render(request, 'cadastro_metas.html',{"tipos":tipo_curso,
     'escolas':escolas_cad,
     'modalidades':modalidade,
@@ -603,6 +604,8 @@ def editar_meta(request,codigo):
     escolas = Metas_escolas.objects.filter(tipo=0)
     eixos = Eixos.objects.filter(escola_id=idEscola)
     modalidades = Metas_modalidade.objects.all()
+    print(idEscola)
+    municipios = Udepi_municipio.objects.filter(escola_id=idEscola)
     print(idEixos,tipoCursos)
     #cursos = Cadastrar_curso.objects.all()
     cursos = Cadastrar_curso.objects.filter(eixos=idEixos,tipo_id=tipoCursos)
@@ -616,7 +619,8 @@ def editar_meta(request,codigo):
     'escolas':escolas,
     'eixos':eixos,
     'cursos':cursos,
-    'limite':limite})
+    'limite':limite,
+    'municipios':municipios})
 
 @login_required(login_url='/')
 def editarmetas(request):
