@@ -550,36 +550,60 @@ def cad_metas(request):
     previsao_inicio = request.POST['data_p_inicio']
     previsao_fim = request.POST['data_p_fim']
     dias_semana = request.POST['dias_semana']
-    previsao_abertura_edital = request.POST['p_abertura_edital']
-    previsao_fechamento_edital = request.POST['p_fechamento_edital']
+    if request.POST['p_abertura_edital'] != "" and request.POST['p_fechamento_edital'] != "":
+        previsao_abertura_edital = request.POST['p_abertura_edital']
+        previsao_fechamento_edital = request.POST['p_fechamento_edital']
     eixos = request.POST['eixo']
-    data_registro = request.POST['escola']
+    udepi = request.POST['municipio']
 
-    meta_is_exist = Metas_efg.objects.filter(escola_id=escola,tipo_curso_id=tipo_curso,modalidade_id=modalidade_oferta,ano=ano,trimestre=trimestre).values()
+    meta_is_exist = Metas_efg.objects.filter(escola_id=escola,tipo_curso_id=tipo_curso,modalidade_id=modalidade_oferta,ano=ano,trimestre=trimestre,udepi=udepi).values()
     print('-------------------------------------------------------\n\n\n\n'+ str(meta_is_exist))
     if meta_is_exist:
         messages.error(request,'): Desculpe, mas já existe uma meta adicionada com estes dados!')
         return redirect('/cadastrar-metas')
     else:
-        cadmetas = Metas_efg.objects.create(
-            diretoria = diretoria,
-            escola_id = escola,
-            tipo_curso_id = tipo_curso,
-            curso_id = nome_curso,
-            turno = turno,
-            ano = ano,
-            eixo_id = eixos,
-            modalidade_id  = modalidade_oferta,
-            trimestre = trimestre,
-            carga_horaria = carga_horaria,
-            vagas_totais = vagas_totais,
-            carga_horaria_total = carga_horaria_total,
-            previsao_inicio = previsao_inicio,
-            previsao_fim = previsao_fim,
-            dias_semana = dias_semana,
-            previsao_abertura_edital = previsao_abertura_edital,
-            previsao_fechamento_edital = previsao_fechamento_edital
-            )
+        if request.POST['p_abertura_edital'] != "" and request.POST['p_fechamento_edital'] != "":
+            cadmetas = Metas_efg.objects.create(
+                diretoria = diretoria,
+                escola_id = escola,
+                tipo_curso_id = tipo_curso,
+                curso_id = nome_curso,
+                turno = turno,
+                ano = ano,
+                eixo_id = eixos,
+                modalidade_id  = modalidade_oferta,
+                trimestre = trimestre,
+                carga_horaria = carga_horaria,
+                vagas_totais = vagas_totais,
+                carga_horaria_total = carga_horaria_total,
+                previsao_inicio = previsao_inicio,
+                previsao_fim = previsao_fim,
+                dias_semana = dias_semana,
+                previsao_abertura_edital = previsao_abertura_edital,
+                previsao_fechamento_edital = previsao_fechamento_edital,
+                jus_reprovacao = '',
+                udepi_id = udepi
+                )
+        else:
+            cadmetas = Metas_efg.objects.create(
+                diretoria = diretoria,
+                escola_id = escola,
+                tipo_curso_id = tipo_curso,
+                curso_id = nome_curso,
+                turno = turno,
+                ano = ano,
+                eixo_id = eixos,
+                modalidade_id  = modalidade_oferta,
+                trimestre = trimestre,
+                carga_horaria = carga_horaria,
+                vagas_totais = vagas_totais,
+                carga_horaria_total = carga_horaria_total,
+                previsao_inicio = previsao_inicio,
+                previsao_fim = previsao_fim,
+                dias_semana = dias_semana,
+                jus_reprovacao = '',
+                udepi_id = udepi
+                )
 
         atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(escola=escola,tipo=tipo_curso,ano=ano).values()
         id_filtro = atualiza_saldo[0]['id']

@@ -341,7 +341,7 @@
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>MODALIDADE:</b></label>
             <select class="form-control" id="modalidade" name="modalidade" required>
-              <option selected value="">--</option>
+              <option value="">--</option>
               {% for modalidade in modalidades %}
               <option value="{{modalidade.id}}">{{modalidade.modalidade}}</option>
              {% endfor %}
@@ -477,32 +477,33 @@
               >
             </div>
 
-            <div class="col-md-4 form-group">
+            <!-- OCULTO -->
+            <div class="col-md-4 form-group" style="display: none;">
               <label for="basicInput"><b>PREVISÃO PARA ABERTURA DO EDITAL:</b></label>
               <input
                 type="date"
                 class="form-control"
                 id="p_abertura_edital"
                 name="p_abertura_edital"
-                required
+                
 
               >
             </div>
 
-            <div class="col-md-4 form-group">
+            <div class="col-md-4 form-group" style="display: none;">
               <label for="basicInput"><b>PREVISÃO PARA FECHAMENTO DO EDITAL:</b></label>
               <input
                 type="date"
                 class="form-control"
                 id="p_fechamento_edital"
                 name="p_fechamento_edital"
-                required
+                
 
               >
             </div>
 
-            <div class="col-md-4 form-group">
-              <label for="basicInput" style="width: 100%;"><b> </b></label>
+            <div class="col-md-8 form-group">
+              <label for="basicInput" style="width: 100%; text-align: right;"><b> </b></label>
               <a href="/" class="btn btn-secondary" style="width: 45%;">Voltar</a>
             <button type="button" id="valida_form" style="width: 53%;" onclick="validaForm()" class="btn btn-success">Inserir Metas</button>
              
@@ -661,6 +662,7 @@
     var limite = parseInt($("#limite").val());
     var cht = parseInt($("#ch_total").val());
     document.getElementById('total_de_horas_disponiveis').innerHTML = limite
+    console.log(limite)
     if (cht > limite || cht == 0){
       if (cht == 0){
         document.getElementById('total_de_horas_disponiveis').innerHTML = "Sem Registros"
@@ -684,7 +686,7 @@
       carga_horaria = $("#carga_horaria").val()
       vagas_totais = $("#vagas_totais").val()
 
-      if (trimestre == "" || data_p_inicio == "" || data_p_fim == "" || dias_semana == "" || p_abertura_edital == "" || p_fechamento_edital == "" || carga_horaria == "" || vagas_totais == ""){
+      if (trimestre == "" || data_p_inicio == "" || data_p_fim == "" || dias_semana == ""  || carga_horaria == "" || vagas_totais == ""){
 
         if(trimestre == ""){
           document.getElementById('trimestre').style.borderColor = "red"
@@ -716,11 +718,11 @@
           document.getElementById('data_p_fim').style.borderColor = ""
         }
 
-        if(p_abertura_edital == ""){
-          document.getElementById('p_abertura_edital').style.borderColor = "red"
-        }else{
-          document.getElementById('p_abertura_edital').style.borderColor = ""
-        }
+        // if(p_abertura_edital == ""){
+        //   document.getElementById('p_abertura_edital').style.borderColor = "red"
+        // }else{
+        //   document.getElementById('p_abertura_edital').style.borderColor = ""
+        // }
 
         if(dias_semana == ""){
           document.getElementById('dias_semana').style.borderColor = "red"
@@ -728,11 +730,11 @@
           document.getElementById('dias_semana').style.borderColor = ""
         }
 
-        if(p_fechamento_edital == ""){
-          document.getElementById('p_fechamento_edital').style.borderColor = "red"
-        }else{
-          document.getElementById('p_fechamento_edital').style.borderColor = ""
-        }
+        // if(p_fechamento_edital == ""){
+        //   document.getElementById('p_fechamento_edital').style.borderColor = "red"
+        // }else{
+        //   document.getElementById('p_fechamento_edital').style.borderColor = ""
+        // }
       
       }else{
         document.getElementById('Form').submit();

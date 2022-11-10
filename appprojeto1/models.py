@@ -132,7 +132,7 @@ class Cadastrar_curso(models.Model):
     escolaridade = models.CharField(max_length=255)
     idade_min = models.IntegerField()
     carga_horaria = models.IntegerField()
-    
+
     class Meta:
         db_table = 'cursos'
 
@@ -189,6 +189,7 @@ class Metas_efg(models.Model):
     situacao = models.IntegerField(default=0, choices=SITUACAO)
     num_edital_id = models.IntegerField(default=0)
     udepi = models.ForeignKey(Udepi_municipio,on_delete=models.CASCADE)
+    jus_reprovacao = models.CharField(max_length=255)
 
    
 
