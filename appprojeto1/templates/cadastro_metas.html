@@ -522,6 +522,16 @@
   </div>
   </div>
   <section class="section">
+    <div class="row">
+
+      <div class="col-sm-12" style="text-align: right;">
+        <a type="button" style="text-align: right;" href="#" class="btn icon btn-danger">ENVIAR PLANEJAMENTO</a>
+      </div>
+      
+    </div>
+  </section>
+  <br>
+  <section class="section">
   <div class="card">
     <div class="card-header">
       <h4 class="card-title">Metas Adicionadas</h4> <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Procurar Escola...">
@@ -558,7 +568,7 @@
                 <td>{{lancamento.previsao_inicio|date:"d/m/Y"}}<br>{{lancamento.previsao_fim|date:"d/m/Y"}}</td>
                 <td>{{lancamento.carga_horaria}}</td>
                 <td>{{lancamento.udepi.municipio}}</td>
-                <td>{% if lancamento.situacao > 1 %}<a href="editar-meta/{{lancamento.id}}" class="changeSelected btn icon btn-primary"><i class="bi bi-pencil">{% endif %}</i>
+                <td>{% if lancamento.situacao <= 1 %}<a href="editar-meta/{{lancamento.id}}" class="changeSelected btn icon btn-primary"><i class="bi bi-pencil">{% endif %}</i>
                 </a>
              <button type="button" onclick='insereTexto("{{lancamento.id}}","{{lancamento.vagas_totais}}","{{lancamento.carga_horaria}}","{{lancamento.escola.id}}","{{lancamento.tipo_curso.id}}","{{lancamento.ano}}")' class="btn icon btn-danger" data-bs-toggle="modal"
                   data-bs-target="#warning"><i class="bi bi-x"></i>
