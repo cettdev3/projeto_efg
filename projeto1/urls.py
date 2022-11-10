@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from appprojeto1.views import Logout_Users, load_municipios,cadastrar_udepi,Autenticar, apaga_orcamento, apagar_curso_escola, cad_curso_escola, cad_novo_curso, cadastrar_curso, cadastro_curso_escola, del_curso, editar_curso, editar_curso_escola, editar_orcamento, load_cht, load_cursos, load_eixos, load_funcoes_gerencia_cursos, load_funcoes_gerencia_eixo, load_funcoes_rp, load_funcoes_tabela, load_funcoes_total_horas,load_funcoes_vagas, apagar_meta, apagar_meta_sintetica, cad_metas, cad_metas_sintetica, cad_orcamento, cadastrar_meta_sintetica,load_funcoes_filter, cadastrar_metas, editar_meta, editar_metas_sintetica, editarmetas, load_funcoes_rubrica, load_modalidade, orcamento_plano_trabalho, realizar_solicitacao, view_eixos, view_geral, view_index, load_funcoes
+from appprojeto1.views import Logout_Users,load_ch, load_municipios,cadastrar_udepi,Autenticar, apaga_orcamento, apagar_curso_escola, cad_curso_escola, cad_novo_curso, cadastrar_curso, cadastro_curso_escola, del_curso, editar_curso, editar_curso_escola, editar_orcamento, load_cht, load_cursos, load_eixos, load_funcoes_gerencia_cursos, load_funcoes_gerencia_eixo, load_funcoes_rp, load_funcoes_tabela, load_funcoes_total_horas,load_funcoes_vagas, apagar_meta, apagar_meta_sintetica, cad_metas, cad_metas_sintetica, cad_orcamento, cadastrar_meta_sintetica,load_funcoes_filter, cadastrar_metas, editar_meta, editar_metas_sintetica, editarmetas, load_funcoes_rubrica, load_modalidade, orcamento_plano_trabalho, realizar_solicitacao, view_eixos, view_geral, view_index, load_funcoes
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,6 +38,7 @@ urlpatterns = [
     path('ajax/ajax_load_tabela', load_funcoes_tabela, name='ajax_load_funcoes_tabela'),
     path('ajax/ajax_load_cursos', load_cursos, name='ajax_load_funcoes_cursos'),
     path('ajax/ajax_load_cht', load_cht, name='ajax_load_funcoes_cht'),
+    path('ajax/ajax_load_carga_hr_curso', load_ch, name='ajax_load_carga_hr_curso'),
     path('realizar-solicitacao', realizar_solicitacao),
     path('cadastrar-metas', cadastrar_metas),
     path('cadmetas', cad_metas),

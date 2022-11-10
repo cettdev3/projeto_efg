@@ -273,7 +273,7 @@ def load_cht(request):
     ano = request.GET.get('ano')
     modalidade = request.GET.get('modalidade_id')
     semestre = request.GET.get('semestre')
-    print(semestre)
+
     ch_total_geral = DivisaoDeMetasPorEscola.objects.filter(escola=escola,tipo=tipo_curso,ano=ano,modalidade=modalidade,semestre=semestre).all()
     try:
         chTotal = int(ch_total_geral.values()[0]['carga_horaria'])
@@ -282,15 +282,32 @@ def load_cht(request):
         chTotal = 0
     return render(request, 'ajax/ajax_load_cht.html', {'ch_total_geral':chTotal })
 
+def load_ch(request):
+    escola = request.GET.get('escola_id')
+    curso_selected = request.GET.get('curso_selected')
+    tipocurso = request.GET.get('tipo_id')
+    modalidade = request.GET.get('modalidade_id')
+    eixo =  request.GET.get('eixo_id')
+    print(str(escola)+'|'+str(curso_selected)+'|'+str(escola)+'|'+str(tipocurso)+'|'+str(modalidade)+'|'+str(eixo))
+    carga_horaria = Cadastrar_curso.objects.filter(escola=escola,tipo=tipocurso,eixos=eixo,modalidade=modalidade,curso=curso_selected).all()
+    print('>>>>>>>>>>>>>>>>>')
+    print(carga_horaria.values())
+    try:
+        carga_horaria = int(carga_horaria.values()[0]['carga_horaria'])
+        print(carga_horaria)
+    except:
+        carga_horaria = 0
+    return render(request, 'ajax/ajax_load_carga_hr_curso.html', {'carga_hr':carga_horaria })
+
 @login_required(login_url='/')
 def load_cursos(request):
     escola_id = request.GET.get('escola_id')
     modalidade_id = request.GET.get('modalidade_id')
     id_tipo_curso = request.GET.get('tipo_id')
     eixos_id = request.GET.get('eixo_id')
-    print(escola_id,modalidade_id,id_tipo_curso,eixos_id)
+
     cursos = Cadastrar_curso.objects.filter(escola=escola_id,tipo=id_tipo_curso,modalidade=modalidade_id,eixos=eixos_id,status="ATIVO").all()
-    print(cursos)
+
     return render(request, 'ajax/ajax_load_cursos.html', {'cursos': cursos})
 
 @login_required(login_url='/')
@@ -300,7 +317,7 @@ def load_modalidade(request):
     eixos_id = request.GET.get('eixo_id')
     modalidade_id = request.GET.get('modalidade_id')
     cursos = Cadastrar_curso.objects.filter(escola=escola_id,tipo=tipo_id,eixos=eixos_id,modalidade=modalidade_id,status="ATIVO").all().values()
-    print(cursos)
+
     return render(request, 'ajax/ajax_load_curso.html', {'cursos': cursos})
 
 @login_required(login_url='/')
@@ -951,14 +968,23 @@ def del_curso(request):
 @login_required(login_url='/')
 def editar_curso(request):
     id_ = request.POST['id_edit']
+    escola = request.POST['escola_modal']
     tipo = request.POST['tipo_modal']
+    modalidade = request.POST['modalidade_modal']
+    escolaridade = request.POST['escolaridade_modal']
+    idade_min = request.POST['idade_min_modal']
     eixos = request.POST['eixo_modal']
     curso = request.POST['curso_modal']
     status = request.POST['status_modal']
+    carga_horaria = request.POST['carga_horaria_modal']
     editaCurso = Cadastrar_curso.objects.get(id=id_)
+    editaCurso.escola_id = escola
     editaCurso.tipo_id = tipo
+    editaCurso.escolaridade = escolaridade
+    editaCurso.idade_min = idade_min
     editaCurso.eixos_id = eixos
     editaCurso.curso = curso
+    editaCurso.carga_horaria = carga_horaria
     editaCurso.status = status
     editaCurso.save()
     messages.success(request,'Registros alterados com sucesso!')

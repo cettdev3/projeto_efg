@@ -290,6 +290,7 @@
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>DIRETORIA:</b></label>
             <select class="form-control" id="basicInput" name="basicInput" required>
+              <option selected value="">--</option>
               <option value="DAC">DAC</option>
               <option value="DDA">DDA</option>
               <option value="DE">DE</option>
@@ -298,8 +299,9 @@
 
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>ESCOLA:</b></label>
+            
             <select class="form-control" id="escola" name="escola" required>
-
+              <option selected value="">--</option>
               {% for escola in escolas %}
               <option value="{{escola.id}}">{{escola.escola}}</option>
               {% endfor %}
@@ -309,7 +311,7 @@
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>MUNICÍPIO:</b></label>
             <select class="form-control" id="municipio" name="municipio" required>
-
+              <option selected value="">--</option>
               {% for municipio in municipios %}
               <option value="{{municipio.id}}">{{municipio.municipio}}</option>
               {% endfor %}
@@ -318,7 +320,8 @@
 
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>TIPO DE CURSO:</b></label>
-            <select class="form-control" id="tipo" name="tipo"> required
+            <select class="form-control" id="tipo" name="tipo"> 
+              <option selected value="">--</option>
               {% for tipo in tipos %}
               <option  value="{{tipo.id}}">{{tipo.tipo}}</option>
               {% endfor %}
@@ -328,6 +331,7 @@
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>EIXOS:</b></label>
             <select class="form-control" id="eixo" name="eixo" required>
+              <option selected value="">--</option>
               {% for eixo in eixos %}
               <option value="{{eixo.eixo_id}}">{{eixo.nome}}</option>
               {% endfor %}       
@@ -337,7 +341,7 @@
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>MODALIDADE:</b></label>
             <select class="form-control" id="modalidade" name="modalidade" required>
-
+              <option selected value="">--</option>
               {% for modalidade in modalidades %}
               <option value="{{modalidade.id}}">{{modalidade.modalidade}}</option>
              {% endfor %}
@@ -347,6 +351,7 @@
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>CURSO:</b></label>
             <select class="form-control" id="curso" name="curso" required>
+              <option selected value="">--</option>
               {% for curso in cursos %}
               <option value="{{curso.id}}">{{curso.curso}}</option>
               {% endfor %}         
@@ -358,6 +363,7 @@
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>TURNO:</b></label>
             <select class="form-control" id="turno" name="turno" required>
+              <option selected value="">--</option>
               <option value="VESPERTINO">VESPERTINO</option>
               <option value="MATUTINO">MATUTINO</option>
               <option value="NOTURNO">NOTURNO</option>
@@ -367,6 +373,7 @@
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>ANO:</b></label>
             <select class="form-control" id="ano" name="ano" required>
+              <option selected value="">--</option>
               <option value="2021">2021</option>  
               <option value="2022">2022</option> 
               <option value="2023">2023</option> 
@@ -380,12 +387,13 @@
             <div class="col-md-4 form-group">
               <label for="basicInput"><b>SEMESTRE:</b></label>
               <select class="form-control" id="trimestre" name="trimestre" required>
+                <option selected value="">--</option>
                 <option value="1">1º Semestre</option>  
                 <option value="2">2º Semestre</option>  
               </select>
             </div>
 
-            <div class="col-md-4 form-group">
+            <div class="col-md-4 form-group" id="ajax_carga_horaria">
               <label for="basicInput"><b>CARGA HORÁRIA:</b></label>
               <input
                 type="number"
@@ -748,7 +756,8 @@
         const url_eixos = '/ajax/ajax_load_eixos';
         const url_cursos = "/ajax/ajax_load_cursos";
         const url_municipio = "/ajax/ajax_load_municipio";
-
+        const url_ch = '/ajax/ajax_load_carga_hr_curso'
+        var curso_selected = $('#curso option:selected').text()
         escola = $(this).val();
         tipo_curso = document.getElementById('tipo').value
         ano = document.getElementById('ano').value
@@ -756,8 +765,12 @@
         eixo = document.getElementById('eixo').value
         semestre = document.getElementById('trimestre').value
 
+        var curso_selected = $('#curso option:selected').text()
+
+
         $.ajax({
           url : url_cursos,
+          
           data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade},
           success: function(data){
               $("#curso").html(data);
@@ -789,12 +802,23 @@
                 $("#municipio").html(data);
             }
         });
+
+        $.ajax({
+
+          url : url_ch,
+          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'curso_selected':curso_selected},
+          success: function(data){
+              $("#ajax_carga_horaria").html(data);
+    
+          }
     });
+  });
 
   $("#tipo").change(function(){
        
        const url = "/ajax/ajax_load_cht";
        const url_cursos = "/ajax/ajax_load_cursos";
+       const url_ch = '/ajax/ajax_load_carga_hr_curso'
 
        tipo_curso = $(this).val();
        escola = document.getElementById('escola').value
@@ -802,6 +826,9 @@
        modalidade = document.getElementById('modalidade').value
        eixo = document.getElementById('eixo').value
        semestre = document.getElementById('trimestre').value
+
+       var curso_selected = $('#curso option:selected').text()
+
        $.ajax({
           url : url_cursos,
           data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade},
@@ -819,6 +846,18 @@
                calcular()
            }
        });
+
+
+        $.ajax({
+            
+            url : url_ch,
+            data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'curso_selected':curso_selected},
+            success: function(data){
+                $("#ajax_carga_horaria").html(data);
+
+            }
+          });
+
    });
 
   $("#ano").change(function(){
@@ -871,6 +910,31 @@
           }
       });
   });
+
+  $("#curso").change(function(){
+
+      const url_ch = '/ajax/ajax_load_carga_hr_curso'
+      var curso_selected = $('#curso option:selected').text()
+   
+
+       eixo = document.getElementById('eixo').value
+       escola = document.getElementById('escola').value
+       console.log(escola)
+       tipo_curso = document.getElementById('tipo').value
+       ano = document.getElementById('ano').value
+       semestre = document.getElementById('trimestre').value
+       modalidade = document.getElementById('modalidade').value
+  
+       $.ajax({
+
+          url : url_ch,
+          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'curso_selected':curso_selected},
+          success: function(data){
+              $("#ajax_carga_horaria").html(data);
+
+          }
+          });
+   });
 
   $("#eixo").change(function(){
         const url_cursos = "/ajax/ajax_load_cursos";

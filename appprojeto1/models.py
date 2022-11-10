@@ -132,6 +132,7 @@ class Cadastrar_curso(models.Model):
     escolaridade = models.CharField(max_length=255)
     idade_min = models.IntegerField()
     carga_horaria = models.IntegerField()
+    
     class Meta:
         db_table = 'cursos'
 
