@@ -1,5 +1,43 @@
 {% extends "index.html" %} {% block content %} {% load static %}
 <style>
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #1e6f00;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: rgb(255, 255, 255);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #000000}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
   #myInput {
   background-repeat: no-repeat; /* Do not repeat the icon image */
   width: 100%; /* Full-width */
@@ -138,6 +176,8 @@
       margin-bottom: 10px;
     }
 }
+
+
 </style>
 <div class="page-heading">
   <h3>Cadastrar Cursos por Escola - EFG</h3>
@@ -360,9 +400,28 @@
 
                                             {% endif %}
                                            
-                                            <td>
-                                            
-                                              <button
+                                            <td >
+                                    
+                                              <div class="dropdown">
+                                                <button class="dropbtn btn icon btn-dark"><i class="fas fa-ellipsis-v"></i></button>
+                                                <div class="dropdown-content">
+                                                  <a 
+                                                  type="button"
+                                                  onclick='insereTexto("{{curso.id}}")'
+                                                  class="btn icon btn-danger"
+                                                  data-bs-toggle="modal"
+                                                  data-bs-target="#warning"> <i class="bi bi-trash"></i> APAGAR</a>
+
+                                                  <a 
+                                                  type="button"
+                                                onclick='atualiza("{{curso.id}}")'
+                                                class="btn icon btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#xlarge"><i class="bi bi-pencil"></i> EDITAR</a>
+                                                
+                                                </div>
+                                              </div>
+                                              <!-- <button
                                                 type="button"
                                                 onclick='insereTexto("{{curso.id}}")'
                                                 class="btn icon btn-danger"
@@ -371,7 +430,7 @@
                                               >
                                                 <i class="bi bi-trash"></i>
                                               </button>
-                                                  
+                                              
                                               <button
                                                 type="button"
                                                 onclick='atualiza("{{curso.id}}")'
@@ -380,8 +439,11 @@
                                                 data-bs-target="#xlarge"
                                               >
                                                 <i class="bi bi-pencil"></i>
-                                              </button>
+                                              </button> -->
+                                            
                                             </td>
+                                              
+                                           
 
                                             
                                           
@@ -621,7 +683,7 @@
             id="id_edit"
             name="id_edit"
             placeholder="Informe a escola:"
-            style="display: none;"
+            style="display: inline;"
           />
 
           <div class="row">
@@ -852,6 +914,25 @@
           });
 
       });
+  
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+  
   </script>
 
 
