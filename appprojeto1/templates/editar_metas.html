@@ -48,265 +48,263 @@
       
       <div>
         <form
-          name="Form"
-          id="Form"
-          class="form-control"
-          method="post"
-          action="/editarmetas"
-        >
-          {% csrf_token %}
-         
-          {% if messages %}
+        name="Form"
+        id="Form"
+        class="form-control"
+        method="post"
+        action="/editarmetas"
+      >
 
-            {% for message in messages %}
-              <div class="alert alert-dismissible alert-success" role="alert">
-                  <strong class="text-dark">{{message}}</strong>
-              </div>
-            {% endfor %}
+        {% csrf_token %}
+        <input style="display: none;" type="text" id="id" name="id" value="{{idEdit}}">
+        {% if messages %}
+
+          {% for message in messages %}
+          {% if message.tags == 'alert-success'  %}
+            <div class="alert alert-dismissible alert-success" role="alert">
+                <strong class="text-dark">{{message}}</strong>
+            </div>
+          {% else %}
+          <div class="alert alert-dismissible alert-danger" role="alert">
+            <strong class="text-dark">{{message}}</strong>
+        </div>
           {% endif %}
+          {% endfor %}
+        {% endif %}
 
-          <div class="row">
-          <div class="col-md-4 form-group">
-            <label for="basicInput"><b>DIRETORIA:</b></label>
-            <select class="form-control" id="diretoria" name="diretoria">
-              <option {% if meta_edit.diretoria == 'DAC' %} selected {% endif %} value="DAC">DAC</option>
-              <option {% if meta_edit.diretoria == 'DDE' %} selected {% endif %} value="DDE">DDE</option>
-              <option {% if meta_edit.diretoria == 'DE' %} selected {% endif %} value="DE">DE</option>
-            </select>
-          </div>
+        <div class="row">
+        <div class="col-md-4 form-group">
+          <label for="basicInput"><b>DIRETORIA:</b></label>
+          <select class="form-control" id="diretoria" name="diretoria" required>
+            <option selected value="">--</option>
+            <option {% if diretoria == "DAC" %} selected {% endif %} value="DAC">DAC</option>
+            <option {% if diretoria == "DDA" %} selected {% endif %} value="DDA">DDA</option>
+            <option {% if diretoria == "DE" %} selected {% endif %} value="DE">DE</option>
+          </select>
+        </div>
 
-          <input style="display: none ;" name="id" id="id" value="{{meta_edit.id}}">
-        
-         
+        <div class="col-md-4 form-group">
+          <label for="basicInput"><b>ESCOLA:</b></label>
+          
+          <select class="form-control" id="escola" name="escola" required>
+            <option selected value="">--</option>
+            {% for escola in escolas %}
+            <option {% if escola.id == idEscola %} selected {% endif %} value="{{escola.id}}">{{escola.escola}}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-          <div class="col-md-4 form-group">
-            <label for="basicInput"><b>ESCOLA:</b></label>
-            <select class="form-control" id="escola" name="escola">
-              {% for escola in escolas %}
-              <option {% if meta_edit.escola_id == escola.id %} selected {% endif %} value="{{escola.id}}">{{escola.escola}}</option>
-              {% endfor %}
-            </select>
-          </div>
+        <div class="col-md-4 form-group">
+          <label for="basicInput"><b>MUNICÍPIO:</b></label>
+          <select class="form-control" id="municipio" name="municipio" required>
+            <option selected value="">--</option>
+            {% for municipio in municipios %}
+            <option {% if municipio.id == idMunicipio %} selected {% endif %} value="{{municipio.id}}">{{municipio.municipio}}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-          <div class="col-md-4 form-group">
-            <label for="basicInput"><b>MUNICÍPIO:</b></label>
-            <select class="form-control" id="municipio" name="municipio" required>
-
-              {% for municipio in municipios %}
-              <option value="{{municipio.id}}">{{municipio.municipio}}</option>
-              {% endfor %}
-            </select>
-          </div>
-
-          <div class="col-md-4 form-group">
-            <label for="basicInput"><b>TIPO DE CURSO:</b></label>
-            <select class="form-control" id="tipo" name="tipo">
-             {% for tipo in tipos_cursos %}
-              <option {% if meta_edit.tipo_curso_id == tipo.id %} selected {% endif %} value="{{tipo.id}}">{{tipo.tipo}}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="basicInput"><b>EIXOS:</b></label>
-            <select class="form-control" id="eixo" name="eixo">
-              {% for eixo in eixos %}
-              
-              <option {% if meta_edit.eixo_id == eixo.id %} selected {% endif %} value="{{eixo.id}}">{{eixo.nome}}</option>
-              {% endfor %}       
-            </select>
-          </div>
-
-          <div class="col-md-4 form-group">
-            <label for="basicInput"><b>MODALIDADE:</b></label>
-            
-            <select class="form-control" id="modalidade" name="modalidade">
-              {% for modalidade in modalidades %}
-              <option  {% if meta_edit.modalidade_id == modalidade.id %} selected {% endif %} value="{{modalidade.id}}">{{modalidade.modalidade}}</option>
-              {% endfor %}
-            </select>
-          </div>
-
-          <div class="col-md-4 form-group">
+        <div class="col-md-4 form-group">
+          <label for="basicInput"><b>TIPO DE CURSO:</b></label>
+          <select class="form-control" id="tipo" name="tipo"> 
+            <option selected value="">--</option>
+            {% for tipo in tipos_cursos %}
+            <option {% if tipo.id ==  tipoCursos %} selected {% endif %}  value="{{tipo.id}}">{{tipo.tipo}}</option>
+            {% endfor %}
+          </select>
+        </div>
        
-            <label for="basicInput"><b>CURSOS:</b></label>
-            <select class="form-control" id="curso" name="curso">
-              {% for curso in cursos %}
-              <option {% if meta_edit.curso_id|floatformat == curso.id|floatformat  %} selected {% endif %}   value="{{curso.id}}">{{curso.curso}} </option>
-              {% endfor %}       
+        <div class="col-md-4 form-group">
+          <label for="basicInput"><b>EIXOS:</b></label>
+          <select class="form-control" id="eixo" name="eixo" required>
+            <option selected value="">--</option>
+            {% for eixo in eixos %}
+            <option {% if eixo.eixo_id ==  idEixos %} selected {% endif %} value="{{eixo.eixo_id}}">{{eixo.nome}}</option>
+            {% endfor %}       
+          </select>
+        </div>
+        
+        <div class="col-md-4 form-group">
+          <label for="basicInput"><b>MODALIDADE:</b></label>
+          <select class="form-control" id="modalidade" name="modalidade" required>
+            <option value="">--</option>
+            {% for modalidade in modalidades %}
+            <option {% if modalidade.id ==  idModalidade %} selected {% endif %} value="{{modalidade.id}}">{{modalidade.modalidade}}</option>
+           {% endfor %}
+          </select>
+        </div>
+        
+        <div class="col-md-4 form-group">
+          <label for="basicInput"><b>CURSO:</b></label>
+          <select class="form-control" id="curso" name="curso" required>
+            <option selected value="">--</option>
+            {% for curso in cursos %}
+            <option {% if curso.id ==  idCurso %} selected {% endif %} value="{{curso.id}}">{{curso.curso}}</option>
+            {% endfor %}         
+          </select>
+        </div>
+
+      
+
+        <div class="col-md-4 form-group">
+          <label for="basicInput"><b>TURNO:</b></label>
+          <select class="form-control" id="turno" name="turno" required>
+            <option selected value="">--</option>
+            <option {% if turno ==  "VESPERTINO" %} selected {% endif %} value="VESPERTINO">VESPERTINO</option>
+            <option {% if turno ==  "MATUTINO" %} selected {% endif %} value="MATUTINO">MATUTINO</option>
+            <option {% if turno ==  "NOTURNO" %} selected {% endif %} value="NOTURNO">NOTURNO</option>
+          </select>
+        </div>
+
+        <div class="col-md-4 form-group">
+          <label for="basicInput"><b>ANO:</b></label>
+          <select class="form-control" id="ano" name="ano" required>
+            <option selected value="">--</option>
+            <option {% if ano ==  2021 %} selected {% endif %} value="2021">2021</option>  
+            <option {% if ano ==  2022 %} selected {% endif %} value="2022">2022</option> 
+            <option {% if ano ==  2023 %} selected {% endif %} value="2023">2023</option> 
+            <option {% if ano ==  2024 %} selected {% endif %} value="2024">2024</option> 
+            <option {% if ano ==  2025 %} selected {% endif %} value="2025">2025</option>  
+          </select>
+        </div>
+        
+          
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>SEMESTRE:</b></label>
+            <select class="form-control" id="trimestre" name="trimestre" required>
+              <option selected value="">--</option>
+              <option {% if trimestre ==  1 %} selected {% endif %} value="1">1º Semestre</option>  
+              <option {% if trimestre ==  2 %} selected {% endif %} value="2">2º Semestre</option>  
             </select>
           </div>
 
-          <div class="col-md-4 form-group">
-            <label for="basicInput"><b>TURNO:</b></label>
-            <select class="form-control" id="turno" name="turno">
-              <option {% if meta_edit.turno == 'VESPERTINO' %} selected {% endif %} value="VESPERTINO">VESPERTINO</option>
-              <option {% if meta_edit.turno == 'MATUTINO' %} selected {% endif %} value="MATUTINO">MATUTINO</option>
-              <option {% if meta_edit.turno == 'NOTURNO' %} selected {% endif %} value="NOTURNO">NOTURNO</option>
-            </select>
-          </div>
-
-          <div class="col-md-4 form-group">
-            <label for="basicInput"><b>ANO:</b></label>
+          <div class="col-md-4 form-group" id="ajax_carga_horaria">
+            <label for="basicInput"><b>CARGA HORÁRIA:</b></label>
             <input
               type="number"
               class="form-control"
-              id="ano"
-              name="ano"
-              placeholder="Informe o ano:"
-              max="2999" maxlength="4" min="2022"
-              value="{{meta_edit.ano}}"
+              id="carga_horaria"
+              name="carga_horaria"
+              placeholder="Carga Horária:"
+              min="1"
+              value="{{ch}}"
+              oninput="calcular()"
+              required
             >
           </div>
 
-            
-
-            <div class="col-md-4 form-group">
-              <label for="basicInput"><b>TRIMESTRE:</b></label>
-              <input
-                type="number"
-                class="form-control"
-                id="trimestre"
-                name="trimestre"
-                placeholder="Informe o trimestre:"
-                max="9" maxlength="1" min="1"
-                value="{{meta_edit.trimestre}}"
-              >
-            </div>
-
-            <div class="col-md-4 form-group">
-              <label for="basicInput"><b>CARGA HORÁRIA:</b></label>
-              <input
-                type="number"
-                class="form-control"
-                id="carga_horaria"
-                name="carga_horaria"
-                placeholder="Informe a quantidade de vagas:"
-                min="1"
-                
-                value="{{meta_edit.carga_horaria}}"
-                oninput="calcular()"
-              >
-            </div>
-
-            <div class="col-md-4 form-group">
-              <label for="basicInput"><b>VAGAS TOTAIS:</b></label>
-              <input
-                type="number"
-                class="form-control"
-                id="vagas_totais"
-                name="vagas_totais"
-                placeholder="Informe a quantidade de vagas:"
-                min="1"
-                value="{{meta_edit.vagas_totais}}"
-                oninput="calcular()"
-              >
-            </div>
-
-            <div class="col-md-4 form-group">
-              <label for="basicInput"><b>VAGAS POR TURMA:</b></label>
-              <input
-                type="number"
-                class="form-control"
-                id="vagas_turma"
-                name="vagas_turma"
-                placeholder="Informe a quantidade de vagas por turma:"
-                min="1"
-                value="{{meta_edit.vagas_turma}}"
-              >
-            </div>
-
-            <div class="col-md-4 form-group"  id="cht_ajax">
-              <label for="basicInput"><b>CARGA HORÁRIA TOTAL:</b></label>
-              <input
-                type="number"
-                class="form-control"
-                id="ch_total"
-                name="ch_total"
-                placeholder="Informe a carga horária:"
-                min="1"
-                value="{{meta_edit.carga_horaria_total}}"
-                readonly
-              >
-              <input style="display: none;" id="ch_antiga" name="ch_antiga" value="{{meta_edit.carga_horaria_total}}" >
-              <input style="display: none;" id="limite" name="limite" value="{{limite}}" >
-            </div>
-
-            <div class="col-md-4 form-group">
-              <label for="basicInput"><b>DATA PREVISTA PARA INÍCIO:</b></label>
-              <input
-                type="text"
-                class="form-control"
-                id="data_p_inicio"
-                name="data_p_inicio"
-                value="{{meta_edit.previsao_inicio|date:'d/m/Y'}}"
-                onkeypress="mascaraData( this, event )"
-                maxlength="10"
-
-              >
-            </div>
-
-            <div class="col-md-4 form-group">
-              <label for="basicInput"><b>DATA PREVISTA PARA FINALIZAR:</b></label>
-              <input
-                type="text"
-                class="form-control"
-                id="data_p_fim"
-                name="data_p_fim"
-                value="{{meta_edit.previsao_fim|date:'d/m/Y'}}"
-                onkeypress="mascaraData( this, event )"
-                maxlength="10"
-              >
-            </div>
-
-            <div class="col-md-4 form-group">
-              <label for="basicInput"><b>DIAS DA SEMANA:</b></label>
-              <input
-                type="text"
-                class="form-control"
-                id="dias_semana"
-                name="dias_semana"
-                value="{{meta_edit.dias_semana}}"
-              >
-            </div>
-
-            <div class="col-md-4 form-group">
-              <label for="basicInput"><b>PREVISÃO PARA ABERTURA DO EDITAL:</b></label>
-              <input
-                type="text"
-                class="form-control"
-                id="p_abertura_edital"
-                name="p_abertura_edital"
-                value="{{meta_edit.previsao_abertura_edital|date:'d/m/Y'}}"
-                onkeypress="mascaraData( this, event )"
-                maxlength="10"
-              >
-            </div>
-
-            <div class="col-md-4 form-group">
-              <label for="basicInput"><b>PREVISÃO PARA FECHAMENTO DO EDITAL:</b></label>
-              <input
-                type="text"
-                class="form-control"
-                id="p_fechamento_edital"
-                name="p_fechamento_edital"
-                value="{{meta_edit.previsao_fechamento_edital|date:'d/m/Y'}}"
-                onkeypress="mascaraData( this, event )"
-                maxlength="10"
-              >
-            </div>
-
-
-
-
-
-            
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>VAGAS TOTAIS:</b></label>
+            <input
+              type="number"
+              class="form-control"
+              id="vagas_totais"
+              name="vagas_totais"
+              placeholder="Informe a quantidade de vagas:"
+              min="1"
+              value="{{qtdVagas}}"
+              oninput="calcular()"
+              required
+            >
           </div>
-          
-          <div class="form-group" style="width: 100%; text-align: right;">
-            <a href="/cadastrar-metas" class="btn btn-secondary">Voltar</a>
-            <button  onclick="validaForm()" type="button" class="btn btn-success">Atualizar Metas</button>
+
+         
+
+          <div class="col-md-4 form-group" id="cht_ajax">
+            <label for="basicInput"><b>CARGA HORÁRIA TOTAL:</b></label>
+            <input
+              type="number"
+              class="form-control"
+              id="ch_total"
+              name="ch_total"
+              placeholder="Informe a carga horária:"
+              min="1"
+              value="{{cht}}"
+              readonly
+              
+            >
+            <input style="display: none;" id="limite" name="limite" value="0" >
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>DATA PREVISTA PARA INÍCIO:</b></label>
+            <input
+              type="date"
+              class="form-control"
+              id="data_p_inicio"
+              name="data_p_inicio"
+              value="{{pi}}"
+              required
+
+            >
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>DATA PREVISTA PARA FINALIZAR:</b></label>
+            <input
+              type="date"
+              class="form-control"
+              id="data_p_fim"
+              name="data_p_fim"
+              value="{{pf}}"
+              required
+
+            >
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>DIAS DA SEMANA:</b></label>
+            <input
+              type="text"
+              class="form-control"
+              id="dias_semana"
+              name="dias_semana"
+              value="{{dia_semana}}"
+              required
+
+            >
+          </div>
+
+          <!-- OCULTO -->
+          <div class="col-md-4 form-group" style="display: none;">
+            <label for="basicInput"><b>PREVISÃO PARA ABERTURA DO EDITAL:</b></label>
+            <input
+              type="date"
+              class="form-control"
+              id="p_abertura_edital"
+              name="p_abertura_edital"
+              
+
+            >
+          </div>
+
+          <div class="col-md-4 form-group" style="display: none;">
+            <label for="basicInput"><b>PREVISÃO PARA FECHAMENTO DO EDITAL:</b></label>
+            <input
+              type="date"
+              class="form-control"
+              id="p_fechamento_edital"
+              name="p_fechamento_edital"
+              
+
+            >
+          </div>
+
+          <div class="col-md-8 form-group">
+            <label for="basicInput" style="width: 100%; text-align: right;"><b> </b></label>
+            <a href="/" class="btn btn-secondary" style="width: 45%;">Voltar</a>
+          <button type="button" id="valida_form" style="width: 53%;" onclick="validaForm()" class="btn btn-success">Atualizar Metas</button>
+           
+          </div>
+
+
+
+         
         </div>
-        </form>
+        
+  
+      </form>
       </div>
     </div>
   </div>
@@ -352,18 +350,39 @@
 </script>
 
 <script>
-  
+  $(document).ready(function(){
+    const url = "/ajax/ajax_load_cht";
+    escola = document.getElementById('escola').value
+    tipo_curso = document.getElementById('tipo').value
+    ano = document.getElementById('ano').value
+    modalidade = document.getElementById('modalidade').value
+    eixo = document.getElementById('eixo').value
+    semestre = document.getElementById('trimestre').value
+
+
+    $.ajax({
+            url : url,
+            data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade,'semestre':semestre},
+            success: function(data){
+                $("#cht_ajax").html(data);
+                calcular()
+            }
+        });
+  });
+
   function validaForm() {
     var limite = parseInt($("#limite").val());
     var cht = parseInt($("#ch_total").val());
     document.getElementById('total_de_horas_disponiveis').innerHTML = limite
+    console.log(limite)
     if (cht > limite || cht == 0){
       if (cht == 0){
         document.getElementById('total_de_horas_disponiveis').innerHTML = "Sem Registros"
         document.getElementById('total_de_horas_disponiveis').style.color = "red"
         $('#ops').modal('show');
       }else{
-        document.getElementById('total_de_horas_disponiveis').innerHTML = "Carga Horária Total Excedida!"
+        var texto = "Carga Horária Total Excedida!<br>Disponível: "+limite+' horas'
+        document.getElementById('total_de_horas_disponiveis').innerHTML = texto
         document.getElementById('total_de_horas_disponiveis').style.color = "red"
         $('#ops').modal('show');
       }
@@ -371,14 +390,15 @@
       
     }else{
       trimestre = $("#trimestre").val()
-      vagas_turma = $("#vagas_turma").val()
       data_p_inicio = $("#data_p_inicio").val()
       data_p_fim = $("#data_p_fim").val()
       dias_semana = $("#dias_semana").val()
       p_abertura_edital = $("#p_abertura_edital").val()
       p_fechamento_edital = $("#p_fechamento_edital").val()
+      carga_horaria = $("#carga_horaria").val()
+      vagas_totais = $("#vagas_totais").val()
 
-      if (trimestre == "" || vagas_turma == "" || data_p_inicio == "" || data_p_fim == "" || dias_semana == "" || p_abertura_edital == "" || p_fechamento_edital == "" ){
+      if (trimestre == "" || data_p_inicio == "" || data_p_fim == "" || dias_semana == ""  || carga_horaria == "" || vagas_totais == ""){
 
         if(trimestre == ""){
           document.getElementById('trimestre').style.borderColor = "red"
@@ -386,12 +406,18 @@
           document.getElementById('trimestre').style.borderColor = ""
         }
 
-        if(vagas_turma == ""){
-          document.getElementById('vagas_turma').style.borderColor = "red"
+        if(carga_horaria == ""){
+          document.getElementById('carga_horaria').style.borderColor = "red"
         }else{
-          document.getElementById('vagas_turma').style.borderColor = ""
+          document.getElementById('carga_horaria').style.borderColor = ""
         }
 
+        if(vagas_totais == ""){
+          document.getElementById('vagas_totais').style.borderColor = "red"
+        }else{
+          document.getElementById('vagas_totais').style.borderColor = ""
+        }
+     
         if(data_p_inicio == ""){
           document.getElementById('data_p_inicio').style.borderColor = "red"
         }else{
@@ -404,11 +430,11 @@
           document.getElementById('data_p_fim').style.borderColor = ""
         }
 
-        if(p_abertura_edital == ""){
-          document.getElementById('p_abertura_edital').style.borderColor = "red"
-        }else{
-          document.getElementById('p_abertura_edital').style.borderColor = ""
-        }
+        // if(p_abertura_edital == ""){
+        //   document.getElementById('p_abertura_edital').style.borderColor = "red"
+        // }else{
+        //   document.getElementById('p_abertura_edital').style.borderColor = ""
+        // }
 
         if(dias_semana == ""){
           document.getElementById('dias_semana').style.borderColor = "red"
@@ -416,11 +442,11 @@
           document.getElementById('dias_semana').style.borderColor = ""
         }
 
-        if(p_fechamento_edital == ""){
-          document.getElementById('p_fechamento_edital').style.borderColor = "red"
-        }else{
-          document.getElementById('p_fechamento_edital').style.borderColor = ""
-        }
+        // if(p_fechamento_edital == ""){
+        //   document.getElementById('p_fechamento_edital').style.borderColor = "red"
+        // }else{
+        //   document.getElementById('p_fechamento_edital').style.borderColor = ""
+        // }
       
       }else{
         document.getElementById('Form').submit();
@@ -437,21 +463,27 @@
     document.getElementById("ch_total").value = parseInt(resultado);
   }
 
-
   $("#escola").change(function(){
-       
+       console.log('teste')
         const url = "/ajax/ajax_load_cht";
         const url_eixos = '/ajax/ajax_load_eixos';
         const url_cursos = "/ajax/ajax_load_cursos";
         const url_municipio = "/ajax/ajax_load_municipio";
+        const url_ch = '/ajax/ajax_load_carga_hr_curso'
 
         escola = $(this).val();
         tipo_curso = document.getElementById('tipo').value
         ano = document.getElementById('ano').value
         modalidade = document.getElementById('modalidade').value
         eixo = document.getElementById('eixo').value
+        semestre = document.getElementById('trimestre').value
+
+        var curso_selected = $('#curso option:selected').text()
+
+
         $.ajax({
           url : url_cursos,
+          
           data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade},
           success: function(data){
               $("#curso").html(data);
@@ -469,7 +501,7 @@
 
         $.ajax({
             url : url,
-            data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade},
+            data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade,'semestre':semestre},
             success: function(data){
                 $("#cht_ajax").html(data);
                 calcular()
@@ -483,18 +515,33 @@
                 $("#municipio").html(data);
             }
         });
+
+        $.ajax({
+
+          url : url_ch,
+          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'curso_selected':curso_selected},
+          success: function(data){
+              $("#ajax_carga_horaria").html(data);
+    
+          }
     });
+  });
 
   $("#tipo").change(function(){
        
        const url = "/ajax/ajax_load_cht";
        const url_cursos = "/ajax/ajax_load_cursos";
+       const url_ch = '/ajax/ajax_load_carga_hr_curso'
 
        tipo_curso = $(this).val();
        escola = document.getElementById('escola').value
        ano = document.getElementById('ano').value
        modalidade = document.getElementById('modalidade').value
        eixo = document.getElementById('eixo').value
+       semestre = document.getElementById('trimestre').value
+
+       var curso_selected = $('#curso option:selected').text()
+
        $.ajax({
           url : url_cursos,
           data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade},
@@ -506,12 +553,24 @@
 
        $.ajax({
            url : url,
-           data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade},
+           data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade,'semestre':semestre},
            success: function(data){
                $("#cht_ajax").html(data);
                calcular()
            }
        });
+
+
+        $.ajax({
+            
+            url : url_ch,
+            data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'curso_selected':curso_selected},
+            success: function(data){
+                $("#ajax_carga_horaria").html(data);
+
+            }
+          });
+
    });
 
   $("#ano").change(function(){
@@ -521,9 +580,10 @@
        escola = document.getElementById('escola').value
        tipo_curso = document.getElementById('tipo').value
        modalidade = document.getElementById('modalidade').value
+       semestre = document.getElementById('trimestre').value
        $.ajax({
            url : url,
-           data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade},
+           data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade,'semestre':semestre},
            success: function(data){
                $("#cht_ajax").html(data);
                calcular()
@@ -542,11 +602,12 @@
       console.log(escola)
       tipo_curso = document.getElementById('tipo').value
       ano = document.getElementById('ano').value
-      
+      semestre = document.getElementById('trimestre').value
+
       console.log(eixo)
       $.ajax({
           url : url_cursos,
-          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade},
+          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'ano':ano},
           success: function(data){
               $("#curso").html(data);
     
@@ -555,13 +616,38 @@
 
       $.ajax({
           url : url,
-          data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade},
+          data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade,'semestre':semestre},
           success: function(data){
               $("#cht_ajax").html(data);
               calcular()
           }
       });
   });
+
+  $("#curso").change(function(){
+
+      const url_ch = '/ajax/ajax_load_carga_hr_curso'
+      var curso_selected = $('#curso option:selected').text()
+   
+
+       eixo = document.getElementById('eixo').value
+       escola = document.getElementById('escola').value
+       console.log(escola)
+       tipo_curso = document.getElementById('tipo').value
+       ano = document.getElementById('ano').value
+       semestre = document.getElementById('trimestre').value
+       modalidade = document.getElementById('modalidade').value
+  
+       $.ajax({
+
+          url : url_ch,
+          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'curso_selected':curso_selected},
+          success: function(data){
+              $("#ajax_carga_horaria").html(data);
+
+          }
+          });
+   });
 
   $("#eixo").change(function(){
         const url_cursos = "/ajax/ajax_load_cursos";
@@ -571,10 +657,12 @@
         modalidade = document.getElementById('modalidade').value
         escola = document.getElementById('escola').value
         tipo_curso = document.getElementById('tipo').value
+        ano = document.getElementById('ano').value
+        semestre = document.getElementById('trimestre').value
 
         $.ajax({
           url : url_cursos,
-          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade},
+          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'ano':ano},
           success: function(data){
               $("#curso").html(data);
     
@@ -582,7 +670,28 @@
       });
 
     });
+  
+  $("#trimestre").change(function(){
+      const url_cursos = "/ajax/ajax_load_cht";
 
+      semestre = $(this).val();
+      tipo_curso = document.getElementById('tipo').value
+      modalidade = document.getElementById('modalidade').value
+      escola = document.getElementById('escola').value
+      tipo_curso = document.getElementById('tipo').value
+      ano = document.getElementById('ano').value
+
+      $.ajax({
+        url : url_cursos,
+        data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade,'semestre':semestre},
+        success: function(data){
+            $("#cht_ajax").html(data);
+  
+        }
+    });
+
+  });
+  
   function insereTexto(id,vagas_totais,carga_horaria,escola,tipo,ano)
     {
       console.log(id)

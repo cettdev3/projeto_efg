@@ -25,12 +25,20 @@
             <td>{{filtro.vagas_totais}}</td>
             <td>{{filtro.previsao_inicio|date:"d/m/Y"}}<br>{{filtro.previsao_fim|date:"d/m/Y"}}</td>
             <td>{{filtro.carga_horaria}}</td>
-            <td><a href="editar-meta/{{filtro.id}}" class="changeSelected btn icon btn-primary"><i class="bi bi-pencil"></i>
-            </a>
-         <button type="button" onclick='insereTexto("{{filtro.id}}")' class="btn icon btn-danger" data-bs-toggle="modal"
-              data-bs-target="#warning"><i class="bi bi-x"></i>
-          </button>
-          <!---<a  class="deleteFromMeta btn icon btn-danger" href="apagar-meta/{{meta.id}}"><i class="bi bi-x"></i></a></td>-->
+            <td>  <div class="dropdown" style="float: right; ">
+                <button class="dropbtn btn icon btn-dark"><i class="fas fa-ellipsis-v"></i></button>
+                <div class="dropdown-content">
+                  {% if filtro.situacao <= 1 %}
+                  <a 
+                  href="editar-meta/{{filtro.id}}"
+                  class="btn icon btn-primary"> <i class="bi bi-pencil"></i> EDITAR</a>
+                  {% endif %}
+                  <a type="button" onclick='insereTexto("{{filtro.id}}","{{filtro.vagas_totais}}","{{filtro.carga_horaria}}","{{filtro.escola.id}}","{{filtro.tipo_curso.id}}","{{filtro.ano}}")' class="btn icon btn-danger" data-bs-toggle="modal"
+                  data-bs-target="#warning"><i class="bi bi-trash"> APAGAR</i>
+                </a>
+                
+                </div>
+              </div>
         </tr>
         {% endfor %}
         

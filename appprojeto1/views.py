@@ -638,22 +638,38 @@ def editar_meta(request,codigo):
     infoFiltro = Metas_efg.objects.filter(id=codigo).values()
     meta_edit = Metas_efg.objects.get(id=codigo)
     pega_eixos = Metas_efg.objects.filter(id=codigo).values()
-    idEixos = pega_eixos[0]['eixo_id']
+    diretoria = pega_eixos[0]['diretoria']
     idEscola = pega_eixos[0]['escola_id']
-    tipos_cursos = Metas_tipo.objects.all()
+    idMunicipio = pega_eixos[0]['udepi_id']
     tipoCursos = pega_eixos[0]['tipo_curso_id']
+    idEixos = pega_eixos[0]['eixo_id']
+    idModalidade = pega_eixos[0]['modalidade_id']
+    idCurso = int(pega_eixos[0]['curso_id'])
+    turno = pega_eixos[0]['turno']
+    ano = pega_eixos[0]['ano']
+    trimestre = int(pega_eixos[0]['trimestre'])
+    ch = int(pega_eixos[0]['carga_horaria'])
+    qtdVagas = int(pega_eixos[0]['vagas_totais'])
+    cht = int(pega_eixos[0]['carga_horaria_total'])
+    pi = pega_eixos[0]['previsao_inicio']
+    pi = datetime.datetime.strftime(pi,'%Y-%m-%d')
+    pf = pega_eixos[0]['previsao_fim']
+    pf = datetime.datetime.strftime(pf,'%Y-%m-%d')
+    dia_semana = pega_eixos[0]['dias_semana']
+    idEdit = pega_eixos[0]['id']
+    
+    
+    tipos_cursos = Metas_tipo.objects.all()
+    
     escolas = Metas_escolas.objects.filter(tipo=0)
     eixos = Eixos.objects.filter(escola_id=idEscola)
     modalidades = Metas_modalidade.objects.all()
-    print(idEscola)
     municipios = Udepi_municipio.objects.filter(escola_id=idEscola)
-    print(idEixos,tipoCursos)
-    #cursos = Cadastrar_curso.objects.all()
+
     cursos = Cadastrar_curso.objects.filter(eixos=idEixos,tipo_id=tipoCursos)
     atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(escola=infoFiltro[0]['escola_id'],tipo=infoFiltro[0]['tipo_curso_id'],ano=infoFiltro[0]['ano']).values()
     id_filtro = atualiza_saldo[0]['id']
     limite = atualiza_saldo[0]['carga_horaria']
-    print(limite)
     return render(request, 'editar_metas.html', {'meta_edit': meta_edit,
     'tipos_cursos':tipos_cursos,
     'modalidades':modalidades,
@@ -661,7 +677,24 @@ def editar_meta(request,codigo):
     'eixos':eixos,
     'cursos':cursos,
     'limite':limite,
-    'municipios':municipios})
+    'municipios':municipios,
+    'diretoria':diretoria,
+    'idEscola':idEscola,
+    'idMunicipio':idMunicipio,
+    'tipoCursos':tipoCursos,
+    'idEixos':idEixos,
+    'idModalidade':idModalidade,
+    'idCurso':idCurso,
+    'turno':turno,
+    'ano':ano,
+    'trimestre':trimestre,
+    'ch':ch,
+    'qtdVagas':qtdVagas,
+    'cht':cht,
+    'pi':pi,
+    'pf':pf,
+    'dia_semana':dia_semana,
+    'idEdit':idEdit})
 
 @login_required(login_url='/')
 def editarmetas(request):
@@ -669,30 +702,26 @@ def editarmetas(request):
     id_ = request.POST['id']
     diretoria = request.POST['diretoria']
     escola = request.POST['escola']
+    municipio = request.POST['municipio']
+    print(municipio)
     tipo_curso = request.POST['tipo']
     eixos = request.POST['eixo']
+    modalidade_oferta =request.POST['modalidade']
     nome_curso = request.POST['curso']
     turno = request.POST['turno']
     ano = request.POST['ano']
-    modalidade_oferta =request.POST['modalidade']
     trimestre =request.POST['trimestre']
     carga_horaria = request.POST['carga_horaria']
     vagas_totais =request.POST['vagas_totais']
-    vagas_turma =request.POST['vagas_turma']
     carga_horaria_total = request.POST['ch_total']
     previsao_inicio = request.POST['data_p_inicio']
-    previsao_inicio = converter_data(previsao_inicio)
+    #previsao_inicio = converter_data(previsao_inicio)
     previsao_fim = request.POST['data_p_fim']
-    previsao_fim = converter_data(previsao_fim)
+    #previsao_fim = converter_data(previsao_fim)
     dias_semana = request.POST['dias_semana']
-    previsao_abertura_edital = request.POST['p_abertura_edital']
-    previsao_abertura_edital = converter_data(previsao_abertura_edital)
-    previsao_fechamento_edital = request.POST['p_fechamento_edital']
-    previsao_fechamento_edital = converter_data(previsao_fechamento_edital)
-    data_registro = str(datetime.datetime.now())
-    data_registro = str(data_registro[:10])
 
     editmetas = Metas_efg.objects.get(id=id_)
+    editmetas.udepi_id = municipio
     editmetas.diretoria = diretoria
     editmetas.escola_id = escola
     editmetas.tipo_curso_id = tipo_curso
@@ -705,19 +734,15 @@ def editarmetas(request):
     editmetas.carga_horaria = carga_horaria
     editmetas.carga_horaria_total = carga_horaria_total
     editmetas.vagas_totais = vagas_totais
-    editmetas.vagas_turma = vagas_turma
     editmetas.previsao_inicio = previsao_inicio
     editmetas.previsao_fim = previsao_fim
     editmetas.dias_semana = dias_semana
-    editmetas.previsao_abertura_edital = previsao_abertura_edital
-    editmetas.previsao_fechamento_edital = previsao_fechamento_edital
-    editmetas.data_registro = data_registro
     editmetas.save()
 
     atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(escola=escola,tipo=tipo_curso,ano=ano).values()
     id_filtro = atualiza_saldo[0]['id']
     saldo_atual = int(atualiza_saldo[0]['carga_horaria'])
-    cht_antiga = int(request.POST['ch_antiga'])
+    cht_antiga = int(request.POST['carga_horaria'])
     cht_atual = int(request.POST['ch_total'])
     if cht_atual < cht_antiga:
         saldo = saldo_atual + (cht_antiga - cht_atual)
