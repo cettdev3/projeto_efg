@@ -2,6 +2,38 @@
 {% load static %}
 
 <style>
+  /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #000000}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
   #myInput {
   background-repeat: no-repeat; /* Do not repeat the icon image */
   width: 100%; /* Full-width */
@@ -568,11 +600,22 @@
                 <td>{{lancamento.previsao_inicio|date:"d/m/Y"}}<br>{{lancamento.previsao_fim|date:"d/m/Y"}}</td>
                 <td>{{lancamento.carga_horaria}}</td>
                 <td>{{lancamento.udepi.municipio}}</td>
-                <td>{% if lancamento.situacao <= 1 %}<a href="editar-meta/{{lancamento.id}}" class="changeSelected btn icon btn-primary"><i class="bi bi-pencil">{% endif %}</i>
-                </a>
-             <button type="button" onclick='insereTexto("{{lancamento.id}}","{{lancamento.vagas_totais}}","{{lancamento.carga_horaria}}","{{lancamento.escola.id}}","{{lancamento.tipo_curso.id}}","{{lancamento.ano}}")' class="btn icon btn-danger" data-bs-toggle="modal"
-                  data-bs-target="#warning"><i class="bi bi-x"></i>
-              </button></td>
+                <td>
+                  <div class="dropdown" style="float: right; ">
+                    <button class="dropbtn btn icon btn-dark"><i class="fas fa-ellipsis-v"></i></button>
+                    <div class="dropdown-content">
+                      {% if lancamento.situacao <= 1 %}
+                      <a 
+                      href="editar-meta/{{lancamento.id}}"
+                      class="btn icon btn-primary"> <i class="bi bi-pencil"></i> EDITAR</a>
+                      {% endif %}
+                      <a type="button" onclick='insereTexto("{{lancamento.id}}","{{lancamento.vagas_totais}}","{{lancamento.carga_horaria}}","{{lancamento.escola.id}}","{{lancamento.tipo_curso.id}}","{{lancamento.ano}}")' class="btn icon btn-danger" data-bs-toggle="modal"
+                      data-bs-target="#warning"><i class="bi bi-trash"> APAGAR</i>
+                    </a>
+                    
+                    </div>
+                  </div>
+                 </td>
               <!---<a  class="deleteFromMeta btn icon btn-danger" href="apagar-meta/{{meta.id}}"><i class="bi bi-x"></i></a></td>-->
             </tr>
             {% endfor %}
