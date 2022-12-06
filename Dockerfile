@@ -40,7 +40,7 @@ RUN adduser -u 1000 --disabled-password --gecos "" appuser && chown -R appuser /
 WORKDIR /home/appuser
 USER appuser
 
-COPY --chown=appuser:appuser ./app /home/appuser
+# COPY --chown=appuser:appuser ./app /home/appuser
 
 # RUN chown -R appuser:appuser /home/appuser
 # RUN mkdir /home/appuser/templates
