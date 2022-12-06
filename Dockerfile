@@ -37,7 +37,10 @@ RUN python -m pip install -r requirements.txt -U
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
 RUN adduser -u 1000 --disabled-password --gecos "" appuser && chown -R appuser /home/appuser
 
-WORKDIR /home/appuser
+RUN mkdir /home/appuser/app -p
+
+WORKDIR /home/appuser/app
+
 USER appuser
 
 # COPY --chown=appuser:appuser ./app /home/appuser
