@@ -1,0 +1,14 @@
+<div class="col-md-12 form-group" id="cht_ajax">
+    <label style="width: 100%;" for="basicInput"><b> CARGA HORÁRIA TOTAL: </b></label>
+    <input
+      type="number"
+      class="form-control"
+      id="ch_total"
+      name="ch_total"
+      min="1"
+      max="{{ch_total_geral}}"
+      readonly
+      required
+    >
+    <input style="display: none;" id="limite" name="limite" value="{{ch_total_geral}}">
+  </div>

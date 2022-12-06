@@ -1,0 +1,95 @@
+{% load l10n %}
+<table id="myTable" class="myTable">
+  <thead>
+    <tr>
+      <th>Escola</th>
+      <th>Tipo</th>
+      <th>Eixo</th>
+      <th>Curso</th>
+      <th>Id. Min</th>
+      <th>Escolaridade</th>
+      <th>Status</th>
+      <th></th>
+      <th>On/Off</th>
+    </tr>
+  </thead>
+  <tbody id="tabela_metas">
+    {% for curso in cursos %}
+
+            <tr>
+              <td>{{curso.escola.escola}}</td>
+                                            <span id="escola{{curso.id}}" style="display: none;">{{curso.escola.id}}</span>
+                                            <td>{{curso.tipo.tipo}}</td>
+                                            <span id="tipo{{curso.id}}" style="display: none;">{{curso.tipo.id}}</span>
+                                            <td >{{curso.eixos.nome}}</td>
+                                            <span id="eixo{{curso.id}}" style="display: none;">{{curso.eixos.id}}</span>
+                                            <span id="modalidade{{curso.id}}" style="display: none;">{{curso.modalidade.id}}</span>
+                                            <span id="ch{{curso.id}}" style="display: none;">{{curso.carga_horaria}}</span>
+                                            <td id="curso{{curso.id}}">{{curso.curso}}</td>
+                                            <td id="idade{{curso.id}}">{{curso.idade_min}}</td>
+                                            <td id="escolaridade{{curso.id}}">{{curso.escolaridade}}</td>
+                                            
+                                            {% if curso.status == "ATIVO" %}
+                                            <td >
+                                              <a  style="width: 100%;" class="btn btn-success btn-icon-split">
+                                                <span id="status{{info.id}}" class="text">{{curso.status}}</span>
+                                              </a>
+                                            </td>
+                                            {% else %}
+
+                                            <td>
+                                              <a   style="width: 100%;" class="btn btn-warning btn-icon-split text-dark">
+                                                  <span  id="status{{info.id}}" class="text">{{curso.status}}</span>
+                                              </a>
+                                            </td>
+
+                                            {% endif %}
+                                            <td>
+                                            <div class="dropdown">
+                                                <button class="dropbtn btn icon btn-dark"><i class="fas fa-ellipsis-v"></i></button>
+                                                <div class="dropdown-content">
+                                                  <a 
+                                                  type="button"
+                                                  onclick='insereTexto("{{curso.id}}")'
+                                                  class="btn icon btn-danger"
+                                                  data-bs-toggle="modal"
+                                                  data-bs-target="#warning"> <i class="bi bi-trash"></i> APAGAR</a>
+
+                                                  <a 
+                                                  type="button"
+                                                onclick='atualiza("{{curso.id}}")'
+                                                class="btn icon btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#xlarge"><i class="bi bi-pencil"></i> EDITAR</a>
+                                                
+                                                </div>
+                                              </div>
+              </td>
+              <td>
+    
+                  {% if curso.status == "ATIVO" %}
+                  <button
+                    type="button"
+                    onclick='desabilita_curso("{{curso.id}}","ATIVO")'
+                    class="btn icon btn-dark"
+                    
+                  >
+                  <i class="bi bi-lock"></i>
+                  </button>
+                {% else %}
+                <button
+                type="button"
+                onclick='desabilita_curso("{{curso.id}}","INATIVO")'
+                class="btn icon btn-dark"
+                
+              >
+              <i class="bi bi-unlock-fill"></i>
+              </button>
+                {% endif %}
+
+              </td>
+            </tr>
+                  
+    {% endfor %}
+  </tbody>
+</table>

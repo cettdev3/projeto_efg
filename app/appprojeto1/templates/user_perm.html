@@ -1,0 +1,193 @@
+{% extends "index.html" %}
+{% block content %}
+
+{% if 'gpu' in permissoes.permission %}
+<div class="page-heading">
+  <h3>Permissões de Usuários</h3>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">
+     Gerenciamento de controle de usuários
+    </h4>
+  </div>
+
+  <div class="card-body">
+
+    <div class="column">
+
+        <form  class="form-control" method="post" action="/salvar-permissoes">
+          {% csrf_token %}
+        <div class="form-group">
+          <label for="basicInput"><b>Usuário</b></label>
+          <select class="form-control" id="basicInput" name="basicInput">
+            <option selected>INFORME UM USUÁRIO</option>
+            {% for user in users %}
+            <option value="{{user.id}}">{{user.username}}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+       
+    
+
+
+    <hr>
+    <div class="column" id="form_perm">
+          
+        <div class="form-group">
+          <label for="basicInput"><b>PLANEJAMENTO</b></label>
+          <hr>
+          <div class="row">
+          <div class="col-md-4 form-group">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="ima" name="ima" id="ima">
+                <label class="form-check-label" for="flexCheckDefault">
+                  INCLUIR METAS ANALÍTICAS
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-4 form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="ims"  name="ims" id="ims">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      INCLUIR METAS SINTÉTICO
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-4 form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="opt"  name="opt" id="opt">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          ORÇAMENTO DE PLANO DE TRABALHO
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="cc"  name="cc" id="cc">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              CADASTRAR CURSO
+                            </label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4 form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="dm" value="" name="dm" id="dm">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                  DIVISÃO DE METAS
+                                </label>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="ac"  name="ac" id="ac">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                      APROVAÇÃO DE CURSOS
+                                    </label>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-4 form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="vte"  name="vte" id="vte">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                          VERIFICAÇÃO DE TURMAS DO EDITAL
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4 form-group"></div>
+                                    <div class="col-md-4 form-group"></div>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    
+                       
+            </div>
+            <label for="basicInput"><b>PROCESSOS</b></label>
+            <hr>
+            <div class="row">
+            <div class="col-md-4 form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="sicge"  name="sicge" id="sicge">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      SOLICITAR INCLUSÃO DE CURSO NA GRADE DA ESCOLAS
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-4 form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="sat"  name="sat" id="sat">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          SOLICITAR DE ABERTURA DE TURMAS
+                        </label>
+                      </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+
+                <label for="basicInput"><b>PERMISSÕES</b></label>
+            <hr>
+            <div class="row">
+            <div class="col-md-4 form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="gpu"  name="gpu" id="gpu">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      GERENCIAR PERMISSÕES DE USUÁRIOS
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-md-4 form-group">
+                  <label for="basicInput"><b>ESCOLA:</b></label>
+                  
+                  <select class="form-control" id="escola" name="escola" required>
+                    <option value="0">TODAS</option>
+                    {% for escola in escolas %}
+                    <option value="{{escola.id}}">{{escola.escola}}</option>
+                    {% endfor %}
+                    
+                  </select>
+                </div>
+
+             
+        </div>
+        </div>
+        <div style="text-align: right;">
+        <button  type="submit" class="btn btn-success">ATUALIZAR PERMISSÕES</button>
+    </div>
+      </form>
+
+    </div>
+  </div>
+  {% else %}
+<div class="alert alert-danger" role="alert">
+  :'( Desculpe, mas você não tem permissões para acessar esta funcionalidade do sistema!
+</div>
+{% endif %}
+  <script>
+    $("#basicInput").change(function(){
+      url = '/ajax/ajax_load_perm'
+      userid = document.getElementById('basicInput').value
+      $.ajax({
+          url : url,
+          
+          data: {'userid': userid},
+          success: function(data){
+              $("#form_perm").html(data);
+    
+          }
+      });
+    });
+ </script>
+  
+  {% endblock content %}
+
+</div>

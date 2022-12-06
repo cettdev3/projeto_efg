@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    #   ports:
+    #  - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning 
+    volumes: 
+      - ./cache:/data
+
+  efg_index:
+    image: efg_index
+    restart: always
+    depends_on:
+      - cache
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+     - 8000:8000
+
+networks:
+   default:
+     external: true
+     name: backend

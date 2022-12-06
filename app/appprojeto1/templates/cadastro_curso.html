@@ -1,0 +1,963 @@
+{% extends "index.html" %} {% block content %} {% load static %}
+
+<style>
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #1e6f00;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: rgb(255, 255, 255);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #000000}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+  #myInput {
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+
+
+
+#myTable {
+  border-collapse: collapse; /* Collapse borders */
+  width:100%; /* Full-width */
+  border: 1px solid #ddd; /* Add a grey border */
+
+}
+
+#myTable th, #myTable td {
+  text-align: center; /* Left-align text */
+  padding: 10px; /* Add padding */
+  overflow-wrap: break-word;
+}
+
+#myTable tr {
+  /* Add a bottom border to all table rows */
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #00f36d6c;
+}
+
+@media screen and (max-width: 1280px) {
+    .myTable {
+        border: 0px;
+    }
+    .myTable caption {
+        font-size: 22px;
+    }
+    .myTable thead {
+        display: none;
+    }
+    .TamyTableble tr {
+        margin-bottom: 8px;
+        border-bottom: 4px solid #ddd;
+        display: block;
+        
+    }
+    .myTable th, .table td {
+        font-size: 12px;
+        
+    }
+    .myTable td {
+        display: block;
+        border-bottom: 1px solid #ddd;
+        
+        
+    }
+    .myTable  td:last-child {
+        border-bottom: 0px;
+    }
+    .myTable td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: left;
+    }
+    .myTable button, btn_voltar{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+}
+
+#myTable2 {
+  border-collapse: collapse; /* Collapse borders */
+  width:100%; /* Full-width */
+  border: 1px solid #ddd; /* Add a grey border */
+
+}
+
+#myTable2 th, #myTable2 td {
+  text-align: center; /* Left-align text */
+  padding: 10px; /* Add padding */
+  overflow-wrap: break-word;
+}
+
+#myTable2 tr {
+  /* Add a bottom border to all table rows */
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable2 tr.header, #myTable2 tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #00f36d6c;
+}
+
+@media screen and (max-width: 1280px) {
+    .myTable2 {
+        border: 0px;
+    }
+    .myTable2 caption {
+        font-size: 22px;
+    }
+    .myTable2 thead {
+        display: none;
+    }
+    .TamyTable2ble tr {
+        margin-bottom: 8px;
+        border-bottom: 4px solid #ddd;
+        display: block;
+        
+    }
+    .myTable2 th, .table td {
+        font-size: 12px;
+        
+    }
+    .myTable2 td {
+        display: block;
+        border-bottom: 1px solid #ddd;
+        
+        
+    }
+    .myTable2  td:last-child {
+        border-bottom: 0px;
+    }
+    .myTable2 td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: left;
+    }
+    .myTable2 button, btn_voltar{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+}
+
+
+</style>
+{% if 'cc' in permissoes.permission %}
+<div class="page-heading">
+  <h3>Cadastrar Cursos por Escola - EFG</h3>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Inserir metas de ensino do convênio</h4>
+  </div>
+
+  <div class="card-body">
+    <div class="column">
+      <div>
+        <form
+          name="Form"
+          id="Form"
+          class="form-control"
+          method="post"
+          action="/cad-new-curso"
+        >
+          {% csrf_token %} 
+          <!-- {% if messages %} {% for message in messages %}
+          <div class="alert alert-dismissible alert-success" role="alert">
+            <strong class="text-dark">{{message}}</strong>
+          </div>
+          {% endfor %} {% endif %} -->
+
+          <div class="row">
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>ESCOLA:</b></label>
+              <select class="form-control" id="escola" name="escola">
+                {% for escola in escolas %}
+                <option value="{{escola.id}}">{{escola.escola}}</option>
+                {% endfor %}       
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>TIPO DE CURSO:</b></label>
+              <select class="form-control" id="tipo" name="tipo">
+                {% for tipo_curso in tipos %}
+                <option value="{{tipo_curso.id}}">{{tipo_curso.tipo}}</option>
+                {% endfor %}     
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>MODALIDADE:</b></label>
+              <select class="form-control" id="modalidade" name="modalidade">
+                {% for modalidade in modalidades %}
+                <option value="{{modalidade.id}}">{{modalidade.modalidade}}</option>
+                {% endfor %}     
+              </select>
+            </div>
+
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>ESCOLARIDADE</b></label>
+              <select class="form-control" id="escolaridade" name="escolaridade">
+                <option value="ENSINO FUNDAMENTAL COMPLETO">ENSINO FUNDAMENTAL COMPLETO</option>
+                <option value="ENSINO MÉDIO COMPLETO">ENSINO MÉDIO COMPLETO</option>
+                <option value="SEM EXIGÊNCIA DE ESCOLARIDADE">SEM EXIGÊNCIA DE ESCOLARIDADE</option>
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>IDADE MÍNIMA:</b></label>
+              <input type="number" class="form-control" id="idade_min" name="idade_min">
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>EIXO:</b></label>
+              <select class="form-control" id="eixo" name="eixo">
+                {% for eixo in eixos_inicial %}
+                <option value="{{eixo.id}}">{{eixo.nome}}</option>
+               {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>CURSO:</b></label>
+              <input type="text" class="form-control" id="curso" name="curso">
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>CARGA HORÁRIA:</b></label>
+              <input type="number" class="form-control" id="carga_horaria" name="carga_horaria">
+            </div>
+          
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>STATUS:</b></label>
+              <select class="form-control" id="status" name="status">
+                <option value="ATIVO">ATIVO</option> 
+                <option value="INATIVO">INATIVO</option>  
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>ID SIGA:</b></label>
+              <input type="number" class="form-control" id="siga_id" name="siga_id">
+            </div>
+
+          
+           
+          </div>
+
+          <div class="form-group" style="width: 100%; text-align: right">
+            <a href="/" id="btn_voltar" class="btn btn-secondary">Voltar</a>
+            <button type="submit" class="btn btn-success">Cadastrar Curso</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+
+  <div class="row">
+      <div class="col-md-12">
+          <div class="card">
+              <div class="card-body">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist" style="border-bottom: 1px solid;">
+                    <li class="nav-item" role="presentation">
+                      <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#gerenciar-eixos" role="tab"
+                          aria-controls="profile" aria-selected="false">Gerenciar Eixos</a>
+                  </li>
+                    
+                    <li class="nav-item" role="presentation">
+                          <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#cursos-escola" role="tab"
+                              aria-controls="home" aria-selected="true">Cursos por Escola</a>
+                      </li>
+                     
+                      
+                    
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active" id="cursos-escola" role="tabpanel" aria-labelledby="home-tab">
+                        <section class="section">
+                          <div class="card">
+                            <div class="card-header">
+                              <h4 class="card-title">Cursos Cadastrados por Escola:</h4>
+        
+                              <div style="border-radius: 15px; background-color: #0C504B; padding: 10px;">
+                              <div class="row" >
+                              <div class="col-md-5 ">
+                                <label for="basicInput" style="color: #FFFF;">INFORME A ESCOLA:</label>
+                                <select class="form-control" id="filtro_escola" name="filtro_escola" onchange="search_escola()">
+                                  <option></option>
+                                  {% for escola in escolas_cursos %}
+                     
+                                  <option value="{{escola.escola.id}}">{{escola.escola}}</option>
+                                  {% endfor %}     
+                                </select>
+                              </div>
+                        
+                              <div class="col-md-3 ">
+                                <label for="basicInput" style="color: #FFFF;">INFORME O TIPO:</label>
+                                <select class="form-control" id="filtro_tipo" name="filtro_tipo" onchange="search_escola()">
+                                  <option></option>
+                                  {% for tipo in tipo_curso %}
+                                  <option value="{{tipo.id}}">{{tipo.tipo.tipo}}</option>
+                                  {% endfor %}     
+                                </select>
+                        
+                              </div>
+                              <div class="col-md-4 ">
+                                <label for="basicInput" style="color: #FFFF;">INFORME UM EIXO:</label>
+                                <select class="form-control" id="filtro_eixo" name="filtro_eixo" onchange="search_escola()">
+                                  <option></option>
+                                  {% for eixo in eixos_curso %}
+                                  <option value="{{eixo.eixos.id}}">{{eixo.eixos.nome}}</option>
+                                  {% endfor %}     
+                                </select>
+                        
+                              </div>
+                            </div>
+                        </div>
+                            </div>
+                        
+                        
+                            <div class="card-body"  style="overflow-x:auto;">
+                              <table id="myTable" class="myTable">
+                                <thead>
+                              
+                                    <th>Escola</th>
+                                    <th>Tipo</th>
+                                    <th>Eixo</th>
+                                    <th>Curso</th>
+                                    <th>ID Siga</th>
+                                    <th>Escolaridade</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                    <th>On/Off</th>
+                             
+                                </thead>
+                                <tbody id="tabela_metas">
+                                  {% for curso in cursos %}
+                        
+                                          <tr>
+                                            <td>{{curso.escola.escola}}</td>
+                                            <span id="escola{{curso.id}}" style="display: none;">{{curso.escola.id}}</span>
+                                            <td>{{curso.tipo.tipo}}</td>
+                                            <span id="tipo{{curso.id}}" style="display: none;">{{curso.tipo.id}}</span>
+                                            <td >{{curso.eixos.nome}}</td>
+                                            <span id="eixo{{curso.id}}" style="display: none;">{{curso.eixos.id}}</span>
+                                            <span id="modalidade{{curso.id}}" style="display: none;">{{curso.modalidade.id}}</span>
+                                            <span id="ch{{curso.id}}" style="display: none;">{{curso.carga_horaria}}</span>
+                                            <span id="idade{{curso.id}}" style="display: none;">{{curso.idade_min}}</span>
+                                            <td id="curso{{curso.id}}">{{curso.curso}}</td>
+                                            <td id="idsiga{{curso.id}}">{{curso.siga_id}}</td>
+                                            <td id="escolaridade{{curso.id}}">{{curso.escolaridade}}</td>
+                                            
+                                            {% if curso.status == "ATIVO" %}
+                                            <td >
+                                              <a  style="width: 100%;" class="btn btn-success btn-icon-split">
+                                                <span id="status{{info.id}}" class="text">{{curso.status}}</span>
+                                              </a>
+                                            </td>
+                                            {% else %}
+
+                                            <td>
+                                              <a   style="width: 100%;" class="btn btn-warning btn-icon-split text-dark">
+                                                  <span  id="status{{info.id}}" class="text">{{curso.status}}</span>
+                                              </a>
+                                            </td>
+
+                                            {% endif %}
+                                           
+                                            <td >
+                                    
+                                              <div class="dropdown">
+                                                <button class="dropbtn btn icon btn-dark"><i class="fas fa-ellipsis-v"></i></button>
+                                                <div class="dropdown-content">
+                                                  <a 
+                                                  type="button"
+                                                  onclick='insereTexto("{{curso.id}}")'
+                                                  class="btn icon btn-danger"
+                                                  data-bs-toggle="modal"
+                                                  data-bs-target="#warning"> <i class="bi bi-trash"></i> APAGAR</a>
+
+                                                  <a 
+                                                  type="button"
+                                                onclick='atualiza("{{curso.id}}")'
+                                                class="btn icon btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#xlarge"><i class="bi bi-pencil"></i> EDITAR</a>
+                                                
+                                                </div>
+                                              </div>
+                                              <!-- <button
+                                                type="button"
+                                                onclick='insereTexto("{{curso.id}}")'
+                                                class="btn icon btn-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#warning"
+                                              >
+                                                <i class="bi bi-trash"></i>
+                                              </button>
+                                              
+                                              <button
+                                                type="button"
+                                                onclick='atualiza("{{curso.id}}")'
+                                                class="btn icon btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#xlarge"
+                                              >
+                                                <i class="bi bi-pencil"></i>
+                                              </button> -->
+                                            
+                                            </td>
+                                              
+                                           
+
+                                            
+                                          
+                                            <td>
+                                              {% if curso.status == "ATIVO" %}
+                                              <button
+                                                type="button"
+                                                onclick='desabilita_curso("{{curso.id}}","ATIVO")'
+                                                class="btn icon btn-dark"
+                                                
+                                              >
+                                              <i class="bi bi-lock"></i>
+                                              </button>
+                                            {% else %}
+                                            <button
+                                            type="button"
+                                            onclick='desabilita_curso("{{curso.id}}","INATIVO")'
+                                            class="btn icon btn-dark"
+                                            
+                                          >
+                                          <i class="bi bi-unlock-fill"></i>
+                                          </button>
+                                            {% endif %}
+                                            </td>
+                                          </tr>
+                                                
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </section>
+                      </div>
+
+                      <div class="tab-pane fade" id="gerenciar-eixos" role="tabpanel" aria-labelledby="profile-tab">
+                        <section class="section">
+                          <div class="card">
+                            <div class="card-header">
+                              <h4 class="card-title">Gerenciar Eixos:</h4>
+                         
+                              <div style="border-radius: 15px; background-color: #0C504B; padding: 10px;">
+                              <div class="row" >
+                              <div class="col-md-6 ">
+                                <label for="basicInput" style="color: #FFFF;">INFORME A ESCOLA:</label>
+                                <select class="form-control" id="ft_escola" name="ft_escola" onchange="search_eixo()">
+                                  <option></option>
+                                  {% for escola in escolas %}
+                                  <option value="{{escola.id}}">{{escola.escola}}</option>
+                                  {% endfor %}     
+                                </select>
+                              </div>
+                              <div class="col-md-6 ">
+                                <label for="basicInput" style="color: #FFFF;">INFORME UM EIXO:</label>
+                                <select class="form-control" id="ft_eixo" name="ft_eixo" onchange="search_eixo()">
+                                  <option></option>
+                                  {% for eixo in eixos_curso %}
+                                  <option value="{{eixo.eixos.id}}">{{eixo.eixos.nome}}</option>
+                                  {% endfor %}     
+                                </select>
+                        
+                              </div>
+                            </div>
+                        </div>
+                            </div>
+                        
+                        
+                            <div class="card-body">
+                              <table id="myTable2" class="myTable2">
+                                <thead>
+                              
+                                    <th>Escola</th>
+                                    <th>Eixo</th>
+                                    <th>Status</th>
+                                    <th>Ação</th>
+                                   
+                            
+                                </thead>
+                                <tbody id="tabela_metas">
+                                  {% for eixo in eixos %}
+                        
+                                          <tr>
+                                            <td>{{eixo.escola.escola}}</td>
+                                            <td>{{eixo.nome}}</td>
+                                            {% if eixo.status == "ATIVO" %}
+                                            <td ><a  style="width: 100%;" class="btn btn-success btn-icon-split">
+                                              <span class="icon text-white-50">
+                                                  <i class="fas fa-check"></i>
+                                              </span>
+                                              <span id="status{{info.id}}" class="text">{{eixo.status}}</span>
+                                          </a></td>
+                                            {% else %}
+                                            <td><a   style="width: 100%;" class="btn btn-warning btn-icon-split text-dark">
+                                              <span class="icon text-white-50">
+                                                  <i class="fas fa-check"></i>
+                                              </span>
+                                              <span  id="status{{info.id}}" class="text">{{eixo.status}}</span>
+                                          </a></td>
+                                            {% endif %}
+                                            <td>
+                                              
+                                              {% if eixo.status == "ATIVO" %}
+                                              <button
+                                                type="button"
+                                                onclick='desabilita_eixo("{{eixo.id}}","ATIVO")'
+                                                class="btn icon btn-dark"
+                                                
+                                              >
+                                              <i class="bi bi-lock"></i>
+                                              </button>
+                                            {% else %}
+                                            <button
+                                            type="button"
+                                            onclick='desabilita_eixo("{{eixo.id}}","INATIVO")'
+                                            class="btn icon btn-dark"
+                                            
+                                          >
+                                          <i class="bi bi-unlock-fill"></i>
+                                          </button>
+                                            {% endif %}
+                                            </td>
+                                          </tr>
+                                          
+                                                
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </section>
+                      </div>
+                    
+                  </div>
+              </div>
+          </div>
+      </div>
+
+  </div>
+</section>
+
+
+{% else %}
+<div class="alert alert-danger" role="alert">
+  :'( Desculpe, mas você não tem permissões para acessar esta funcionalidade do sistema!
+</div>
+{% endif %}
+
+
+<div
+  class="modal fade text-left"
+  id="warning"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel140"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+    role="document"
+  >
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title white" id="myModalLabel140">
+          Confirma a exclusão do curso nesta escola?
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i data-feather="x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">Ao confirmar, o curso será retirado desta unidade.</div>
+      <div class="modal-footer">
+        <form
+          name="Form"
+          id="Form"
+          method="POST"
+          action="/del-curso"
+        >
+          {% csrf_token %}
+          <div style="display: none">
+            <input type="text" id="id_deleta" name="id_deleta" />
+          </div>
+          <button
+            type="button"
+            class="btn btn-light-secondary"
+            data-bs-dismiss="modal"
+          >
+            <i class="bx bx-x d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">Fechar</span>
+          </button>
+          <button class="btn btn-danger ml-1" type="submit">
+            Confirmar Exclusão
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade text-left w-100"
+  id="xlarge"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel16"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+    role="document"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel16">Editar Dados</h4>
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          name="Form"
+          id="form_update"
+          class="form-control"
+          method="post"
+          action="/editar-curso"
+        >
+          {% csrf_token %}
+
+          <input
+            type="Text"
+            class="form-control"
+            id="id_edit"
+            name="id_edit"
+            placeholder="Informe a escola:"
+            style="display: inline;"
+          />
+
+          <div class="row">
+           
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>ESCOLA:</b></label>
+              <select class="form-control" id="escola_modal" name="escola_modal">
+                {% for escola in escolas %}
+                <option value="{{escola.id}}">{{escola.escola}}</option>
+                {% endfor %}       
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>TIPO DE CURSO:</b></label>
+              <select class="form-control" id="tipo_modal" name="tipo_modal">
+                {% for tipo_curso in tipos %}
+                <option value="{{tipo_curso.id}}">{{tipo_curso.tipo}}</option>
+                {% endfor %}     
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>MODALIDADE:</b></label>
+              <select class="form-control" id="modalidade_modal" name="modalidade_modal">
+                {% for modalidade in modalidades %}
+                <option value="{{modalidade.id}}">{{modalidade.modalidade}}</option>
+                {% endfor %}     
+              </select>
+            </div>
+
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>ESCOLARIDADE</b></label>
+              <select class="form-control" id="escolaridade_modal" name="escolaridade_modal">
+                <option value="ENSINO FUNDAMENTAL COMPLETO">ENSINO FUNDAMENTAL COMPLETO</option>
+                <option value="ENSINO MÉDIO COMPLETO">ENSINO MÉDIO COMPLETO</option>
+                <option value="SEM EXIGÊNCIA DE ESCOLARIDADE">SEM EXIGÊNCIA DE ESCOLARIDADE</option>
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>IDADE MÍNIMA:</b></label>
+              <input type="number" class="form-control" id="idade_min_modal" name="idade_min_modal">
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>EIXO:</b></label>
+              <select class="form-control" id="eixo_modal" name="eixo_modal">
+                {% for eixo in eixos_inicial %}
+                <option value="{{eixo.id}}">{{eixo.nome}}</option>
+               {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>CURSO:</b></label>
+              <input type="text" class="form-control" id="curso_modal" name="curso_modal">
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>CARGA HORÁRIA:</b></label>
+              <input type="number" class="form-control" id="carga_horaria_modal" name="carga_horaria_modal">
+            </div>
+          
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>STATUS:</b></label>
+              <select class="form-control" id="status_modal" name="status_modal">
+                <option value="ATIVO">ATIVO</option> 
+                <option value="INATIVO">INATIVO</option>  
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>ID Siga:</b></label>
+              <input type="number" class="form-control" id="siga_id_modal" name="siga_id_modal">
+            </div>
+
+          </div>
+
+          <div class="form-group" style="width: 100%; text-align: right">
+          <a data-bs-dismiss="modal" class="btn btn-light-secondary">Fechar</a> <button type="submit" class="btn btn-success">Editar Curso</button>
+          </div>
+        </form>
+      </div>
+    
+    </div>
+  </div>
+</div>
+{% block javascript %}
+
+<script>
+  function insereTexto(id) {
+    document.getElementById("id_deleta").value = id;
+  }
+
+  function atualiza(id) {
+    let escola = document.getElementById("escola"+id).innerHTML;
+    let tipo = document.getElementById("tipo"+id).innerHTML;
+    let eixo = document.getElementById("eixo"+id).innerHTML;
+    let curso = document.getElementById("curso"+id).innerHTML;
+    let idade = document.getElementById("idade"+id).innerHTML;
+    let escolaridade = document.getElementById("escolaridade"+id).innerHTML;
+    let modalidade = document.getElementById("modalidade"+id).innerHTML;
+    let ch = document.getElementById("ch"+id).innerHTML;
+    let idsiga = document.getElementById('idsiga'+id).innerHTML;
+
+    $('#escola_modal').val(escola.trim()).change();
+    $('#tipo_modal').val(tipo.trim()).change();
+    $('#modalidade_modal').val(modalidade.trim()).change();
+    $('#escolaridade_modal').val(escolaridade.trim()).change();
+    $('#eixo_modal').val(eixo.trim()).change();
+
+    
+    document.getElementById("idade_min_modal").value = idade;
+    document.getElementById("curso_modal").value = curso;
+    document.getElementById("carga_horaria_modal").value = ch;
+    document.getElementById("id_edit").value = id;
+    document.getElementById("siga_id_modal").value = idsiga;
+    
+    
+
+    
+    // document.getElementById("curso_modal").value = curso;
+    // $('#eixo_modal').val(id_eixo.trim()).change();
+    // $('#status_modal').val(status.trim()).change();
+    // $('#tipo_modal').val(id_tipo.trim()).change();
+
+
+
+    
+  }
+
+  function search_escola() {
+    
+    filter_escola = $('#filtro_escola option:selected').text();
+    filter_tipo = $('#filtro_tipo option:selected').text();
+    filter_eixo = $('#filtro_eixo option:selected').text();
+    let rows = $("#tabela_metas tr")
+
+    rows.filter(function () {
+        let valueEscola = $(this).children("td").eq(0).text()
+        let valueTipo = $(this).children("td").eq(1).text()
+        let valueEixo = $(this).children("td").eq(2).text()
+
+        let showRowEscola = true
+        if (filter_escola) {
+          let comparisonEscola = valueEscola.toUpperCase().trim() == filter_escola.toUpperCase().trim()
+          showRowEscola &= comparisonEscola
+        }
+
+        let showRowTipo = true
+        if (filter_tipo) {
+          let comparisonTipo = valueTipo.toUpperCase().trim() == filter_tipo.toUpperCase().trim()
+          showRowTipo &= comparisonTipo
+        }
+        
+        let showRowEixo = true
+        if (filter_eixo) {
+          showRowEixo &= valueEixo.toUpperCase().trim() == filter_eixo.toUpperCase().trim()
+        }
+
+        if (showRowEscola &&
+          showRowTipo &&
+          showRowEixo) $(this).show()
+        else $(this).hide() 
+      })
+  }
+  
+  function search_eixo() {
+    
+    filter_escola = $('#ft_escola option:selected').text();
+    filter_eixo = $('#ft_eixo option:selected').text();
+    let rows = $("#tabela_metas tr")
+
+    rows.filter(function () {
+        let valueEscola = $(this).children("td").eq(0).text()
+        let valueEixo = $(this).children("td").eq(1).text()
+
+        let showRowEscola = true
+        if (filter_escola) {
+          let comparisonEscola = valueEscola.toUpperCase().trim() == filter_escola.toUpperCase().trim()
+          showRowEscola &= comparisonEscola
+        }
+
+        
+        let showRowEixo = true
+        if (filter_eixo) {
+          showRowEixo &= valueEixo.toUpperCase().trim() == filter_eixo.toUpperCase().trim()
+        }
+
+        if (showRowEscola &&
+          showRowEixo) $(this).show()
+        else $(this).hide() 
+      })
+  }
+  
+  function desabilita_eixo(id,status){
+    const url = "/ajax/ajax_load_tbleixos";
+
+    $.ajax({
+        url : url,
+        data: {'id': id,'status':status},
+        success: function(data){
+            $("#myTable2").html(data);
+        }
+    });
+  }
+
+  function desabilita_curso(id,status){
+    const url = "/ajax/ajax_load_tblcursos";
+
+    $.ajax({
+        url : url,
+        data: {'id': id,'status':status},
+        success: function(data){
+            $("#myTable").html(data);
+        }
+    });
+  }
+  
+    $("#escola").change(function(){
+          const url_eixos = '/ajax/ajax_load_eixos';
+          escola = $(this).val();
+          tipo_curso = document.getElementById('tipo').value
+      
+          $.ajax({
+              url : url_eixos,
+              data: {'escola_id': escola,'tipo_id':tipo_curso},
+              success: function(data){
+                  $("#eixo").html(data);
+              }
+          });
+
+      });
+  
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+  
+  </script>
+
+
+
+
+
+{% endblock %}
+
+{% endblock content %}

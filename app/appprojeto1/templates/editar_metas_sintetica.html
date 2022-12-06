@@ -1,0 +1,369 @@
+{% extends "index.html" %} {% block content %} {% load static %}
+<style>
+  /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #000000}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+  #myInput {
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+
+
+
+#myTable {
+  border-collapse: collapse; /* Collapse borders */
+  width:100%; /* Full-width */
+  border: 1px solid #ddd; /* Add a grey border */
+
+}
+
+#myTable th, #myTable td {
+  text-align: center; /* Left-align text */
+  padding: 10px; /* Add padding */
+  overflow-wrap: break-word;
+}
+
+#myTable tr {
+  /* Add a bottom border to all table rows */
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #00f36d6c;
+}
+
+@media screen and (max-width: 1280px) {
+    .myTable {
+        border: 0px;
+    }
+    .myTable caption {
+        font-size: 22px;
+    }
+    .myTable thead {
+        display: none;
+    }
+    .TamyTableble tr {
+        margin-bottom: 8px;
+        border-bottom: 4px solid #ddd;
+        display: block;
+        
+    }
+    .myTable th, .table td {
+        font-size: 12px;
+        
+    }
+    .myTable td {
+        display: block;
+        border-bottom: 1px solid #ddd;
+        
+        
+    }
+    .myTable  td:last-child {
+        border-bottom: 0px;
+    }
+    .myTable td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: left;
+    }
+    .myTable button, btn_voltar{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+}
+
+#myTable2 {
+  border-collapse: collapse; /* Collapse borders */
+  width:100%; /* Full-width */
+  border: 1px solid #ddd; /* Add a grey border */
+
+}
+
+#myTable2 th, #myTable2 td {
+  text-align: center; /* Left-align text */
+  padding: 10px; /* Add padding */
+  overflow-wrap: break-word;
+}
+
+#myTable2 tr {
+  /* Add a bottom border to all table rows */
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable2 tr.header, #myTable2 tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #00f36d6c;
+}
+
+@media screen and (max-width: 1280px) {
+    .myTable2 {
+        border: 0px;
+    }
+    .myTable2 caption {
+        font-size: 22px;
+    }
+    .myTable2 thead {
+        display: none;
+    }
+    .TamyTable2ble tr {
+        margin-bottom: 8px;
+        border-bottom: 4px solid #ddd;
+        display: block;
+        
+    }
+    .myTable2 th, .table td {
+        font-size: 12px;
+        
+    }
+    .myTable2 td {
+        display: block;
+        border-bottom: 1px solid #ddd;
+        
+        
+    }
+    .myTable2  td:last-child {
+        border-bottom: 0px;
+    }
+    .myTable2 td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: left;
+    }
+    .myTable2 button, btn_voltar{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+}
+</style>
+<div class="page-heading">
+  <h3>Cadastrar Metas do Sintéticas - EFG</h3>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Inserir metas de ensino do convênio</h4>
+  </div>
+
+  <div class="card-body">
+    <div class="column">
+      <div>
+        <form
+          name="Form"
+          id="Form"
+          class="form-control"
+          method="post"
+          action="/editarmetas"
+        >
+          {% csrf_token %} {% if messages %} {% for message in messages %}
+          <div class="alert alert-dismissible alert-success" role="alert">
+            <strong class="text-dark">{{message}}</strong>
+          </div>
+          {% endfor %} {% endif %}
+
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="basicInput">DIRETORIA:</label>
+              <select class="form-control" id="basicInput" name="basicInput">
+                <option value="DAC">DAC</option>
+                <option value="DDA">DDA</option>
+                <option value="DE">DE</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label for="basicInput">Escola:</label>
+              <select class="form-control" id="escola2" name="escola2">
+                {% for escola in escolas %}
+                <option value="{{escola.id}}">{{escola.escola}}</option>
+                {% endfor %}            
+              </select>
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label for="basicInput">MODALIDADE:</label>
+              <select class="form-control" id="modalidade2" name="modalidade2">
+                {% for modalidade in modalidades %}
+                <option value="{{modalidade.id}}">{{modalidade.modalidade}}</option>
+                {% endfor %}     
+              </select>
+            </div>
+            <div class="col-md-4 form-group">
+              <label for="basicInput">ANO:</label>
+              <input
+                type="number"
+                class="form-control"
+                id="ano"
+                name="ano"
+                placeholder="Informe a descrição:"
+                max="2999"
+                maxlength="4"
+                min="2022"
+              />
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput">TIPO DE CURSO:</label>
+              <select class="form-control" id="tipo" name="tipo">
+                <option value="Capacitação">Capacitação</option>
+                <option value="Qualificação">Qualificação</option>
+                <option value="Técnico">Técnico</option>
+                <option value="Tecnológico">Tecnológico</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="basicInput">DESCRIÇÃO:</label>
+              <input
+                type="Text"
+                class="form-control"
+                id="descricao"
+                name="descricao"
+                placeholder="Informe a descrição:"
+              />
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label for="basicInput">CARGA HORÁRIA OFERTADA:</label>
+              <input
+                type="number"
+                class="form-control"
+                id="ch_ofertada"
+                name="ch_ofertada"
+                placeholder="Informe a Carga Horária"
+                onblur="calcular()"
+              />
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label for="basicInput">VAGAS:</label>
+              <input
+                type="number"
+                class="form-control"
+                id="vagas"
+                name="vagas"
+                placeholder="Informe a quantidade de vagas."
+              />
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label for="basicInput">REPASSE:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="repasse"
+                name="repasse"
+                placeholder="Informe o valor de repasse."
+              />
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label for="basicInput">VALOR UNITÁRIO:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="valor_unitario"
+                name="valor_unitario"
+                placeholder="Informe o valor unitário"
+                value="0"
+              />
+            </div>
+          </div>
+
+          <div class="form-group" style="width: 100%; text-align: right">
+            <button type="submit" class="btn btn-success">Atualizar Metas</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function insereTexto(id) {
+    document.getElementById("id_deleta").value = id;
+  }
+
+  function atualiza(id, diretoria) {
+    document.getElementById("id_edit").value = id;
+  }
+</script>
+<script>
+  const changeSelected = (e) => {
+    const $select = document.querySelector("#basicInputModal");
+    $select.value = "DDE";
+  };
+
+  document
+    .querySelector(".changeSelected")
+    .addEventListener("click", changeSelected);
+</script>
+
+<script>
+  function myFunction() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+<script>
+  function calcular() {
+    var n1 = parseInt(document.getElementById("repasse").value, 10);
+    var n2 = parseInt(document.getElementById("ch_ofertada").value, 10);
+    var resultado = n1 / n2;
+    document.getElementById("valor_unitario").value = resultado.toFixed(2);
+  }
+</script>
+
+
+{% endblock content %}

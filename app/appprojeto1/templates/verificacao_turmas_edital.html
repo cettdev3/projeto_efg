@@ -1,0 +1,400 @@
+{% extends "index.html" %} 
+{% load static %}
+{% block content %} 
+<style>
+    .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #000000}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+  #myInput {
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+
+
+
+#myTable {
+  border-collapse: collapse; /* Collapse borders */
+  width:100%; /* Full-width */
+  border: 1px solid #ddd; /* Add a grey border */
+
+}
+
+#myTable th, #myTable td {
+  text-align: center; /* Left-align text */
+  padding: 10px; /* Add padding */
+  overflow-wrap: break-word;
+}
+
+#myTable tr {
+  /* Add a bottom border to all table rows */
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #00f36d6c;
+}
+
+@media screen and (max-width: 1280px) {
+    .myTable {
+        border: 0px;
+    }
+    .myTable caption {
+        font-size: 22px;
+    }
+    .myTable thead {
+        display: none;
+    }
+    .TamyTableble tr {
+        margin-bottom: 8px;
+        border-bottom: 4px solid #ddd;
+        display: block;
+        
+    }
+    .myTable th, .table td {
+        font-size: 12px;
+        
+    }
+    .myTable td {
+        display: block;
+        border-bottom: 1px solid #ddd;
+        
+        
+    }
+    .myTable  td:last-child {
+        border-bottom: 0px;
+    }
+    .myTable td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: left;
+    }
+    .myTable button, btn_voltar{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+}
+    </style>
+{% if 'vte' in permissoes.permission %}
+<div class="page-heading">
+  <h3>Verificar Turmas do Edital</h3>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Informações do Edital</h4>
+  </div>
+
+  <div class="card-body">
+    <div class="column">
+      <div>
+        <form
+          name="Form"
+          id="Form"
+          class="form-control"
+          method="post"
+          action="/atualiza-edital"
+          data-funcoes-url="{% url 'ajax_load_funcoes_orcamento' %}"
+        >
+          {% csrf_token %}
+         
+
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <label for="basicInput"><b>EDITAL</b>:</label>
+              <select class="form-control" id="edital" name="edital">
+                <option value="">------</option>
+                
+                {% for meta in metas %}
+
+                <option value="{{meta.num_edital_id}}">{{meta.num_edital}} | {{meta.escola.escola}} | {{meta.tipo}} | {{meta.modalidade}} | {{meta.ano}}</option>
+                <span id="idEdital">{{meta.num_edital_id}}</span>
+                {% endfor %}
+              </select>
+            </div>
+            </div>
+
+            <div class="row" id="painel_edital">
+              <div class="col-md-4 form-group">
+                <label for="basicInput"><b>N° EDITAL:</b></label>
+                <input readonly type="text" class="form-control" id="n_edital" name="n_edital">
+              </div>
+  
+              <div class="col-md-4 form-group">
+                <label for="basicInput"><b>ESCOLA:</b></label>
+                <input  type="text" class="form-control" id="escola" name="escola">
+              </div>
+  
+              <div class="col-md-4 form-group">
+                <label for="basicInput"><b>ANO:</b></label>
+                <input  type="number" class="form-control" id="ano" name="ano">
+              </div>
+  
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>DATA INICIAL DO EDITAL:</b></label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="data_ini_edit"
+                  name="data_ini_edit"
+                  required
+  
+                >
+              </div>
+  
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>DATA FINAL DO EDITAL:</b></label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="data_fim_edit"
+                  name="data_fim_edit"
+                  required
+  
+                >
+              </div>
+  
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>DATA INICIAL DE INSCRIÇÃO:</b></label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="data_ini_insc"
+                  name="data_ini_insc"
+                  required
+  
+                >
+              </div>
+  
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>DATA FINAL DE INSCRIÇÃO:</b></label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="data_fim_insc"
+                  name="data_fim_insc"
+                  required
+  
+                >
+              </div>
+            </div>
+          </div>
+
+        <br>
+
+          <div class="form-group" style="width: 100%; text-align: right">
+            <a href="/" id="btn_voltar" class="btn btn-secondary">Voltar</a>
+            <button type="submit" class="btn btn-success">Atualizar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+  <section class="section" style="display: none;">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Metas Adicionadas</h4> <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Procurar Escola...">
+      </div>
+    
+      <div class="card-body" style="overflow-x:auto;">
+        <table id="myTable" class="myTable" >
+          <thead>
+              <tr>
+                  <th scope="col">Diretoria</th>
+                  <th scope="col">Escola</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Curso</th>
+                  <th scope="col">Turno</th>
+                  <th scope="col">Modalidade</th>
+                  <th scope="col">Vagas Totais</th>
+                  <th scope="col">Início/Fim</th>
+                  <th scope="col">Carga Horária</th>
+                  <th scope="col">Município</th>
+                  <th scope="col">Ação</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for lancamento in lancamentos %}
+  
+              <tr>
+                  <td>{{lancamento.diretoria}}</td>
+                  <td>{{lancamento.escola.escola}}</td>
+                  <td>{{lancamento.tipo_curso.tipo}}</td>
+                  <td>{{lancamento.curso.curso}}</td>
+                  <td>{{lancamento.turno}}</td>
+                  <td>{{lancamento.modalidade.modalidade}}</td>
+                  <td>{{lancamento.vagas_totais}}</td>
+                  <td>{{lancamento.previsao_inicio|date:"d/m/Y"}}<br>{{lancamento.previsao_fim|date:"d/m/Y"}}</td>
+                  <td>{{lancamento.carga_horaria}}</td>
+                  <td>{{lancamento.udepi.municipio}}</td>
+                  <td>
+                    <div class="dropdown" style="float: right; ">
+                      <button class="dropbtn btn icon btn-dark"><i class="fas fa-ellipsis-v"></i></button>
+                      <div class="dropdown-content" >
+                        {% if lancamento.situacao <= 1 %}
+                        
+                        <a type="button"  style="color: #FFFFFF;"
+                        href="editar-meta/{{lancamento.id }}"
+                        class="icon btn-primary"> <i class="bi bi-pencil">EDITAR</i> </a>
+                        {% endif %}
+                        <a style="color: #FFFFFF;" type="button" onclick='insereTexto("{{lancamento.id}}","{{lancamento.vagas_totais}}","{{lancamento.carga_horaria}}","{{lancamento.escola.id}}","{{lancamento.tipo_curso.id}}","{{lancamento.ano}}")' class="icon btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#warning"><i class="bi bi-trash"> APAGAR</i>
+                      </a>
+                      
+                      </div>
+                    </div>
+                   </td>
+                <!---<a  class="deleteFromMeta btn icon btn-danger" href="apagar-meta/{{meta.id}}"><i class="bi bi-x"></i></a></td>-->
+              </tr>
+              {% endfor %}
+              
+              <div class="" style="text-align: right; margin-bottom: 5px;">
+              <button onclick="exportData()">
+                <span class="glyphicon glyphicon-download"></span>
+                Exportar CSV</button>
+              </div>
+          </tbody>
+      </table>
+        </div>
+  
+        </div>
+  </section>
+  {% else %}
+<div class="alert alert-danger" role="alert">
+  :'( Desculpe, mas você não tem permissões para acessar esta funcionalidade do sistema!
+</div>
+{% endif %}
+</div>
+
+<div class="modal fade text-left" id="warning" tabindex="-1" role="dialog"
+      aria-labelledby="myModalLabel140" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          role="document">
+        
+          <div class="modal-content">
+              <div class="modal-header bg-danger">
+                  <h5 class="modal-title white" id="myModalLabel140">Confirma a exclusão da meta?
+                  </h5>
+                  <button type="button" class="close" data-bs-dismiss="modal"
+                      aria-label="Close">
+                      <i data-feather="x"></i>
+                  </button>
+              </div>
+           
+              <div class="modal-body">
+                  Ao confirmar, a meta será excluida.
+                  
+                    
+                  
+              </div>
+              <div class="modal-footer">
+                <form name="Form" id="Form" method="POST" action="/apagar-meta">
+                  {% csrf_token %}
+                  <div style="display: none;">
+                <input type="text" id="id_deleta" name="id_deleta">
+                <input type="text" id="cht" name="cht">
+                <input type="text" id="escola_delete" name="escola_delete">
+                <input type="text" id="tipo_delete" name="tipo_delete">
+                <input type="text" id="ano_delete" name="ano_delete">
+              </div>
+                  <button type="button" class="btn btn-light-secondary"
+                      data-bs-dismiss="modal">
+                      <i class="bx bx-x d-block d-sm-none"></i>
+                      <span class="d-none d-sm-block">Fechar</span>
+                  </button>
+                  <button class="btn btn-danger ml-1" type="submit">Confirmar Exclusão</button>
+
+                </form>
+              </div>
+          </div>
+        
+      </div>
+</div>
+    
+
+
+{% block javascript %}
+
+
+
+<script>
+  $("#edital").change(function(){
+    const url = "/ajax/ajax_load_turmas_edital";
+    const url_table = "/ajax/ajax_load_turmas_edital_filtro";
+
+    edital_id = document.getElementById('edital').value
+    console.log(edital_id)
+    
+    $.ajax({
+          url : url,
+          data: {'id': edital_id,},
+          success: function(data){
+              $("#painel_edital").html(data);
+    
+          }
+      });
+
+      $.ajax({
+          url : url_table,
+          data: {'id': edital_id,},
+          success: function(data){
+              $("#myTable").html(data);
+    
+          }
+      });
+  })
+
+  function insereTexto(id,vagas_totais,carga_horaria,escola,tipo,ano)
+    {
+      console.log(id)
+      document.getElementById('id_deleta').value = id;
+      var total = vagas_totais * carga_horaria
+      document.getElementById('cht').value = total
+      document.getElementById('escola_delete').value = escola
+      document.getElementById('tipo_delete').value = tipo
+      document.getElementById('ano_delete').value = ano
+      }
+</script>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+ <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+{% endblock %}
+
+{% endblock content %}

@@ -1,0 +1,134 @@
+
+<div class="column">
+
+  
+    
+  <div class="form-group">
+    <label for="basicInput"><b>PLANEJAMENTO</b></label>
+    <hr>
+    <div class="row">
+    <div class="col-md-4 form-group">
+
+      <div class="form-check">
+          <input class="form-check-input" {% if 'ima' in perm.permission %} checked {% endif %} type="checkbox" value="ima" name="ima" id="ima">
+          <label class="form-check-label" for="flexCheckDefault">
+            INCLUIR METAS ANALÍTICAS
+          </label>
+        </div>
+      </div>
+
+      <div class="col-md-4 form-group">
+          <div class="form-check">
+              <input class="form-check-input" {% if 'ims' in perm.permission %} checked {% endif %} type="checkbox" value="ims"  name="ims" id="ims">
+              <label class="form-check-label" for="flexCheckDefault">
+                INCLUIR METAS SINTÉTICO
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-4 form-group">
+              <div class="form-check">
+                  <input class="form-check-input" {% if 'opt' in perm.permission %} checked {% endif %} type="checkbox" value="opt"  name="opt" id="opt">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    ORÇAMENTO DE PLANO DE TRABALHO
+                  </label>
+                </div>
+              </div>
+              
+              <div class="col-md-4 form-group">
+                  <div class="form-check">
+                      <input class="form-check-input" {% if 'cc' in perm.permission %} checked {% endif %} type="checkbox" name="cc"  name="cc" id="cc">
+                      <label class="form-check-label" for="flexCheckDefault">
+                        CADASTRAR CURSO
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-4 form-group">
+                      <div class="form-check">
+                          <input class="form-check-input" {% if 'dm' in perm.permission %} checked {% endif %} type="checkbox" name="dm" value="" name="dm" id="dm">
+                          <label class="form-check-label" for="flexCheckDefault">
+                            DIVISÃO DE METAS
+                          </label>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-4 form-group">
+                          <div class="form-check">
+                              <input class="form-check-input"{% if 'ac' in perm.permission %} checked {% endif %}  type="checkbox" value="ac"  name="ac" id="ac">
+                              <label class="form-check-label" for="flexCheckDefault">
+                                APROVAÇÃO DE CURSOS
+                              </label>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-4 form-group">
+                              <div class="form-check">
+                                  <input class="form-check-input"  {% if 'vte' in perm.permission %} checked {% endif %} type="checkbox" value="vte"  name="vte" id="vte">
+                                  <label class="form-check-label" for="flexCheckDefault">
+                                    VERIFICAÇÃO DE TURMAS DO EDITAL
+                                  </label>
+                                </div>
+                              </div>
+                              <div class="col-md-4 form-group"></div>
+                              <div class="col-md-4 form-group"></div>
+                              <br>
+                              <br>
+                              <br>
+                              
+                 
+      </div>
+      <label for="basicInput"><b>PROCESSOS</b></label>
+      <hr>
+      <div class="row">
+      <div class="col-md-4 form-group">
+          <div class="form-check">
+              <input class="form-check-input" {% if 'sicge' in perm.permission %} checked {% endif %} type="checkbox" value="sicge"  name="sicge" id="sicge">
+              <label class="form-check-label" for="flexCheckDefault">
+                SOLICITAR INCLUSÃO DE CURSO NA GRADE DA ESCOLAS
+              </label>
+            </div>
+          </div>
+          
+          <div class="col-md-4 form-group">
+              <div class="form-check">
+                  <input class="form-check-input" {% if 'sat' in perm.permission %} checked {% endif %} type="checkbox" value="sat"  name="sat" id="sat">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    SOLICITAR DE ABERTURA DE TURMAS
+                  </label>
+                </div>
+              </div>
+          </div>
+          <br>
+          <br>
+
+          <label for="basicInput"><b>PERMISSÕES</b></label>
+      <hr>
+      <div class="row">
+      <div class="col-md-4 form-group">
+          <div class="form-check">
+              <input class="form-check-input" {% if 'gpu' in perm.permission %} checked {% endif %} type="checkbox" value="gpu"  name="gpu" id="gpu">
+              <label class="form-check-label" for="flexCheckDefault">
+                GERENCIAR PERMISSÕES DE USUÁRIOS
+              </label>
+            </div>
+          </div>
+          
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>ESCOLA:</b></label>
+            
+            <select class="form-control" id="escola" name="escola" required>
+              <option value="0">TODAS</option>
+              {% for escola in escolas %}
+              <option value="{{escola.id}}" {% if escola.id == perm.escola_id %} selected {% endif %}>{{escola.escola}}</option>
+              {% endfor %}
+              
+            </select>
+          </div>
+
+       
+  </div>
+  </div>
+  <div style="text-align: right;">
+  <button  type="submit" class="btn btn-success">ATUALIZAR PERMISSÕES</button>
+</div>

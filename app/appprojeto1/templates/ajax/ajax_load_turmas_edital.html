@@ -1,0 +1,67 @@
+<div class="col-md-12">
+<div class="row" id="painel_edital">
+
+    <div class="col-md-4 form-group">
+      <label for="basicInput"><b>N° EDITAL:</b></label>
+      <input readonly type="text" class="form-control" id="n_edital" name="n_edital" value="{{edital.num_edital}}">
+    </div>
+
+    <div class="col-md-4 form-group">
+      <label for="basicInput"><b>ESCOLA:</b></label>
+      <input  type="text" class="form-control" id="escola" name="escola" value="{{edital.escola}}">
+    </div>
+
+    <div class="col-md-4 form-group">
+      <label for="basicInput"><b>ANO:</b></label>
+      <input  type="number" class="form-control" id="ano" name="ano" value="{{edital.ano}}">
+    </div>
+
+    <div class="col-md-6 form-group">
+      <label for="basicInput"><b>DATA INICIAL DO EDITAL:</b></label>
+      <input
+        type="date"
+        class="form-control"
+        id="data_ini_edit"
+        name="data_ini_edit"
+        value="{{edital.dt_ini_edit}}"
+
+      >
+    </div>
+
+    <div class="col-md-6 form-group">
+      <label for="basicInput"><b>DATA FINAL DO EDITAL:</b></label>
+      <input
+        type="date"
+        class="form-control"
+        id="data_fim_edit"
+        name="data_fim_edit"
+        required
+
+      >
+    </div>
+
+    <div class="col-md-6 form-group">
+      <label for="basicInput"><b>DATA INICIAL DE INSCRIÇÃO:</b></label>
+      <input
+        type="date"
+        class="form-control"
+        id="data_ini_insc"
+        name="data_ini_insc"
+        required
+
+      >
+    </div>
+
+    <div class="col-md-6 form-group">
+      <label for="basicInput"><b>DATA FINAL DE INSCRIÇÃO:</b></label>
+      <input
+        type="date"
+        class="form-control"
+        id="data_fim_insc"
+        name="data_fim_insc"
+        required
+
+      >
+    </div>
+  </div>
+  </div>
