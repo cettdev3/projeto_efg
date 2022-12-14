@@ -1,27 +1,17 @@
 version: '3.4'
 
 services:
-  redis:
-    image: redis:6.2-alpine
+  app:
     restart: always
-    #   ports:
-    #  - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning 
-    volumes: 
-      - ./cache:/data
-
-  efg_index:
-    image: efg_index
-    restart: always
-    depends_on:
-      - cache
     build:
       context: .
       dockerfile: ./Dockerfile
+    environment:
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+    volumes:
+      - ./src:/home/appuser/app:rw
     ports:
      - 8000:8000
-    volumes:
-      - ./app:/home/appuser/app:rw
 
 networks:
    default:

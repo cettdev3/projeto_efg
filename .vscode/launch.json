@@ -1,19 +1,18 @@
 {
+    "version": "0.2.0",
     "configurations": [
         {
-            "name": "Docker: Python - Django",
-            "type": "docker",
+            "name": "Python: Django",
+            "type": "python",
             "request": "launch",
-            "preLaunchTask": "docker-run: debug",
-            "python": {
-                "pathMappings": [
-                    {
-                        "localRoot": "${workspaceFolder}",
-                        "remoteRoot": "/app"
-                    }
-                ],
-                "projectType": "django"
-            }
+            "stopOnEntry": false,
+            "program": "${workspaceRoot}/src/manage.py",
+            "args": [
+                "runserver",
+                "0.0.0.0:8000"
+            ],
+            "django": true
         }
-    ]
+    ],
+    "compounds": []
 }
