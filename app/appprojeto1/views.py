@@ -8,6 +8,7 @@ import datetime
 import MySQLdb
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django_tables2.views import SingleTableMixin
 from django_filters.views import FilterView
@@ -704,7 +705,7 @@ def cad_metas(request):
     udepi = request.POST['municipio']
 
     meta_is_exist = Metas_efg.objects.filter(escola_id=escola, tipo_curso_id=tipo_curso,
-                                             modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso).values()
+                                             modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso,previsao_inicio = previsao_inicio, previsao_fim=previsao_fim).values()
     print('-------------------------------------------------------\n\n\n\n' +
           str(meta_is_exist))
     if meta_is_exist:
@@ -1360,7 +1361,7 @@ class ReprovaCursosUpdateView(LoginRequiredMixin, SuccessMessageMixin, FormView,
 @login_required(login_url='/')
 def verifica_turmas_edital(request):
 
-    metas = Edital.objects.raw("Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is NULL group by Turmas_planejado_orcado.num_edital_id and status")
+    metas = Edital.objects.raw("Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is NULL group by Turmas_planejado_orcado.num_edital_id")
 
     return render(request, 'verificacao_turmas_edital.html', {'metas': metas, 'permissoes': get_permission(request)})
 
@@ -1394,6 +1395,7 @@ def atualiza_edital(request):
     edital_update.dt_fim_edit = data_fim_edit
     edital_update.dt_ini_insc = data_ini_insc
     edital_update.dt_fim_insc = data_fim_insc
+    edital_update.status = 0
     edital_update.save()
     messages.success(request, 'Edital atualizado com sucesso!')
     return redirect('/verifica-turmas-edital')
@@ -1506,6 +1508,15 @@ def salvar_permissoes(request):
     except:
         pass
 
+    try:
+        ae = request.POST['ae']
+        if checkbox != "":
+            checkbox += ",ae"
+        else:
+            checkbox += "ae"
+    except:
+        pass
+
     user_is_perm = User_permission.objects.filter(user_id=userId).all()
 
     if user_is_perm:
@@ -1521,7 +1532,6 @@ def salvar_permissoes(request):
             user_id=userId, permission=checkbox, escola_id=escola_id)
         messages.success(request, 'Permissão realizada com sucesso!')
         return redirect('/permissoes-usuarios')
-
 
 @login_required(login_url='/')
 def enviar_planejamento(request):
@@ -1565,3 +1575,13 @@ def enviar_planejamento(request):
         else:
             messages.success(request, 'Planejamento enviado com sucesso!')
             return redirect('/cadastrar-metas')
+
+@login_required(login_url='/')
+def cadastrar_usuario(request):
+
+    user = User.objects.create_user(username=request.POST['nome_user'],email=request.POST['email_user'],password=request.POST['senha_user'])
+    id_user = Users.objects.filter(username=user).values()
+    
+    auth_user = User_permission.objects.create(user_id=id_user[0]['id'], permission='', escola_id=0)
+    messages.success(request, 'Usuário cadastrado com sucesso!')
+    return redirect('/permissoes-usuarios')

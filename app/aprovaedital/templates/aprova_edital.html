@@ -1,0 +1,337 @@
+{% extends "index.html" %} 
+{% load static %}
+{% block content %} 
+<style>
+    .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #000000}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+  #myInput {
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+
+
+
+#myTable {
+  border-collapse: collapse; /* Collapse borders */
+  width:100%; /* Full-width */
+  border: 1px solid #ddd; /* Add a grey border */
+
+}
+
+#myTable th, #myTable td {
+  text-align: center; /* Left-align text */
+  padding: 10px; /* Add padding */
+  overflow-wrap: break-word;
+}
+
+#myTable tr {
+  /* Add a bottom border to all table rows */
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #00f36d6c;
+}
+
+@media screen and (max-width: 1280px) {
+    .myTable {
+        border: 0px;
+    }
+    .myTable caption {
+        font-size: 22px;
+    }
+    .myTable thead {
+        display: none;
+    }
+    .TamyTableble tr {
+        margin-bottom: 8px;
+        border-bottom: 4px solid #ddd;
+        display: block;
+        
+    }
+    .myTable th, .table td {
+        font-size: 12px;
+        
+    }
+    .myTable td {
+        display: block;
+        border-bottom: 1px solid #ddd;
+        
+        
+    }
+    .myTable  td:last-child {
+        border-bottom: 0px;
+    }
+    .myTable td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: left;
+    }
+    .myTable button, btn_voltar{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+}
+    </style>
+{% if 'ae' in permissoes.permission %}
+<div class="page-heading">
+  <h3>Aprovar Edital</h3>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Informações do Edital</h4>
+  </div>
+
+  <div class="card-body">
+    <div class="column">
+      <div>
+        <form
+          name="Form"
+          id="Form"
+          class="form-control"
+          method="post"
+          action="/aprova-edital"
+          
+        >
+          {% csrf_token %}
+         
+
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <label for="basicInput"><b>EDITAL</b>:</label>
+              <select class="form-control" id="edital" name="edital">
+                <option value="">------</option>
+                
+                {% for meta in metas %}
+
+                <option value="{{meta.num_edital_id}}">{{meta.num_edital}} | {{meta.escola.escola}} | {{meta.tipo}} | {{meta.modalidade}} | {{meta.ano}}</option>
+                <span id="idEdital">{{meta.num_edital_id}}</span>
+                {% endfor %}
+              </select>
+            </div>
+            </div>
+
+            <div class="row" id="painel_edital">
+              <div class="col-md-4 form-group">
+                <label for="basicInput"><b>N° EDITAL:</b></label>
+                <input readonly type="text" class="form-control" id="n_edital" name="n_edital">
+              </div>
+  
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>ESCOLA:</b></label>
+                <input  type="text" class="form-control" id="escola" name="escola">
+              </div>
+  
+              <div class="col-md-2 form-group">
+                <label for="basicInput"><b>ANO:</b></label>
+                <input  type="number" class="form-control" id="ano" name="ano">
+              </div>
+  
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>DATA INICIAL DO EDITAL:</b></label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="data_ini_edit"
+                  name="data_ini_edit"
+                  required
+  
+                >
+              </div>
+  
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>DATA FINAL DO EDITAL:</b></label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="data_fim_edit"
+                  name="data_fim_edit"
+                  required
+  
+                >
+              </div>
+  
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>DATA INICIAL DE INSCRIÇÃO:</b></label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="data_ini_insc"
+                  name="data_ini_insc"
+                  required
+  
+                >
+              </div>
+  
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>DATA FINAL DE INSCRIÇÃO:</b></label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="data_fim_insc"
+                  name="data_fim_insc"
+                  required
+  
+                >
+              </div>
+            </div>
+          </div>
+
+        <br>
+
+          <div class="form-group" style="width: 100%; text-align: right">
+            <button class="btn btn-success" style="display: none;" id="aprovar" name="ap" type="submit" value="3"><i class="fas fa-check"></i><spam> Aprovar</spam></button>
+
+            <button onclick="cancela_edital()"  data-bs-toggle="modal" style="display: none;" id="reprovar" name="ap" data-bs-target="#xlarge" class="btn btn-danger" type="button" ><i class="fas fa-ban"></i><spam> Reprovar</spam></button>
+
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+  {% else %}
+<div class="alert alert-danger" role="alert">
+  :'( Desculpe, mas você não tem permissões para acessar esta funcionalidade do sistema!
+</div>
+{% endif %}
+</div>
+
+<div
+  class="modal fade text-left w-100"
+  id="xlarge"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel16"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+    role="document"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel16"><b>Reprovar edital:</b> <b id="dados_edital"></b> </h4>
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          name="Form"
+          id="form_update"
+          class="form-control"
+          method="post"
+          action="/aprova-edital"
+        >
+          {% csrf_token %}
+
+          <input type="text" name="id_edital_modal" id="id_edital_modal" style="display:none;">
+          <input style="display: none;" type="text" name="ap" id="ap" value="1">
+          <textarea
+            type="Text"
+            class="form-control"
+            id="motivo"
+            name="motivo"
+            placeholder="Justifique o motivo da reprovação do edital:"
+            rows="10"
+          ></textarea><br>
+ 
+
+          <div class="form-group" style="width: 100%; text-align: right">
+          <button data-bs-dismiss="modal"  class="btn btn-light-secondary">Fechar</button> <button type="submit" class="btn btn-danger">Reprovar</button>
+          </div>
+        </form>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+{% block javascript %}
+
+
+
+<script>
+  $("#edital").change(function(){
+    const url = "/ajax/ajax-load-turmas-v2";
+    // const url_table = "/ajax/ajax_load_turmas_edital_filtro";
+
+    edital_id = document.getElementById('edital').value
+
+
+    
+    $.ajax({
+          url : url,
+          data: {'id': edital_id,},
+          success: function(data){
+              $("#painel_edital").html(data);
+              $("#aprovar").show();
+              $("#reprovar").show();
+          }
+      });
+
+ 
+  })
+
+  function cancela_edital()
+    {
+      var edital_value = $( "#edital option:selected" ).text();
+      var edital_id = document.getElementById('edital').value
+
+      document.getElementById('id_edital_modal').value = edital_id
+      document.getElementById('dados_edital').innerHTML = edital_value
+
+      }
+</script>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+ <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+{% endblock %}
+
+{% endblock content %}

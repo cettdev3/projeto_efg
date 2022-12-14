@@ -139,7 +139,7 @@
                 
                 {% for meta in metas %}
 
-                <option value="{{meta.num_edital_id}}">{{meta.num_edital}} | {{meta.escola.escola}} | {{meta.tipo}} | {{meta.modalidade}} | {{meta.ano}}</option>
+                <option value="{{meta.num_edital_id}}">{{meta.num_edital}} - {{meta.escola.escola}} - {{meta.tipo}} - {{meta.modalidade}} - {{meta.ano}} {% if meta.status == 1 %}- <b>REPROVADO</b> {% endif %}</option>
                 <span id="idEdital">{{meta.num_edital_id}}</span>
                 {% endfor %}
               </select>
@@ -222,10 +222,10 @@
       </div>
     </div>
 </div>
-  <section class="section" style="display: none;">
+  <section class="section">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">Metas Adicionadas</h4> <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Procurar Escola...">
+        <h4 class="card-title">Turmas por Edital</h4>
       </div>
     
       <div class="card-body" style="overflow-x:auto;">

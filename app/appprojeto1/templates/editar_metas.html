@@ -378,10 +378,16 @@
 
 <script>
   var carga_horaria_inicial =  $("#ch_total").val()
+  var dia_semana_atual = $("#dias_semana").val()
 
   function pega_cht_atual(){
     var carga_horaria_padrao =  $("#ch_total").val()
     return carga_horaria_padrao
+  }
+
+  function pega_dias_atual(){
+    var dia_atual =  $("#dias_semana").val()
+    return dia_atual
   }
 
   function insereTexto(id)
@@ -420,8 +426,8 @@
     document.getElementById('total_de_horas_disponiveis').innerHTML = limite
 
     var cht_p = pega_cht_atual()
-
-    if (carga_horaria_inicial == cht_p){
+    var d_a = pega_dias_atual()
+    if (carga_horaria_inicial == cht_p && dia_semana_atual == d_a ){
         document.getElementById('total_de_horas_disponiveis').innerHTML = "Não houve alterações!"
         document.getElementById('total_de_horas_disponiveis').style.color = "red"
         $('#ops').modal('show');

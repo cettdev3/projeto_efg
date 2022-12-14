@@ -70,7 +70,14 @@
                                   </label>
                                 </div>
                               </div>
-                              <div class="col-md-4 form-group"></div>
+                              <div class="col-md-4 form-group">
+                                <div class="form-check">
+                                  <input class="form-check-input" {% if 'ae' in perm.permission %} checked {% endif %} type="checkbox" value="ae"  name="ae" id="ae">
+                                  <label class="form-check-label" for="flexCheckDefault">
+                                    APROVAR EDITAIS
+                                  </label>
+                                </div>
+                              </div>
                               <div class="col-md-4 form-group"></div>
                               <br>
                               <br>

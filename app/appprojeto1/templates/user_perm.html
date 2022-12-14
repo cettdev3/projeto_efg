@@ -8,7 +8,18 @@
 <div class="card">
   <div class="card-header">
     <h4 class="card-title">
-     Gerenciamento de controle de usuários
+      <div class="colum">
+        <div class="row">
+            <div class="col-md-8">
+              Gerenciamento de controle de usuário
+            </div>
+            
+          <div class="col-md-4" style="text-align: right;">
+            <button data-bs-toggle="modal"
+            data-bs-target="#cadastrar_usuario" class="btn btn-success" id="cadastrar_user" name="cadastrar_user" ><i class="fas fa-user"></i><spam> Cadastrar Usuário</spam></button>
+          </div>
+      </div>
+     
     </h4>
   </div>
 
@@ -101,7 +112,14 @@
                                         </label>
                                       </div>
                                     </div>
-                                    <div class="col-md-4 form-group"></div>
+                                    <div class="col-md-4 form-group">
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="ae"  name="ae" id="ae">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                          APROVAR EDITAIS
+                                        </label>
+                                      </div>
+                                    </div>
                                     <div class="col-md-4 form-group"></div>
                                     <br>
                                     <br>
@@ -167,6 +185,84 @@
 
     </div>
   </div>
+
+  <div class="modal fade text-left" id="cadastrar_usuario" tabindex="-1" role="dialog"
+      aria-labelledby="myModalLabel140" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          role="document">
+        
+          <div class="modal-content">
+              <div class="modal-header bg-success">
+                  <h5 class="modal-title white" id="myModalLabel140">Cadastrar Usuário
+                  </h5>
+                  <button type="button" class="close" data-bs-dismiss="modal"
+                      aria-label="Close">
+                      <i data-feather="x"></i>
+                  </button>
+              </div>
+           
+              <div class="modal-body">
+                <form name="Form" id="Form" method="POST" action="/cadastrar-usuario">
+                  {% csrf_token %}
+                  <div class="column">
+                    <div class="row">
+                      <div class="col-md-12 form-group">
+                        <label for="basicInput"><b>USUÁRIO:</b></label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="nome_user"
+                            name="nome_user"
+                            placeholder="Informe o usuário:"
+
+                            required
+                          >
+                      </div>
+
+                      <div class="col-md-12 form-group">
+                        <label for="basicInput"><b>EMAIL:</b></label>
+                          <input
+                            type="email"
+                            class="form-control"
+                            id="email_user"
+                            name="email_user"
+                            placeholder="Informe o email do usuário:"
+
+                            required
+                          >
+                      </div>
+
+                      <div class="col-md-12 form-group">
+                        <label for="basicInput"><b>SENHA:</b></label>
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="senha_user"
+                            name="senha_user"
+                            placeholder="Informe a senha do usuário:"
+
+                            required
+                          >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                  <button class="btn btn-success ml-1 " type="submit">Cadastrar</button>
+                  <button type="button" class="btn btn-light-secondary mt-2"data-bs-dismiss="modal"><i class="bx bx-x d-block d-sm-none"></i><span class="d-none d-sm-block">Fechar</span></button>
+                </div>
+                </form>
+                  
+                    
+                  
+              </div>
+            
+              
+              </div>
+          </div>
+        
+      </div>
+      </div>
+
   {% else %}
 <div class="alert alert-danger" role="alert">
   :'( Desculpe, mas você não tem permissões para acessar esta funcionalidade do sistema!

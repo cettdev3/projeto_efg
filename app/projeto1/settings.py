@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'bootstrap5',
     'django_bootstrap_icons',
     'fontawesome_5',
+    'aprovaedital',
 ]
 
 MIDDLEWARE = [

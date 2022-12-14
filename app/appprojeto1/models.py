@@ -200,6 +200,9 @@ class Edital(models.Model):
     dt_ini_insc = models.DateField(null=True, blank=True)
     dt_fim_insc = models.DateField(null=True, blank=True)
     escola = models.ForeignKey(Metas_escolas,on_delete=models.CASCADE)
+    status = models.CharField(max_length=255)
+    pdf = models.CharField(max_length=255)
+    motivo = models.CharField(max_length=255)
     
     def __str__(self):
         return self.num_edital

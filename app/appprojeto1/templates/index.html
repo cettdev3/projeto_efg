@@ -105,7 +105,13 @@
 
                 {% if 'ac' in permissoes.permission %}
                 <li class="submenu-item">
-                  <a href="/verifica-turmas-edital">Verificação de Turmas do Edital</a>
+                  <a href="/verifica-turmas-edital">Inserir datas do Edital</a>
+                </li>
+                {% endif %}
+
+                {% if 'ae' in permissoes.permission %}
+                <li class="submenu-item">
+                  <a href="/aprovar-edital">Aprovar Editais</a>
                 </li>
                 {% endif %}
                 </ul>
