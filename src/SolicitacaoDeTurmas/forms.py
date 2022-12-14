@@ -2,13 +2,10 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Button
 from crispy_forms.bootstrap import FormActions, InlineCheckboxes, InlineRadios
 from django import forms
-from django_select2 import forms as s2forms
 from .widgets import DatePickerInput
 from .models import Curso, Escola, SolicitacaoDeTurma, Eixo
 
-class EixoSelect(s2forms.Select2Widget):
-    queryset = Eixo.objects
-    
+
 class SolicitacaoDeTurmas(forms.ModelForm):
     
     udepi = forms.ChoiceField(
@@ -98,13 +95,4 @@ class SolicitacaoDeTurmas(forms.ModelForm):
         widgets = {
             'previsao_inicio': DatePickerInput(),
             'previsao_fim': DatePickerInput(),
-            # 'curso': s2forms.ModelSelect2Widget(
-            #     model=Curso,
-            #     search_fields=['curso__icontains'],
-            #     dependent_fields={ 
-            #         'eixo': 'eixos',
-            #         'tipo': 'tipo_id',
-            #     },
-            #     max_results=500,
-            # ),
         }

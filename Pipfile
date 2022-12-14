@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+gunicorn = "*"
+envconfiguration = "*"
+django-multiselectfield = "*"
+django-crispy-forms = "*"
+crispy-bootstrap5 = "*"
+mysqlclient = "*"
+django-select2 = "*"
+django-tables2 = "*"
+django-filter = "*"
+django-bootstrap-v5 = "*"
+django-bootstrap-icons = "*"
+django-fontawesome-5 = "*"
+tablib = {extras = ["xlsx"], version = "*"}
+
+[dev-packages]
+autopep8 = "*"
+pylama = "*"
+
+[requires]
+python_version = "3.8"

@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONFAULTHANDLER=1
 ENV PYTHONUNBUFFERED=1
 
-RUN adduser -u 1000 --disabled-password --gecos "" appuser && chown -R appuser /home/appuser
+RUN adduser -u 2000 --disabled-password --gecos "" app && chown -R app /home/app
 
 RUN apt-get update && apt-get install git -y
 
@@ -19,17 +19,12 @@ RUN sed -i '/pt_BR.UTF-8/s/^#//g' /etc/locale.gen \
     && dpkg-reconfigure --frontend noninteractive locales \
     && update-locale LANG=pt_BR.UTF-8 LANGUAGE=pt_BR.UTF-8 LC_ALL=pt_BR.UTF-8
 
-USER appuser
-
-WORKDIR /home/appuser/app
-
 ENV PIPENV_VENV_IN_PROJECT=True
 ENV PIPENV_SITE_PACKAGES=True
-ENV PATH="/home/appuser/app/.venv/bin:$PATH"
+ENV PATH="/home/app/src/.venv/bin:$PATH"
 
-ADD Pipfile.lock ./
-ADD Pipfile ./
+USER app
 
-RUN pipenv install
+WORKDIR /home/app/src
 
 CMD [ "tail", "-f", "/dev/null" ]

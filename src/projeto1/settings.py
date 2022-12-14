@@ -28,10 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = [ 
-    'https://*.cett.org.br', 
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.cett.org.br',
     'http://*.cett.org.br',
-    'https://*.cett.dev.br', 
+    'https://*.cett.dev.br',
     'http://*.cett.dev.br',
 ]
 # Application definition
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'DivisaoDeMetas.apps.DivisaodemetasConfig',
     'crispy_forms',
     'crispy_bootstrap5',
-    'django_select2',
+    # 'django_select2',
     'django_tables2',
     'django_filters',
     'bootstrap5',
@@ -86,27 +86,6 @@ TEMPLATES = [
     },
 ]
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    "select2": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/2",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
-
-# Tell select2 which cache configuration to use:
-SELECT2_CACHE_BACKEND = "select2"
-SELECT2_THEME = 'default'
-SELECT2_BOOTSTRAP = False
 
 WSGI_APPLICATION = 'projeto1.wsgi.application'
 
@@ -135,7 +114,7 @@ DATABASES = {
 
         'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
     },
-    
+
     # 'siga': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'c3siga',
@@ -145,7 +124,7 @@ DATABASES = {
     #     'PORT': '3306',
     #     'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
     # },
-    
+
     # 'camunda': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'c35camundadb',

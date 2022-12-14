@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  app:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+    volumes:
+      - ./src:/home/app/src
+    ports:
+     - 8000:8000
+
+networks:
+   default:
+     external: true
+     name: backend

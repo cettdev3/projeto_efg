@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'SolicitacaoDeTurmas.apps.SolicitacaodeturmasConfig',
     'crispy_forms',
     'crispy_bootstrap5',
-    'django_select2',
+    # 'django_select2',
 ]
 
 MIDDLEWARE = [
@@ -96,8 +96,8 @@ CACHES = {
 }
 
 # Tell select2 which cache configuration to use:
-SELECT2_CACHE_BACKEND = "select2"
-SELECT2_THEME = 'default'
+# SELECT2_CACHE_BACKEND = "select2"
+# SELECT2_THEME = 'default'
 
 WSGI_APPLICATION = 'projeto1.wsgi.application'
 

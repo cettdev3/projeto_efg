@@ -2,7 +2,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
 from .models import Curso
-
 from .forms import SolicitacaoDeTurmas
 from appprojeto1.models import Users,User_permission
 from appprojeto1.views import get_permission

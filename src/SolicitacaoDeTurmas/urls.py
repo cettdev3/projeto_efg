@@ -18,7 +18,6 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('select2/', include("django_select2.urls")),
     path('form/', views.get_name, name='form'),
     path('thanks/', views.processa_form, name='thanks'),
     path('ajax/load-cursos/', views.load_cursos, name='ajax_load_cursos'),
