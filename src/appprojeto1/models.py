@@ -1,5 +1,6 @@
 from pyexpat import model
 from django.db import models
+from django.urls import reverse_lazy, reverse
 
 # Create your models here.
 class Users(models.Model):
@@ -248,7 +249,6 @@ class Metas_efg(models.Model):
     modalidade = models.ForeignKey(Metas_modalidade, on_delete=models.CASCADE)
     trimestre = models.IntegerField(choices=SEMESTRES)
     vagas_totais = models.IntegerField()
-
     carga_horaria = models.IntegerField()
     carga_horaria_total = models.IntegerField()
     previsao_inicio = models.DateField()

@@ -179,109 +179,109 @@
   <h3>Cadastrar Metas Analíticas - EFG</h3>
 </div>
 
-  <form name="filter" id="filter" method="post" action="/realizar-solicitacao" data-funcoes-url2="{% url 'ajax_load_funcoes_filter' %}">
-<div class="row">
-  
-  <div class="col-sm-6">
-    <div class="card">
+<form name="filter" id="filter" method="post" action="/realizar-solicitacao" data-funcoes-url2="{% url 'ajax_load_funcoes_filter' %}">
     <div class="row">
-      
+    
+    <div class="col-sm-6">
+        <div class="card">
+        <div class="row">
         
-        <div class="col-sm-6">
-          <div class="card-body h-50" style="text-align: center; text-align: center;">
-            <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_ano" name="filtro_ano">
-              <option value="" selected>ANO</option>
-              {% for ano in anos %}
-                <option value="{{ano.ano}}">{{ano.ano}}</option>
-              {% endfor %}
-            </select>
-            <br>
-
-            <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_trimestre" name="filtro_trimestre">
-              <option value="" selected>SEMESTRE</option>
-              {% for trimestre in trimestres %}
-              <option value="{{trimestre.trimestre}}">{{trimestre.trimestre}}</option>
-              {% endfor %}
-            </select>
-            <br>
-            <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_escola" name="filtro_escola">
-              <option value="" selected>ESCOLA</option>
-              {% for escola_cad in escolas_cad %}
-              <option value="{{escola_cad.escola_id}}">{{escola_cad.escola.escola}}</option>
-              {% endfor %}
-            </select>
-            <hr>
-            <button type="button" style="width: 100%; height: 24px; text-align: center; font-size: 10px; font-weight: bold;" onclick="redefine_filtros()" class="btn btn-dark">REDEFINIR FILTROS</button>
-           
-          </div>
-          </div>
-          <div class="col-sm-6">
+            
+            <div class="col-sm-6">
             <div class="card-body h-50" style="text-align: center; text-align: center;">
-              <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_modalidade" name="filtro_modalidade">
-                <option value="" selected>MODALIDADE</option>
-                {% for mod in mods %}
-                <option value="{{mod.modalidade_id}}">{{mod.modalidade.modalidade}}</option>
+                <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_ano" name="filtro_ano">
+                <option value="" selected>ANO</option>
+                {% for ano in anos %}
+                    <option value="{{ano.ano}}">{{ano.ano}}</option>
                 {% endfor %}
-              </select>
-              <br>
-              <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_curso" name="filtro_curso">
-                <option value="" selected>CURSO</option>
-                {% for curso_cad in cursos_cad %}
-                <option value="{{curso_cad.curso_id}}">{{curso_cad.curso.curso}}</option>
+                </select>
+                <br>
+
+                <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_trimestre" name="filtro_trimestre">
+                <option value="" selected>SEMESTRE</option>
+                {% for trimestre in trimestres %}
+                <option value="{{trimestre.trimestre}}">{{trimestre.trimestre}}</option>
                 {% endfor %}
-              </select>
-              <br>
-              <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_tipo" name="filtro_tipo">
-                <option value="" selected>TIPO</option>
-                {% for tipo_cad in tipos_cad %}
-                <option value="{{tipo_cad.tipo_curso_id}}">{{tipo_cad.tipo_curso.tipo}}</option>
+                </select>
+                <br>
+                <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_escola" name="filtro_escola">
+                <option value="" selected>ESCOLA</option>
+                {% for escola_cad in escolas_cad %}
+                <option value="{{escola_cad.escola_id}}">{{escola_cad.escola.escola}}</option>
                 {% endfor %}
-              </select>
-              <hr>
-              <button type="button" style="width: 100%; height: 24px; text-align: center; font-size: 10px; font-weight: bold;" onclick="filtra_buscas()" class="btn btn-success">FILTRAR</button>
+                </select>
+                <hr>
+                <button type="button" style="width: 100%; height: 24px; text-align: center; font-size: 10px; font-weight: bold;" onclick="redefine_filtros()" class="btn btn-dark">REDEFINIR FILTROS</button>
+            
+            </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card-body h-50" style="text-align: center; text-align: center;">
+                <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_modalidade" name="filtro_modalidade">
+                    <option value="" selected>MODALIDADE</option>
+                    {% for mod in mods %}
+                    <option value="{{mod.modalidade_id}}">{{mod.modalidade.modalidade}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_curso" name="filtro_curso">
+                    <option value="" selected>CURSO</option>
+                    {% for curso_cad in cursos_cad %}
+                    <option value="{{curso_cad.curso_id}}">{{curso_cad.curso.curso}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_tipo" name="filtro_tipo">
+                    <option value="" selected>TIPO</option>
+                    {% for tipo_cad in tipos_cad %}
+                    <option value="{{tipo_cad.tipo_curso_id}}">{{tipo_cad.tipo_curso.tipo}}</option>
+                    {% endfor %}
+                </select>
+                <hr>
+                <button type="button" style="width: 100%; height: 24px; text-align: center; font-size: 10px; font-weight: bold;" onclick="filtra_buscas()" class="btn btn-success">FILTRAR</button>
+                </div>
+                
             </div>
             
-          </div>
-         
-          
-    
-        </div>
-    </div>
-    
-  </div>
-
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h4  style="text-align:left; background-color:#363636;color: #ddd; font-size: 15px; "  class="card-title form-control">
-        <div class="row">
-          <div class="col-sm-6"><b>VAGAS TOTAIS</b></div>
-          <div class="col-sm-6" style="text-align: right ;"><span id="tl_vagas" name="tl_vagas">...</span></div>
-          
+            
+        
+            </div>
         </div>
         
-        </h4>
-        <h4  style="text-align:left; background-color:#363636;color: #ddd; font-size: 15px; "  class="card-title form-control">
-          <div class="row">
-            <div class="col-sm-6"><b>CARGA HORÁRIA TOTAL</b></div>
-            <div class="col-sm-6" style="text-align: right ;"><span id="tl_total_horas" name="tl_total_horas">...</span></div>
-            
-          </div>
-          
-          </h4>
-          <h4  style="text-align:left; background-color:#363636;color: #ddd; font-size: 15px; "  class="card-title form-control">
+    </div>
+
+    <div class="col-sm-6">
+        <div class="card">
+        <div class="card-body">
+            <h4  style="text-align:left; background-color:#363636;color: #ddd; font-size: 15px; "  class="card-title form-control">
             <div class="row">
-              <div class="col-sm-6"><b>RECURSO PLANEJADO</b></div>
-              <div class="col-sm-6" style="text-align: right ;"><span id="tl_rp" name="tl_rp">...</span></div>
-              
+            <div class="col-sm-6"><b>VAGAS TOTAIS</b></div>
+            <div class="col-sm-6" style="text-align: right ;"><span id="tl_vagas" name="tl_vagas">...</span></div>
+            
             </div>
             
             </h4>
-      </div>
+            <h4  style="text-align:left; background-color:#363636;color: #ddd; font-size: 15px; "  class="card-title form-control">
+            <div class="row">
+                <div class="col-sm-6"><b>CARGA HORÁRIA TOTAL</b></div>
+                <div class="col-sm-6" style="text-align: right ;"><span id="tl_total_horas" name="tl_total_horas">...</span></div>
+                
+            </div>
+            
+            </h4>
+            <h4  style="text-align:left; background-color:#363636;color: #ddd; font-size: 15px; "  class="card-title form-control">
+                <div class="row">
+                <div class="col-sm-6"><b>RECURSO PLANEJADO</b></div>
+                <div class="col-sm-6" style="text-align: right ;"><span id="tl_rp" name="tl_rp">...</span></div>
+                
+                </div>
+                
+                </h4>
+        </div>
+        </div>
     </div>
-  </div>
 
-</div>
+    </div>
 
 </form>
 
@@ -717,349 +717,347 @@
 
 <script>
   
-  function validaForm() {
+function validaForm() {
     var limite = parseInt($("#limite").val());
     var cht = parseInt($("#ch_total").val());
     document.getElementById('total_de_horas_disponiveis').innerHTML = limite
     console.log(limite)
-    if (cht > limite || cht == 0){
-      if (cht == 0 || limite == 0){
-        document.getElementById('total_de_horas_disponiveis').innerHTML = "Sem Registros"
-        document.getElementById('total_de_horas_disponiveis').style.color = "red"
-        $('#ops').modal('show');
-      }else{
-        var texto = "Carga Horária Total Excedida!<br>Disponível: "+limite+' horas'
-        document.getElementById('total_de_horas_disponiveis').innerHTML = texto
-        document.getElementById('total_de_horas_disponiveis').style.color = "red"
-        $('#ops').modal('show');
-      }
-      
-      
-    }else{
-      trimestre = $("#trimestre").val()
-      data_p_inicio = $("#data_p_inicio").val()
-      data_p_fim = $("#data_p_fim").val()
-      dias_semana = $("#dias_semana").val()
-      p_abertura_edital = $("#p_abertura_edital").val()
-      p_fechamento_edital = $("#p_fechamento_edital").val()
-      carga_horaria = $("#carga_horaria").val()
-      vagas_totais = $("#vagas_totais").val()
-
-      if (trimestre == "" || data_p_inicio == "" || data_p_fim == "" || dias_semana == ""  || carga_horaria == "" || vagas_totais == ""){
-
-        if(trimestre == ""){
-          document.getElementById('trimestre').style.borderColor = "red"
-        }else{
-          document.getElementById('trimestre').style.borderColor = ""
+    if (cht > limite || cht == 0) {
+        if (cht == 0 || limite == 0) {
+            document.getElementById('total_de_horas_disponiveis').innerHTML = "Sem Registros"
+            document.getElementById('total_de_horas_disponiveis').style.color = "red"
+            $('#ops').modal('show');
+        } else {
+            var texto = "Carga Horária Total Excedida!<br>Disponível: " + limite + ' horas'
+            document.getElementById('total_de_horas_disponiveis').innerHTML = texto
+            document.getElementById('total_de_horas_disponiveis').style.color = "red"
+            $('#ops').modal('show');
         }
 
-        if(carga_horaria == ""){
-          document.getElementById('carga_horaria').style.borderColor = "red"
-        }else{
-          document.getElementById('carga_horaria').style.borderColor = ""
+
+    } else {
+        trimestre = $("#trimestre").val()
+        data_p_inicio = $("#data_p_inicio").val()
+        data_p_fim = $("#data_p_fim").val()
+        dias_semana = $("#dias_semana").val()
+        p_abertura_edital = $("#p_abertura_edital").val()
+        p_fechamento_edital = $("#p_fechamento_edital").val()
+        carga_horaria = $("#carga_horaria").val()
+        vagas_totais = $("#vagas_totais").val()
+
+        if (trimestre == "" || data_p_inicio == "" || data_p_fim == "" || dias_semana == "" || carga_horaria == "" || vagas_totais == "") {
+
+            if (trimestre == "") {
+                document.getElementById('trimestre').style.borderColor = "red"
+            } else {
+                document.getElementById('trimestre').style.borderColor = ""
+            }
+
+            if (carga_horaria == "") {
+                document.getElementById('carga_horaria').style.borderColor = "red"
+            } else {
+                document.getElementById('carga_horaria').style.borderColor = ""
+            }
+
+            if (vagas_totais == "") {
+                document.getElementById('vagas_totais').style.borderColor = "red"
+            } else {
+                document.getElementById('vagas_totais').style.borderColor = ""
+            }
+
+            if (data_p_inicio == "") {
+                document.getElementById('data_p_inicio').style.borderColor = "red"
+            } else {
+                document.getElementById('data_p_inicio').style.borderColor = ""
+            }
+
+            if (data_p_fim == "") {
+                document.getElementById('data_p_fim').style.borderColor = "red"
+            } else {
+                document.getElementById('data_p_fim').style.borderColor = ""
+            }
+
+            // if(p_abertura_edital == ""){
+            //   document.getElementById('p_abertura_edital').style.borderColor = "red"
+            // }else{
+            //   document.getElementById('p_abertura_edital').style.borderColor = ""
+            // }
+
+            if (dias_semana == "") {
+                document.getElementById('dias_semana').style.borderColor = "red"
+            } else {
+                document.getElementById('dias_semana').style.borderColor = ""
+            }
+
+            // if(p_fechamento_edital == ""){
+            //   document.getElementById('p_fechamento_edital').style.borderColor = "red"
+            // }else{
+            //   document.getElementById('p_fechamento_edital').style.borderColor = ""
+            // }
+
+        } else {
+            document.getElementById('Form').submit();
         }
 
-        if(vagas_totais == ""){
-          document.getElementById('vagas_totais').style.borderColor = "red"
-        }else{
-          document.getElementById('vagas_totais').style.borderColor = ""
-        }
-     
-        if(data_p_inicio == ""){
-          document.getElementById('data_p_inicio').style.borderColor = "red"
-        }else{
-          document.getElementById('data_p_inicio').style.borderColor = ""
-        }
-
-        if(data_p_fim == ""){
-          document.getElementById('data_p_fim').style.borderColor = "red"
-        }else{
-          document.getElementById('data_p_fim').style.borderColor = ""
-        }
-
-        // if(p_abertura_edital == ""){
-        //   document.getElementById('p_abertura_edital').style.borderColor = "red"
-        // }else{
-        //   document.getElementById('p_abertura_edital').style.borderColor = ""
-        // }
-
-        if(dias_semana == ""){
-          document.getElementById('dias_semana').style.borderColor = "red"
-        }else{
-          document.getElementById('dias_semana').style.borderColor = ""
-        }
-
-        // if(p_fechamento_edital == ""){
-        //   document.getElementById('p_fechamento_edital').style.borderColor = "red"
-        // }else{
-        //   document.getElementById('p_fechamento_edital').style.borderColor = ""
-        // }
-      
-      }else{
-        document.getElementById('Form').submit();
-      }
-      
     }
 
-  }
-  
-  function calcular() {
+}
+
+function calcular() {
     var n1 = parseInt(document.getElementById("carga_horaria").value, 10);
     var n2 = parseInt(document.getElementById("vagas_totais").value, 10);
     var resultado = n1 * n2;
     document.getElementById("ch_total").value = parseInt(resultado);
-  }
+}
 
 
-  $("#escola").change(function(){
-       console.log('teste')
-        const url = "/ajax/ajax_load_cht";
-        const url_eixos = '/ajax/ajax_load_eixos';
-        const url_cursos = "/ajax/ajax_load_cursos";
-        const url_municipio = "/ajax/ajax_load_municipios";
-        const url_ch = '/ajax/ajax_load_carga_hr_curso'
-        var curso_selected = $('#curso option:selected').text()
-        escola = $(this).val();
-        tipo_curso = document.getElementById('tipo').value
-        ano = document.getElementById('ano').value
-        modalidade = document.getElementById('modalidade').value
-        eixo = document.getElementById('eixo').value
-        semestre = document.getElementById('trimestre').value
+$("#escola").change(function () {
+    console.log('teste')
+    const url = "/ajax/ajax_load_cht";
+    const url_eixos = '/ajax/ajax_load_eixos';
+    const url_cursos = "/ajax/ajax_load_cursos";
+    const url_municipio = "/ajax/ajax_load_municipios";
+    const url_ch = '/ajax/ajax_load_carga_hr_curso'
+    var curso_selected = $('#curso option:selected').text()
+    escola = $(this).val();
+    tipo_curso = document.getElementById('tipo').value
+    ano = document.getElementById('ano').value
+    modalidade = document.getElementById('modalidade').value
+    eixo = document.getElementById('eixo').value
+    semestre = document.getElementById('trimestre').value
 
-        var curso_selected = $('#curso option:selected').text()
-
-
-        $.ajax({
-          url : url_cursos,
-          
-          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade},
-          success: function(data){
-              $("#curso").html(data);
-    
-          }
-      });
-
-        $.ajax({
-            url : url_eixos,
-            data: {'escola_id': escola,'tipo_id':tipo_curso},
-            success: function(data){
-                $("#eixo").html(data);
-            }
-        });
-
-        $.ajax({
-            url : url,
-            data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade,'semestre':semestre},
-            success: function(data){
-                $("#cht_ajax").html(data);
-                calcular()
-            }
-        });
-
-        $.ajax({
-            url : url_municipio,
-            data: {'escola_id': escola},
-            success: function(data){
-                $("#municipio").html(data);
-            }
-        });
-
-        $.ajax({
-
-          url : url_ch,
-          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'curso_selected':curso_selected},
-          success: function(data){
-              $("#ajax_carga_horaria").html(data);
-    
-          }
-    });
-  });
-
-  $("#tipo").change(function(){
-       
-       const url = "/ajax/ajax_load_cht";
-       const url_cursos = "/ajax/ajax_load_cursos";
-       const url_ch = '/ajax/ajax_load_carga_hr_curso'
-
-       tipo_curso = $(this).val();
-       escola = document.getElementById('escola').value
-       ano = document.getElementById('ano').value
-       modalidade = document.getElementById('modalidade').value
-       eixo = document.getElementById('eixo').value
-       semestre = document.getElementById('trimestre').value
-
-       var curso_selected = $('#curso option:selected').text()
-
-       $.ajax({
-          url : url_cursos,
-          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade},
-          success: function(data){
-              $("#curso").html(data);
-    
-          }
-      });
-
-       $.ajax({
-           url : url,
-           data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade,'semestre':semestre},
-           success: function(data){
-               $("#cht_ajax").html(data);
-               calcular()
-           }
-       });
+    var curso_selected = $('#curso option:selected').text()
 
 
-        $.ajax({
-            
-            url : url_ch,
-            data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'curso_selected':curso_selected},
-            success: function(data){
-                $("#ajax_carga_horaria").html(data);
+    $.ajax({
+        url: url_cursos,
 
-            }
-          });
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'eixo_id': eixo, 'modalidade_id': modalidade },
+        success: function (data) {
+            $("#curso").html(data);
 
-   });
-
-  $("#ano").change(function(){
-       
-       const url = "/ajax/ajax_load_cht";
-       ano = $(this).val();
-       escola = document.getElementById('escola').value
-       tipo_curso = document.getElementById('tipo').value
-       modalidade = document.getElementById('modalidade').value
-       semestre = document.getElementById('trimestre').value
-       $.ajax({
-           url : url,
-           data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade,'semestre':semestre},
-           success: function(data){
-               $("#cht_ajax").html(data);
-               calcular()
-           }
-       });
-   });
-
-  $("#modalidade").change(function(){
-       
-      const url = "/ajax/ajax_load_cht";
-      const url_cursos = "/ajax/ajax_load_cursos";
-  
-      modalidade = $(this).val();
-      eixo = document.getElementById('eixo').value
-      escola = document.getElementById('escola').value
-      console.log(escola)
-      tipo_curso = document.getElementById('tipo').value
-      ano = document.getElementById('ano').value
-      semestre = document.getElementById('trimestre').value
-
-      console.log(eixo)
-      $.ajax({
-          url : url_cursos,
-          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'ano':ano},
-          success: function(data){
-              $("#curso").html(data);
-    
-          }
-      });
-
-      $.ajax({
-          url : url,
-          data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade,'semestre':semestre},
-          success: function(data){
-              $("#cht_ajax").html(data);
-              calcular()
-          }
-      });
-  });
-
-  $("#curso").change(function(){
-
-      const url_ch = '/ajax/ajax_load_carga_hr_curso'
-      var curso_selected = $('#curso option:selected').text()
-   
-
-       eixo = document.getElementById('eixo').value
-       escola = document.getElementById('escola').value
-       console.log(escola)
-       tipo_curso = document.getElementById('tipo').value
-       ano = document.getElementById('ano').value
-       semestre = document.getElementById('trimestre').value
-       modalidade = document.getElementById('modalidade').value
-  
-       $.ajax({
-
-          url : url_ch,
-          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'curso_selected':curso_selected},
-          success: function(data){
-              $("#ajax_carga_horaria").html(data);
-
-          }
-          });
-   });
-
-  $("#eixo").change(function(){
-        const url_cursos = "/ajax/ajax_load_cursos";
-
-        eixo = $(this).val();
-        tipo_curso = document.getElementById('tipo').value
-        modalidade = document.getElementById('modalidade').value
-        escola = document.getElementById('escola').value
-        tipo_curso = document.getElementById('tipo').value
-        ano = document.getElementById('ano').value
-        semestre = document.getElementById('trimestre').value
-
-        $.ajax({
-          url : url_cursos,
-          data: {'escola_id': escola,'tipo_id':tipo_curso,'eixo_id':eixo,'modalidade_id':modalidade,'ano':ano},
-          success: function(data){
-              $("#curso").html(data);
-    
-          }
-      });
-
-    });
-  
-  $("#trimestre").change(function(){
-      const url_cursos = "/ajax/ajax_load_cht";
-
-      semestre = $(this).val();
-      tipo_curso = document.getElementById('tipo').value
-      modalidade = document.getElementById('modalidade').value
-      escola = document.getElementById('escola').value
-      tipo_curso = document.getElementById('tipo').value
-      ano = document.getElementById('ano').value
-
-      $.ajax({
-        url : url_cursos,
-        data: {'escola_id': escola,'tipo_id':tipo_curso,'ano':ano,'modalidade_id':modalidade,'semestre':semestre},
-        success: function(data){
-            $("#cht_ajax").html(data);
-  
         }
     });
 
-  });
-  
-  function insereTexto(id,vagas_totais,carga_horaria,escola,tipo,ano)
-    {
-      console.log(id)
-      document.getElementById('id_deleta').value = id;
-      var total = vagas_totais * carga_horaria
-      document.getElementById('cht').value = total
-      document.getElementById('escola_delete').value = escola
-      document.getElementById('tipo_delete').value = tipo
-      document.getElementById('ano_delete').value = ano
-      }
+    $.ajax({
+        url: url_eixos,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso },
+        success: function (data) {
+            $("#eixo").html(data);
+        }
+    });
 
-  function exportData(){
+    $.ajax({
+        url: url,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'ano': ano, 'modalidade_id': modalidade, 'semestre': semestre },
+        success: function (data) {
+            $("#cht_ajax").html(data);
+            calcular()
+        }
+    });
+
+    $.ajax({
+        url: url_municipio,
+        data: { 'escola_id': escola },
+        success: function (data) {
+            $("#municipio").html(data);
+        }
+    });
+
+    $.ajax({
+
+        url: url_ch,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'eixo_id': eixo, 'modalidade_id': modalidade, 'curso_selected': curso_selected },
+        success: function (data) {
+            $("#ajax_carga_horaria").html(data);
+
+        }
+    });
+});
+
+$("#tipo").change(function () {
+
+    const url = "/ajax/ajax_load_cht";
+    const url_cursos = "/ajax/ajax_load_cursos";
+    const url_ch = '/ajax/ajax_load_carga_hr_curso'
+
+    tipo_curso = $(this).val();
+    escola = document.getElementById('escola').value
+    ano = document.getElementById('ano').value
+    modalidade = document.getElementById('modalidade').value
+    eixo = document.getElementById('eixo').value
+    semestre = document.getElementById('trimestre').value
+
+    var curso_selected = $('#curso option:selected').text()
+
+    $.ajax({
+        url: url_cursos,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'eixo_id': eixo, 'modalidade_id': modalidade },
+        success: function (data) {
+            $("#curso").html(data);
+
+        }
+    });
+
+    $.ajax({
+        url: url,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'ano': ano, 'modalidade_id': modalidade, 'semestre': semestre },
+        success: function (data) {
+            $("#cht_ajax").html(data);
+            calcular()
+        }
+    });
+
+
+    $.ajax({
+
+        url: url_ch,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'eixo_id': eixo, 'modalidade_id': modalidade, 'curso_selected': curso_selected },
+        success: function (data) {
+            $("#ajax_carga_horaria").html(data);
+
+        }
+    });
+
+});
+
+$("#ano").change(function () {
+
+    const url = "/ajax/ajax_load_cht";
+    ano = $(this).val();
+    escola = document.getElementById('escola').value
+    tipo_curso = document.getElementById('tipo').value
+    modalidade = document.getElementById('modalidade').value
+    semestre = document.getElementById('trimestre').value
+    $.ajax({
+        url: url,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'ano': ano, 'modalidade_id': modalidade, 'semestre': semestre },
+        success: function (data) {
+            $("#cht_ajax").html(data);
+            calcular()
+        }
+    });
+});
+
+$("#modalidade").change(function () {
+
+    const url = "/ajax/ajax_load_cht";
+    const url_cursos = "/ajax/ajax_load_cursos";
+
+    modalidade = $(this).val();
+    eixo = document.getElementById('eixo').value
+    escola = document.getElementById('escola').value
+    console.log(escola)
+    tipo_curso = document.getElementById('tipo').value
+    ano = document.getElementById('ano').value
+    semestre = document.getElementById('trimestre').value
+
+    console.log(eixo)
+    $.ajax({
+        url: url_cursos,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'eixo_id': eixo, 'modalidade_id': modalidade, 'ano': ano },
+        success: function (data) {
+            $("#curso").html(data);
+
+        }
+    });
+
+    $.ajax({
+        url: url,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'ano': ano, 'modalidade_id': modalidade, 'semestre': semestre },
+        success: function (data) {
+            $("#cht_ajax").html(data);
+            calcular()
+        }
+    });
+});
+
+$("#curso").change(function () {
+
+    const url_ch = '/ajax/ajax_load_carga_hr_curso'
+    var curso_selected = $('#curso option:selected').text()
+
+
+    eixo = document.getElementById('eixo').value
+    escola = document.getElementById('escola').value
+    console.log(escola)
+    tipo_curso = document.getElementById('tipo').value
+    ano = document.getElementById('ano').value
+    semestre = document.getElementById('trimestre').value
+    modalidade = document.getElementById('modalidade').value
+
+    $.ajax({
+        url: url_ch,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'eixo_id': eixo, 'modalidade_id': modalidade, 'curso_selected': curso_selected },
+        success: function (data) {
+            $("#ajax_carga_horaria").html(data);
+
+        }
+    });
+});
+
+$("#eixo").change(function () {
+    const url_cursos = "/ajax/ajax_load_cursos";
+
+    eixo = $(this).val();
+    tipo_curso = document.getElementById('tipo').value
+    modalidade = document.getElementById('modalidade').value
+    escola = document.getElementById('escola').value
+    tipo_curso = document.getElementById('tipo').value
+    ano = document.getElementById('ano').value
+    semestre = document.getElementById('trimestre').value
+
+    $.ajax({
+        url: url_cursos,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'eixo_id': eixo, 'modalidade_id': modalidade, 'ano': ano },
+        success: function (data) {
+            $("#curso").html(data);
+
+        }
+    });
+
+});
+
+$("#trimestre").change(function () {
+    const url_cursos = "/ajax/ajax_load_cht";
+
+    semestre = $(this).val();
+    tipo_curso = document.getElementById('tipo').value
+    modalidade = document.getElementById('modalidade').value
+    escola = document.getElementById('escola').value
+    tipo_curso = document.getElementById('tipo').value
+    ano = document.getElementById('ano').value
+
+    $.ajax({
+        url: url_cursos,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'ano': ano, 'modalidade_id': modalidade, 'semestre': semestre },
+        success: function (data) {
+            $("#cht_ajax").html(data);
+
+        }
+    });
+
+});
+
+function insereTexto(id, vagas_totais, carga_horaria, escola, tipo, ano) {
+    console.log(id)
+    document.getElementById('id_deleta').value = id;
+    var total = vagas_totais * carga_horaria
+    document.getElementById('cht').value = total
+    document.getElementById('escola_delete').value = escola
+    document.getElementById('tipo_delete').value = tipo
+    document.getElementById('ano_delete').value = ano
+}
+
+function exportData() {
     /* Get the HTML data using Element by Id */
     var table = document.getElementById("myTable");
- 
+
     /* Declaring array variable */
-    var rows =[];
- 
-      //iterate through rows of table
-    for(var i=0,row; row = table.rows[i];i++){
+    var rows = [];
+
+    //iterate through rows of table
+    for (var i = 0, row; row = table.rows[i]; i++) {
         //rows would be accessed using the "row" variable assigned in the for loop
         //Get each cell value/column from the row
         column1 = row.cells[0].innerText;
@@ -1070,10 +1068,10 @@
         column6 = row.cells[5].innerText;
         column7 = row.cells[6].innerText;
         column8 = row.cells[7].innerText;
-        column8 = column8.replace("\n",'-')
+        column8 = column8.replace("\n", '-')
         column9 = row.cells[8].innerText;
- 
-    /* add a new records in the array */
+
+        /* add a new records in the array */
         rows.push(
             [
                 column1,
@@ -1088,72 +1086,72 @@
 
             ]
         );
- 
-        }
-        csvContent = "data:text/csv;charset=utf-8,";
-         /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
-        rows.forEach(function(rowArray){
-            row = rowArray.join(",");
-            csvContent += row + "\r\n";
-        });
- 
-        /* create a hidden <a> DOM node and set its download attribute */
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "Metas_Analiticas.csv");
-        document.body.appendChild(link);
-         /* download the data file named "Stock_Price_Report.csv" */
-        link.click();
+
+    }
+    csvContent = "data:text/csv;charset=utf-8,";
+    /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+    rows.forEach(function (rowArray) {
+        row = rowArray.join(",");
+        csvContent += row + "\r\n";
+    });
+
+    /* create a hidden <a> DOM node and set its download attribute */
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "Metas_Analiticas.csv");
+    document.body.appendChild(link);
+    /* download the data file named "Stock_Price_Report.csv" */
+    link.click();
 }
 
-  function filtra_buscas(){
-      const url = "/ajax/ajax_load_vagas";
-      const url2 = "/ajax/ajax_load_recurso_planejado";
-      const url3 = "/ajax/ajax_load_total_horas";
-      const url4 = "/ajax/ajax_load_tabela";
-      let ano = document.getElementById("filtro_ano").value
-      let trimestre = document.getElementById("filtro_trimestre").value
-      let escola = document.getElementById("filtro_escola").value
-      let modalidade = document.getElementById("filtro_modalidade").value
-      let curso = document.getElementById("filtro_curso").value
-      let tipo = document.getElementById("filtro_tipo").value
-      
-      
-      $.ajax({
-          url : url,
-          data: {'ano': ano,'trimestre':trimestre,'escola':escola,'modalidade':modalidade,'curso':curso,'tipo':tipo},
-          success: function(data){
-              $("#tl_vagas").html(data);
-          }
-      });
+function filtra_buscas() {
+    const url = "/ajax/ajax_load_vagas";
+    const url2 = "/ajax/ajax_load_recurso_planejado";
+    const url3 = "/ajax/ajax_load_total_horas";
+    const url4 = "/ajax/ajax_load_tabela";
+    let ano = document.getElementById("filtro_ano").value
+    let trimestre = document.getElementById("filtro_trimestre").value
+    let escola = document.getElementById("filtro_escola").value
+    let modalidade = document.getElementById("filtro_modalidade").value
+    let curso = document.getElementById("filtro_curso").value
+    let tipo = document.getElementById("filtro_tipo").value
 
-      $.ajax({
-          url : url2,
-          data: {'ano': ano,'trimestre':trimestre,'escola':escola,'modalidade':modalidade,'curso':curso,'tipo':tipo},
-          success: function(data){
-              $("#tl_rp").html(data);
-          }
-      });
 
-      $.ajax({
-          url : url3,
-          data: {'ano': ano,'trimestre':trimestre,'escola':escola,'modalidade':modalidade,'curso':curso,'tipo':tipo},
-          success: function(data){
-              $("#tl_total_horas").html(data);
-          }
-      });
+    $.ajax({
+        url: url,
+        data: { 'ano': ano, 'trimestre': trimestre, 'escola': escola, 'modalidade': modalidade, 'curso': curso, 'tipo': tipo },
+        success: function (data) {
+            $("#tl_vagas").html(data);
+        }
+    });
 
-      $.ajax({
-          url : url4,
-          data: {'ano': ano,'trimestre':trimestre,'escola':escola,'modalidade':modalidade,'curso':curso,'tipo':tipo},
-          success: function(data){
-              $("#myTable").html(data);
-          }
-      });
-    }
+    $.ajax({
+        url: url2,
+        data: { 'ano': ano, 'trimestre': trimestre, 'escola': escola, 'modalidade': modalidade, 'curso': curso, 'tipo': tipo },
+        success: function (data) {
+            $("#tl_rp").html(data);
+        }
+    });
 
-  function redefine_filtros(){
+    $.ajax({
+        url: url3,
+        data: { 'ano': ano, 'trimestre': trimestre, 'escola': escola, 'modalidade': modalidade, 'curso': curso, 'tipo': tipo },
+        success: function (data) {
+            $("#tl_total_horas").html(data);
+        }
+    });
+
+    $.ajax({
+        url: url4,
+        data: { 'ano': ano, 'trimestre': trimestre, 'escola': escola, 'modalidade': modalidade, 'curso': curso, 'tipo': tipo },
+        success: function (data) {
+            $("#myTable").html(data);
+        }
+    });
+}
+
+function redefine_filtros() {
     let ano = document.getElementById("filtro_ano").innerHTML
     let trimestre = document.getElementById("filtro_trimestre").innerHTML
     let escola = document.getElementById("filtro_escola").innerHTML
@@ -1168,29 +1166,29 @@
     $('#filtro_curso').val("".trim()).change();
     $('#filtro_tipo').val("".trim()).change();
     filtra_buscas()
-  }
+}
 
-  function myFunction() {
+function myFunction() {
     // Declare variables
     var input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
     table = document.getElementById("myTable");
     tr = table.getElementsByTagName("tr");
-  
+
     // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[1];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
         }
-      }
     }
-  }
+}
 
 </script>
 

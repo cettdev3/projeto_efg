@@ -6,6 +6,10 @@
     "python.terminal.activateEnvInCurrentTerminal": true,
     "python.terminal.activateEnvironment": true,
     "python.analysis.typeCheckingMode": "basic",
+    "python.autoComplete.extraPaths": [
+        "./src",
+        ".venv"
+    ],
     "terminal.integrated.profiles.linux": {
         "bash": {
             "path": "/bin/bash",
@@ -27,9 +31,12 @@
         }
     },
     "python.languageServer": "Default",
-    "python.linting.enabled": true,
-    "python.linting.pylamaEnabled": true,
+    "python.linting.enabled": false,
+    "python.linting.pylamaEnabled": false,
     "python.linting.pylamaPath": "/home/app/src/.venv/bin/pylama",
+    "python.linting.pylintArgs": [
+        "--init-hook='import sys; sys.path.append(${workspaceFolder})'"
+    ],
     "python.formatting.autopep8Path": "/home/app/src/.venv/bin/autopep8",
     "python.formatting.provider": "autopep8",
     "files.associations": {
@@ -43,4 +50,8 @@
     },
     "html.format.indentInnerHtml": true,
     "html.format.indentHandlebars": true,
+    "python.analysis.extraPaths": [
+        "./src",
+        ".venv"
+    ],
 }

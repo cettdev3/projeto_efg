@@ -67,6 +67,8 @@ urlpatterns = [
     path('solicitacaodeturmas/', include('SolicitacaoDeTurmas.urls')),
     path('divisaodemetas/', include('DivisaoDeMetas.urls')),
     path('aprova-cursos/', views.AprovarCursosView.as_view(), name='AprovarCursosView'),
+    path('dash_aprovar/', views.DashboardAprovarCursosView.as_view(),
+         name='DashboardAprovarCursosView')
     path('aprova-cursos/<int:pk>/edit/', views.AprovarCursosUpdateView.as_view(),name='AprovarCursosUpdateView'),
     path('reprova-cursos/', views.ReprovaCursosUpdateView.as_view(),name='ReprovaCursosUpdateView'),
     path('verifica-turmas-edital',verifica_turmas_edital),
@@ -81,5 +83,4 @@ urlpatterns = [
 
     path('', include('aprovaedital.urls')),
 
-    
 ]

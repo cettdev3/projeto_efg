@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'DivisaoDeMetas.apps.DivisaodemetasConfig',
     'crispy_forms',
     'crispy_bootstrap5',
-    # 'django_select2',
     'django_tables2',
     'django_filters',
     'bootstrap5',
@@ -66,6 +65,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 ROOT_URLCONF = 'projeto1.urls'
 

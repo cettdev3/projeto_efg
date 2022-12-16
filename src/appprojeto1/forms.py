@@ -12,8 +12,7 @@ from appprojeto1.widgets import DatePickerInput
 
 class AprovarCursosFilterFormHelper(FormHelper):
 
-    form_method = 'GET'
-
+    form_method = 'GET'  # type: ignore
     layout = Layout(
         Div(
             Div(
@@ -29,6 +28,7 @@ class AprovarCursosFilterFormHelper(FormHelper):
                 Div('situacao', css_class='flex-fill'),
                 css_class='d-md-flex flex-fill gap-3'
             ),
+
             Div(
                 StrictButton('<i class="fas fa-search"></i>',
                              type='submit', name='submit', css_class='btn-outline-primary'),
@@ -48,7 +48,7 @@ class AprovarCursosSubmitFormView(Form):
 
         self.helper = FormHelper(self)
 
-        self.helper.layout.append(
+        self.helper.layout.append(  # type: ignore
             FormActions(
                 StrictButton('<i class="fas fa-check"></i><spam> Aprovar</spam>',
                              type='submit', name='aprovar', value='3', css_class='btn-success'),
@@ -72,10 +72,10 @@ class AprovarCursosForm(ModelForm):
         self.helper.layout = Layout(
             Div(
                 Div('diretoria', css_class='form-group flex-fill'),
-                Div('escola', css_class='form-group flex-fill', 
+                Div('escola', css_class='form-group flex-fill',
                     onChange="populateDependentLists('{}')".format(
-                                    reverse_lazy('ajax_load_municipios')
-                            )),
+                        'id_eixo'
+                    )),
                 Div('udepi', css_class='form-group flex-fill'),
                 css_class='form-row d-lg-flex flex-fill gap-3'
             ),
@@ -139,7 +139,7 @@ class AprovarCursosForm(ModelForm):
         model = Metas_efg
 
         exclude = ('id', )
-        
+
         labels = {
             'udepi': 'Cidade'
         }
@@ -150,7 +150,7 @@ class AprovarCursosForm(ModelForm):
             # 'previsao_abertura_edital': DatePickerInput(format=('%Y-%m-%d')),
             # 'previsao_fechamento_edital': DatePickerInput(format=('%Y-%m-%d')),
         }
-        
+
     class Media:
         js = ('assets/js/populateDependentLists.js',)
 
@@ -165,29 +165,98 @@ class ReprovaCursosForm(ModelForm):
             Div(
                 Div('jus_reprovacao', css_class='form-group flex-fill'),
                 css_class='form-row d-lg-flex flex-fill gap-3'
-            ), 
+            ),
         )
         self.helper.layout.append(
             FormActions(
                 StrictButton('<i class="fas fa-ban"></i><spam> Reprovar</spam>',
                              type='submit', name='aprovar', value='1', css_class='btn-success'),
                 StrictButton('<i class="fas fa-undo-alt"></i><spam> Cancelar</spam>',
-                             type='button', name='cancel', value='cancel', css_class='btn-danger', 
+                             type='button', name='cancel', value='cancel', css_class='btn-danger',
                              onclick="window.location.href = '{}';".format(reverse_lazy('AprovarCursosView'))),
                 css_class='d-flex justify-content-end gap-1'
             )
         )
-        
-        self.fields['jus_reprovacao'].required = True
 
+        self.fields['jus_reprovacao'].required = True
 
     class Meta:
         model = Metas_efg
-        
+
         fields = {
             'jus_reprovacao'
         }
-        
+
         labels = {
             'jus_reprovacao': 'Justificativa para reprovação'
+        }
+
+
+class DashboardAprovarCursosFilterModelForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DashboardAprovarCursosFilterModelForm,
+              self).__init__(*args, **kwargs)
+
+        if (self.data.get('escola')) and (self.data.get('modalidade')) and (self.data.get('tipo_curso')):
+            try:
+                escola_id = int(self.data.get('escola'))  # type: ignore
+                modalidade_id = int(self.data.get(
+                    'modalidade'))  # type: ignore
+                tipo_id = int(self.data.get(
+                    'tipo_curso'))  # type: ignore
+                self.fields['curso'].queryset = Cadastrar_curso.objects.filter(
+                    escola_id=escola_id,
+                    modalidade_id=modalidade_id,
+                    tipo_id=tipo_id,
+                ).order_by('curso')
+                self.fields['curso'].disabled = False
+                
+            except (ValueError, TypeError):
+                self.fields['curso'].queryset = Cadastrar_curso.objects.none()
+                self.fields['curso'].disabled = True
+        else:
+            self.fields['curso'].queryset = Cadastrar_curso.objects.none()
+            self.fields['curso'].disabled = True
+            
+        self.helper = FormHelper(self)
+        
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Div(
+                        Div('ano', css_class=''),
+                        Div('trimestre', css_class=''),
+                        Div('escola', css_class=''),
+                        css_class='col gap-3'
+                    ),
+                    Div(
+                        Div('modalidade', css_class=''),
+                        Div('tipo_curso', css_class=''),
+                        Div('curso', css_class=''),
+                        css_class='col gap-3'
+                    ),
+                    css_class='d-lg-flex gap-3'
+                ),
+                Div(
+                    StrictButton('Filtrar',
+                                 type='submit', name='submit', css_class='btn-primary'),
+                    StrictButton('Redefinir filtro',
+                                 type='submit', name='clean', css_class='btn-danger'),
+                    # css_class='d-flex flex-md-column-reverse mb-3 p-0 gap-1'
+                    css_class='d-flex justify-content-end gap-2'
+                ),
+                css_class='form-row align-items-end overflow-auto gap-3'
+            ),
+        )
+
+    class Meta:
+        model = Metas_efg
+
+        fields = {
+            'ano',
+            'trimestre',
+            'escola',
+            'modalidade',
+            'curso',
+            'tipo_curso'
         }

@@ -24,7 +24,7 @@ def get_name(request):
         form = SolicitacaoDeTurmas()
 
     return render(request, 'form.html', {
-            'form': form,
+            'form': form, # type: ignore
             'permissoes': get_permission(request)
         })
 

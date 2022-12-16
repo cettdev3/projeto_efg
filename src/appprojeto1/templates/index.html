@@ -213,7 +213,10 @@
 <script src={% static "assets/js/app.js" %}></script>
 <script src={% static "assets/js/apagar_meta.js" %}></script>
 
-{{ form.media.js }}
+{% block scripts %}
+      <!-- retain the standard scripts that apply everywhere -->
+      {{ form.media.js }}<!-- add the form specific media/scripts -->
+{% endblock %}
 {% bootstrap_javascript %}
 
 

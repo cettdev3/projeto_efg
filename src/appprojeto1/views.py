@@ -15,12 +15,17 @@ from django_filters.views import FilterView
 from django_tables2.export.views import ExportMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django_tables2.paginators import LazyPaginator
-from appprojeto1.forms import AprovarCursosFilterFormHelper, AprovarCursosSubmitFormView, AprovarCursosForm, ReprovaCursosForm
+from appprojeto1.forms import (
+    AprovarCursosFilterFormHelper,
+    AprovarCursosSubmitFormView,
+    AprovarCursosForm,
+    ReprovaCursosForm
+)
 from appprojeto1.tables import AprovarCursosTable
-from appprojeto1.filters import AprovarCursosFilter
+from appprojeto1.filters import AprovarCursosFilter, DashboardAprovarCursosFilter
 from django.urls import reverse_lazy, reverse
 from django.views.generic.edit import FormView
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 import requests as req
@@ -730,8 +735,8 @@ def cad_metas(request):
                 previsao_inicio=previsao_inicio,
                 previsao_fim=previsao_fim,
                 dias_semana=dias_semana,
-                previsao_abertura_edital=previsao_abertura_edital,
-                previsao_fechamento_edital=previsao_fechamento_edital,
+                previsao_abertura_edital=previsao_abertura_edital,  # type: ignore
+                previsao_fechamento_edital=previsao_fechamento_edital,  # type: ignore
                 jus_reprovacao='',
                 udepi_id=udepi,
                 num_edital_id=0,
@@ -891,15 +896,15 @@ def editarmetas(request):
     dias_semana = request.POST['dias_semana']
 
     editmetas = Metas_efg.objects.get(id=id_)
-    editmetas.udepi_id = municipio
+    editmetas.udepi_id = municipio  # type: ignore
     editmetas.diretoria = diretoria
-    editmetas.escola_id = escola
-    editmetas.tipo_curso_id = tipo_curso
-    editmetas.eixo_id = eixos
-    editmetas.curso_id = nome_curso
+    editmetas.escola_id = escola  # type: ignore
+    editmetas.tipo_curso_id = tipo_curso  # type: ignore
+    editmetas.eixo_id = eixos  # type: ignore
+    editmetas.curso_id = nome_curso  # type: ignore
     editmetas.turno = turno
     editmetas.ano = ano
-    editmetas.modalidade_id = modalidade_oferta
+    editmetas.modalidade_id = modalidade_oferta  # type: ignore
     editmetas.trimestre = trimestre
     editmetas.carga_horaria = carga_horaria
     editmetas.carga_horaria_total = carga_horaria_total
@@ -1014,11 +1019,11 @@ def editar_metas_sintetica(request):
 
     editMetasS = Metas_sinteticas.objects.get(id=id_)
     editMetasS.diretoria = diretoria
-    editMetasS.escola_id = escola
+    editMetasS.escola_id = escola  # type: ignore
     editMetasS.ano = ano
-    editMetasS.modalidade_id = modalidade
-    editMetasS.descricao_id = descricao
-    editMetasS.tipo_id = tipo
+    editMetasS.modalidade_id = modalidade  # type: ignore
+    editMetasS.descricao_id = descricao  # type: ignore
+    editMetasS.tipo_id = tipo  # type: ignore
     editMetasS.ch_ofertada = ch_ofertada
     editMetasS.vagas = vagas
     editMetasS.repasse = repasse
@@ -1102,8 +1107,8 @@ def editar_orcamento(request):
 
     editorcamento = Orcamento_plano_trabalho.objects.get(id=id_)
     editorcamento.tipo = tipo
-    editorcamento.rubrica_id = rubrica
-    editorcamento.item_apoiado_id = item_apoiado
+    editorcamento.rubrica_id = rubrica  # type: ignore
+    editorcamento.item_apoiado_id = item_apoiado  # type: ignore
     editorcamento.und = unidade
     editorcamento.qtd_global = qtd_global
     editorcamento.valor_medio_unitario = v_m_unitario
@@ -1233,11 +1238,11 @@ def editar_curso(request):
     carga_horaria = request.POST['carga_horaria_modal']
     siga_id = request.POST['siga_id_modal']
     editaCurso = Cadastrar_curso.objects.get(id=id_)
-    editaCurso.escola_id = escola
-    editaCurso.tipo_id = tipo
+    editaCurso.escola_id = escola  # type: ignore
+    editaCurso.tipo_id = tipo  # type: ignore
     editaCurso.escolaridade = escolaridade
     editaCurso.idade_min = idade_min
-    editaCurso.eixos_id = eixos
+    editaCurso.eixos_id = eixos  # type: ignore
     editaCurso.curso = curso
     editaCurso.carga_horaria = carga_horaria
     editaCurso.status = status
@@ -1254,10 +1259,10 @@ def cadastrar_udepi(request):
     return render(request, 'cadastrar_udepi.html', {'escolas': escolas, 'udepis': udepis})
 
 
-class AprovarCursosContextMixin(ContextMixin):
+class AuthenticationContextMixin(ContextMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['permissoes'] = get_permission(self.request)
+        context['permissoes'] = get_permission(self.request)  # type: ignore
         return context
 
 
@@ -1272,19 +1277,24 @@ class FilteredSingleTableView(SingleTableMixin, FilterView):
         else:
             filterset = filterset_class(**kwargs)
 
-        filterset.form.helper = self.formhelper_class()
+        filterset.form.helper = self.formhelper_class()  # type: ignore
 
         return filterset
 
 
-class AprovarCursosView(LoginRequiredMixin, ExportMixin, FilteredSingleTableView, FormView, AprovarCursosContextMixin):
+class AprovarCursosView(
+    LoginRequiredMixin,
+    ExportMixin,
+    FilteredSingleTableView,
+    FormView,
+    AuthenticationContextMixin
+):
     login_url = '/'
     table_class = AprovarCursosTable
     filterset_class = AprovarCursosFilter
     formhelper_class = AprovarCursosFilterFormHelper
     paginator_class = LazyPaginator
     exclude_columns = ('actions', )
-
     form_class = AprovarCursosSubmitFormView
     success_url = reverse_lazy('AprovarCursosView')
 
@@ -1318,7 +1328,12 @@ class AprovarCursosView(LoginRequiredMixin, ExportMixin, FilteredSingleTableView
             return self.form_invalid(form)
 
 
-class AprovarCursosUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView, AprovarCursosContextMixin):
+class AprovarCursosUpdateView(
+    LoginRequiredMixin,
+    SuccessMessageMixin,
+    UpdateView,
+    AuthenticationContextMixin
+):
     login_url = '/'
     form_class = AprovarCursosForm
     model = Metas_efg
@@ -1326,7 +1341,7 @@ class AprovarCursosUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateVie
 
     def form_valid(self, form):
         if form.is_valid():
-            self.object = form.save()
+            self.object = form.save()  # type: ignore
             messages.success(self.request, 'Cadastro atualizado com sucesso')
         return super().form_valid(form)
 
@@ -1335,13 +1350,16 @@ class AprovarCursosUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateVie
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         if not form.is_valid():
-            # print('Form is valid?', form.is_valid())
-            # print(form._errors)
-            messages.error(self.request, form._errors)
+            messages.error(self.request, form._errors)  # type: ignore
         return self.render_to_response(self.get_context_data(form=form))
 
 
-class ReprovaCursosUpdateView(LoginRequiredMixin, SuccessMessageMixin, FormView, AprovarCursosContextMixin):
+class ReprovaCursosUpdateView(
+    LoginRequiredMixin,
+    SuccessMessageMixin,
+    FormView,
+    AuthenticationContextMixin
+):
     login_url = '/'
     form_class = ReprovaCursosForm
     model = Metas_efg
@@ -1350,12 +1368,34 @@ class ReprovaCursosUpdateView(LoginRequiredMixin, SuccessMessageMixin, FormView,
 
     def form_valid(self, form):
         params = self.request.session.get('params')
-        if 'pks' in params:
-            selected_objects = Metas_efg.objects.filter(id__in=params['pks'])
+        if 'pks' in params:  # type: ignore
+            selected_objects = Metas_efg.objects.filter(
+                id__in=params['pks'])  # type: ignore
             selected_objects.update(
-                situacao=params['action'], jus_reprovacao=form.cleaned_data['jus_reprovacao'])
+                situacao=params['action'], jus_reprovacao=form.cleaned_data['jus_reprovacao'])  # type: ignore
 
         return HttpResponseRedirect(reverse('AprovarCursosView'))
+
+
+class DashboardAprovarCursosView(
+    LoginRequiredMixin,
+    AuthenticationContextMixin,
+    FilterView
+):
+    login_url = '/'
+    filterset_class = DashboardAprovarCursosFilter
+    template_name = 'appprojeto1/dasboard_cursos_form.html'
+    context_object_name = 'filter'
+
+    def get_filterset(self, filterset_class):
+        kwargs = self.get_filterset_kwargs(filterset_class)
+
+        if 'clean' in self.request.GET:
+            filterset = filterset_class()
+        else:
+            filterset = filterset_class(**kwargs)
+
+        return filterset
 
 
 @login_required(login_url='/')
@@ -1395,7 +1435,7 @@ def atualiza_edital(request):
     edital_update.dt_fim_edit = data_fim_edit
     edital_update.dt_ini_insc = data_ini_insc
     edital_update.dt_fim_insc = data_fim_insc
-    edital_update.status = 0
+    edital_update.status = 0  # type: ignore
     edital_update.save()
     messages.success(request, 'Edital atualizado com sucesso!')
     return redirect('/verifica-turmas-edital')
@@ -1522,7 +1562,7 @@ def salvar_permissoes(request):
     if user_is_perm:
         auth_user = User_permission.objects.get(user_id=userId)
         auth_user.permission = checkbox
-        auth_user.escola_id = escola_id
+        auth_user.escola_id = escola_id  # type: ignore
         auth_user.save()
         messages.success(request, 'Permissão realizada com sucesso!')
         return redirect('/permissoes-usuarios')

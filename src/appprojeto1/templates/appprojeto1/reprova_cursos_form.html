@@ -16,8 +16,8 @@
 
     <div class="card-body">
         {% if form %}
-        {% csrf_token %}
-        {% crispy form %}
+            {% csrf_token %}
+            {% crispy form %}
         {% endif %}
     </div>
 </div>

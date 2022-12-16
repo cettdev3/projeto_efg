@@ -120,7 +120,7 @@ class DivisaoDeMetasFormDelete(forms.ModelForm):
 
 class DivisaoDeMetasFilterFormHelper(FormHelper):
 
-    form_method = 'GET'
+    form_method = 'GET' # type: ignore
 
     layout = Layout(
         Div(

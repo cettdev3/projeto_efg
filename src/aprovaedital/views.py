@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from appprojeto1.models import Users,User_permission,Edital
 from django.contrib import messages
 
