@@ -16,19 +16,21 @@ class AprovarCursosFilterFormHelper(FormHelper):
     layout = Layout(
         Div(
             Div(
-                Div('escola', css_class='flex-fill'),
-                Div('curso', css_class='flex-fill'),
-                css_class='d-lg-flex flex-fill gap-3'
+                Div(
+                    Div('escola', css_class='flex-fill'),
+                    Div('curso', css_class='flex-fill'),
+                    css_class='d-md-flex flex-fill gap-3'
+                ),
+                Div(
+                    Div('ano', css_class='flex-fill'),
+                    Div('trimestre', css_class='flex-fill'),
+                    Div('tipo_curso', css_class='flex-fill'),
+                    Div('modalidade', css_class='flex-fill'),
+                    Div('situacao', css_class='flex-fill'),
+                    css_class='d-md-flex flex-fill gap-3'
+                ),
+                css_class='d-xxl-flex flex-fill gap-3'
             ),
-            Div(
-                Div('ano', css_class='flex-fill'),
-                Div('trimestre', css_class='flex-fill'),
-                Div('tipo_curso', css_class='flex-fill'),
-                Div('modalidade', css_class='flex-fill'),
-                Div('situacao', css_class='flex-fill'),
-                css_class='d-md-flex flex-fill gap-3'
-            ),
-
             Div(
                 StrictButton('<i class="fas fa-search"></i>',
                              type='submit', name='submit', css_class='btn-outline-primary'),
