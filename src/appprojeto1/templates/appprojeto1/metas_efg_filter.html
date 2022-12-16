@@ -2,60 +2,63 @@
 {% load crispy_forms_tags %}
 {% load django_tables2%}
 {% load render_table from django_tables2 %}
+{% block styles %}
+    <style>
+        [style*="--aspect-ratio"] > :first-child {
+            width: 100%;
+        }
+
+        [style*="--aspect-ratio"] > iframe {  
+            height: auto;
+        }
+
+        @media (min-width: 100vw) {
+            @supports (--custom:property) {
+                [style*="--aspect-ratio"] {
+                    position: relative;
+                }
+                
+                [style*="--aspect-ratio"]::before {
+                    content: "";
+                    display: block;
+                        padding-bottom: 380px;
+                }
+                
+                [style*="--aspect-ratio"] > :first-child {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                }
+            }
+        }
+
+        @media (max-width: 848px) {
+            @supports (--custom:property) {
+                [style*="--aspect-ratio"] {
+                    position: relative;
+                }
+                
+                [style*="--aspect-ratio"]::before {
+                    content: "";
+                    display: block;
+                        padding-bottom: 872px;
+                }
+                
+                [style*="--aspect-ratio"] > :first-child {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                }
+            }
+        }
+
+</style>
+{% endblock %}
 
 {% block title %} Oferta de cursos {% endblock %}
 {% block content %}
-<style>
-    [style*="--aspect-ratio"] > :first-child {
-        width: 100%;
-    }
-
-    [style*="--aspect-ratio"] > iframe {  
-        height: auto;
-    }
-
-    @media (min-width: 100vw) {
-        @supports (--custom:property) {
-            [style*="--aspect-ratio"] {
-                position: relative;
-            }
-            
-            [style*="--aspect-ratio"]::before {
-                content: "";
-                display: block;
-                    padding-bottom: 380px;
-            }
-            
-            [style*="--aspect-ratio"] > :first-child {
-                position: absolute;
-                top: 0;
-                left: 0;
-                height: 100%;
-            }
-        }
-    }
-    @media (max-width: 1072px) {
-        @supports (--custom:property) {
-            [style*="--aspect-ratio"] {
-                position: relative;
-            }
-            
-            [style*="--aspect-ratio"]::before {
-                content: "";
-                display: block;
-                    padding-bottom: 872px;
-            }
-            
-            [style*="--aspect-ratio"] > :first-child {
-                position: absolute;
-                top: 0;
-                left: 0;
-                height: 100%;
-            }
-        }
-    }
-
-</style>
 <div class="page-heading">
     <h3>Oferta de cursos</h3>
 </div>

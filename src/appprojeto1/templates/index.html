@@ -19,9 +19,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
 
-  {{ form.media.css }}
   {% bootstrap_css %}
-
+  
   <link rel="stylesheet" href={% static "assets/css/bootstrap.css" %} />
   <link rel="stylesheet" href={% static "assets/vendors/iconly/bold.css" %} />
   <link rel="stylesheet" href={% static "assets/vendors/perfect-scrollbar/perfect-scrollbar.css" %} />
@@ -29,11 +28,14 @@
   <link rel="stylesheet" href={% static "assets/css/app.css" %} />
   <link rel="stylesheet" href={% static "assets/extensions/simple-datatables/style.css" %} />
   <link rel="stylesheet" href={% static "assets/css/pages/simple-datatables.css" %} />
-
+  
   {% fontawesome_5_static %}
-
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+  
+  {% block styles %}
+    {{ form.media.css }}
+  {% endblock %}
   <style>
     h4 {
       color: #000000

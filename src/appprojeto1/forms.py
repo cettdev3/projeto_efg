@@ -235,7 +235,7 @@ class DashboardAprovarCursosFilterModelForm(ModelForm):
                         Div('curso', css_class=''),
                         css_class='col gap-3'
                     ),
-                    css_class='d-lg-flex gap-3'
+                    css_class='d-md-flex gap-3'
                 ),
                 Div(
                     StrictButton('Filtrar',
