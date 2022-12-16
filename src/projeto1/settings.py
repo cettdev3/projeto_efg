@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from django.contrib.messages import constants as messages
 from pathlib import Path
+import envconfiguration as config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%7515@+#n10+#rskbff7_5&g1smjc8j!yn%g3(@eh1yt@p#rpf'
+SECRET_KEY = config.DJANGO_SECRET_KEY #type: ignore
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config.DJANGO_DEBUG #type: ignore
 
 ALLOWED_HOSTS = ['*']
 
@@ -95,47 +96,16 @@ WSGI_APPLICATION = 'projeto1.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'c35camundadb',
-    #     'USER': 'root',#c35camundadb
-    #     'HOST': '127.0.0.1',#isp.cett.dev.br
-    #     'PASSWORD': '',#iC7@hdDF
-    #     'PORT': '3306',
-
-    #     'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-    # },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'c1camundadb',
-        'USER': 'c1camundadb',
-        'HOST': '200.137.215.67',
-        'PASSWORD': 'iC7@hdDF',
-        'PORT': '3306',
+        'NAME': config.CAMUNDA_DOMAINS_DB,  # type: ignore
+        'USER': config.CAMUNDA_DOMAINS_USER,  # type: ignore
+        'HOST': config.CAMUNDA_DOMAINS_HOST,  # type: ignore
+        'PASSWORD': config.CAMUNDA_DOMAINS_PASS,  # type: ignore
+        'PORT': config.CAMUNDA_DOMAINS_PORT,  # type: ignore
 
         'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
     },
-
-    # 'siga': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'c3siga',
-    #     'USER': 'consulta',
-    #     'HOST': 'siga-ser.cotec.org.br',
-    #     'PASSWORD': '4rVqoiDp9ahwEqqMtP49Fi',
-    #     'PORT': '3306',
-    #     'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-    # },
-
-    # 'camunda': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'c35camundadb',
-    #     'USER': 'c35camundadb',
-    #     'HOST': 'isp.cett.dev.br',
-    #     'PASSWORD': 'iC7@hdDF',
-    #     'PORT': '3306',
-
-    #     'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-    # },
 }
 
 # DATABASE_ROUTERS = ['appprojeto1.dbrotas.EixosRota','appprojeto1.dbrotas.CamundaRota']

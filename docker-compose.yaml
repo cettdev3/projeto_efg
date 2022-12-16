@@ -8,6 +8,7 @@ services:
             dockerfile: ./Dockerfile
         environment:
             DJANGO_DEBUG: ${DJANGO_DEBUG}
+            DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
             CAMUNDA_DOMAINS_HOST: ${CAMUNDA_DOMAINS_HOST}
             CAMUNDA_DOMAINS_PORT: ${CAMUNDA_DOMAINS_PORT}
             CAMUNDA_DOMAINS_USER: ${CAMUNDA_DOMAINS_USER}
