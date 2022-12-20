@@ -1,0 +1,9 @@
+{% load fontawesome_5 %}
+{% load bootstrap5 %}
+{% if table %}
+        <select name="{{ name }}" class="select form-select form-control">
+            {% for key, value in options.items %}
+                <option value="{{ key }}" {% if record.situacao == key %} selected="selected" {% endif %}>{{ value }}</option>
+            {% endfor %}
+        </select>
+{% endif %}

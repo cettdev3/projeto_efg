@@ -516,10 +516,10 @@ def load_funcoes_rp(request):
     #total_horas = int(horas) * int(vagas)
 
     if modalidade == "1":
-        rp = float(total_horas) * 8.34
+        rp = float(total_horas) * 8.34  # type: ignore
 
     elif modalidade == "2" or modalidade == "3":
-        rp = float(total_horas) * 3.56
+        rp = float(total_horas) * 3.56   # type: ignore
     else:
         rp = select_vagas_horas_gerais()
         print('Resultado do Recurso Planejado' + str(rp))
@@ -1302,25 +1302,21 @@ class AprovarCursosView(
         form_class = self.get_form_class()
         form = self.get_form(form_class)
 
-        if 'select' in request.POST:
+        id_list = form.data.getlist('id')  # type: ignore
+        action_list = form.data.getlist('situacao')  # type: ignore
 
-            pks = request.POST.getlist('select')
+        disapproved_list = list()
 
-            if 'edital' in request.POST:
-                selected_objects = Metas_efg.objects.filter(
-                    id__in=pks, situacao=3)
-                print('Iniciando processo pada gerar edital para os cursos', pks)
-                pass
-
-            if 'aprovar' in request.POST:
-                action = request.POST['aprovar']
-                if action == '1':
-                    request.session['params'] = {'pks': pks, 'action': action}
-                    return HttpResponseRedirect(reverse('ReprovaCursosUpdateView'))
-                selected_objects = Metas_efg.objects.filter(id__in=pks)
-                selected_objects.update(situacao=action)
-        else:
-            messages.error(self.request, 'Selecione ao menos um registro')
+        for id in range(0, len(id_list)):
+            if action_list[id] != '1':
+                Metas_efg.objects.filter(pk=id_list[id]).exclude(situacao=action_list[id]).update(
+                    situacao=action_list[id], jus_reprovacao='')
+            else:
+                disapproved_list.append(id_list[id])
+        
+        if disapproved_list:
+            request.session['params'] = {'pks': disapproved_list, 'action': 1}
+            return HttpResponseRedirect(reverse('ReprovaCursosUpdateView'))
 
         if form.is_valid():
             return self.form_valid(form)
@@ -1370,7 +1366,7 @@ class ReprovaCursosUpdateView(
         params = self.request.session.get('params')
         if 'pks' in params:  # type: ignore
             selected_objects = Metas_efg.objects.filter(
-                id__in=params['pks'])  # type: ignore
+                id__in=params['pks']).exclude(situacao='1')  # type: ignore
             selected_objects.update(
                 situacao=params['action'], jus_reprovacao=form.cleaned_data['jus_reprovacao'])  # type: ignore
 

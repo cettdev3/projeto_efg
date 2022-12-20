@@ -1,11 +1,13 @@
 import django_tables2 as tables
 from appprojeto1.models import Metas_efg
-from appprojeto1.widgets import MaterializeCssCheckboxColumn
 
 class AprovarCursosTable(tables.Table):
 
-    select = tables.CheckBoxColumn(accessor='pk')
-    # select = MaterializeCssCheckboxColumn(accessor='pk')
+    id = tables.TemplateColumn(
+        template_name='appprojeto1/input/input.html',
+        verbose_name='',
+    )    
+    
     actions = tables.TemplateColumn(
         template_name='appprojeto1/buttons/actions.html',
         verbose_name='Ações',
@@ -21,11 +23,23 @@ class AprovarCursosTable(tables.Table):
         }
     )
     
+    situacao = tables.TemplateColumn(
+        template_name='appprojeto1/select/select.html',
+        verbose_name='Situação',
+        orderable=False,
+        extra_context={
+            'name': 'situacao',
+            'options':
+                dict(Metas_efg.situacao.field.choices), # type: ignore
+        }
+    )
+    
     class Meta:
         model = Metas_efg
-
+        
         fields = (
-            'select',
+            'id',
+            # 'select',
             'diretoria',
             'escola',
             'tipo_curso',
@@ -47,4 +61,6 @@ class AprovarCursosTable(tables.Table):
             "class": "table table-striped table-hover",
         }
 
-        row_attrs = {"data-id": lambda record: record.pk}
+        row_attrs = {
+            "data-id": lambda record: record.pk,
+        }

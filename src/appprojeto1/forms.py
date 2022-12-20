@@ -52,12 +52,8 @@ class AprovarCursosSubmitFormView(Form):
 
         self.helper.layout.append(  # type: ignore
             FormActions(
-                StrictButton('<i class="fas fa-check"></i><spam> Aprovar</spam>',
+                StrictButton('<i class="fas fa-check"></i><spam> Salvar</spam>',
                              type='submit', name='aprovar', value='3', css_class='btn-success'),
-                StrictButton('<i class="fas fa-ban"></i><spam> Reprovar</spam>',
-                             type='submit', name='aprovar', value='1', css_class='btn-danger'),
-                StrictButton('<i class="far fa-hourglass"></i><spam> Em Análise</spam>',
-                             type='submit', name='aprovar', value='2', css_class='btn-warning'),
                 StrictButton('<i class="far fa-file"></i><spam> Gerar edital</spam>',
                              type='submit', name='edital', value='gerar', css_class='btn-primary'),
                 css_class='d-flex justify-content-end gap-1'
