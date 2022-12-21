@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fb54658c947cc0174d962f76a70d11327b1db6f2c4c1328b3bc8fb9e1656ed4c"
+            "sha256": "188fa7d9c150a50c39f45ef5332106c72b99030fd0ae2fe0d7a60d4e6484c9d4"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,11 +18,11 @@
     "default": {
         "asgiref": {
             "hashes": [
-                "sha256:1d2880b792ae8757289136f1db2b7b99100ce959b2aa57fd69dab783d05afac4",
-                "sha256:4a29362a6acebe09bf1d6640db38c1dc3d9217c68e6f9f6204d72667fc19a424"
+                "sha256:71e68008da809b957b7ee4b43dbccff33d1b23519fb8344e33f049897077afac",
+                "sha256:9567dfe7bd8d3c8c892227827c41cce860b368104c3431da67a0c5a65a949506"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==3.5.2"
+            "version": "==3.6.0"
         },
         "backports.zoneinfo": {
             "hashes": [
@@ -209,6 +209,14 @@
                 "sha256:e47805627aebcf860edb4edf7987b1309c1b3632f3750538ed962bbcc3bd7449"
             ],
             "version": "==3.0.10"
+        },
+        "pycamunda": {
+            "hashes": [
+                "sha256:20d215f16f48a3a13f193dd61260e57acc5e1c57a8e365b553fa9c79e40a415d",
+                "sha256:e0b30c371dc344b081dd8d25470d10eebb53751c43da9772c870c8f77a5f117f"
+            ],
+            "index": "pypi",
+            "version": "==0.6.1"
         },
         "python-dotenv": {
             "hashes": [

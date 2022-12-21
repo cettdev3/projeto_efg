@@ -32,6 +32,8 @@ import requests as req
 import json
 from requests.auth import HTTPBasicAuth
 from django.views.generic.base import ContextMixin
+from pycamunda import task as CamundaTask
+from requests import sessions, auth
 
 # DADOS DO SERVIDOR
 host = 'http://localhost:8080/engine-rest/'
@@ -455,7 +457,7 @@ def load_funcoes_vagas(request):
     modalidade = request.GET['modalidade']
     curso = request.GET['curso']
     tipo = request.GET['tipo']
-    #idEscola = select_vagas_horas('escola',subfilter)
+    # idEscola = select_vagas_horas('escola',subfilter)
     vagas = select_vagas_horas(
         ano, trimestre, escola, modalidade, curso, tipo, 'vagas_totais')
     return render(request, 'ajax/ajax_load_vagas.html', {'vagas': vagas})
@@ -509,11 +511,11 @@ def load_funcoes_rp(request):
     modalidade = request.GET['modalidade']
     curso = request.GET['curso']
     tipo = request.GET['tipo']
-    #idEscola = select_vagas_horas('escola',subfilter)
+    # idEscola = select_vagas_horas('escola',subfilter)
     total_horas = select_vagas_horas(
         ano, trimestre, escola, modalidade, curso, tipo, 'carga_horaria_total')
-    #vagas = select_vagas_horas(ano,trimestre,escola,modalidade,curso,tipo,'vagas_totais')
-    #total_horas = int(horas) * int(vagas)
+    # vagas = select_vagas_horas(ano,trimestre,escola,modalidade,curso,tipo,'vagas_totais')
+    # total_horas = int(horas) * int(vagas)
 
     if modalidade == "1":
         rp = float(total_horas) * 8.34  # type: ignore
@@ -578,8 +580,8 @@ def load_funcoes_total_horas(request):
     total_horas = select_vagas_horas(
         ano, trimestre, escola, modalidade, curso, tipo, 'carga_horaria_total')
 
-    #vagas = select_vagas_horas(ano,trimestre,escola,modalidade,curso,tipo,'vagas_totais')
-    #total_horas = int(horas) * int(vagas)
+    # vagas = select_vagas_horas(ano,trimestre,escola,modalidade,curso,tipo,'vagas_totais')
+    # total_horas = int(horas) * int(vagas)
     return render(request, 'ajax/ajax_load_total_horas.html', {'total_horas': total_horas})
 
 
@@ -710,7 +712,7 @@ def cad_metas(request):
     udepi = request.POST['municipio']
 
     meta_is_exist = Metas_efg.objects.filter(escola_id=escola, tipo_curso_id=tipo_curso,
-                                             modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso,previsao_inicio = previsao_inicio, previsao_fim=previsao_fim).values()
+                                             modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso, previsao_inicio=previsao_inicio, previsao_fim=previsao_fim).values()
     print('-------------------------------------------------------\n\n\n\n' +
           str(meta_is_exist))
     if meta_is_exist:
@@ -836,7 +838,7 @@ def editar_meta(request, codigo):
     atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(
         escola=infoFiltro[0]['escola_id'], tipo=infoFiltro[0]['tipo_curso_id'], ano=infoFiltro[0]['ano']).values()
 
-    #id_filtro = atualiza_saldo[0]['id']
+    # id_filtro = atualiza_saldo[0]['id']
     limite = atualiza_saldo[0]['carga_horaria']
 
     return render(request, 'editar_metas.html', {'meta_edit': meta_edit,
@@ -890,9 +892,9 @@ def editarmetas(request):
     vagas_totais = request.POST['vagas_totais']
     carga_horaria_total = request.POST['ch_total']
     previsao_inicio = request.POST['data_p_inicio']
-    #previsao_inicio = converter_data(previsao_inicio)
+    # previsao_inicio = converter_data(previsao_inicio)
     previsao_fim = request.POST['data_p_fim']
-    #previsao_fim = converter_data(previsao_fim)
+    # previsao_fim = converter_data(previsao_fim)
     dias_semana = request.POST['dias_semana']
 
     editmetas = Metas_efg.objects.get(id=id_)
@@ -936,7 +938,7 @@ def editarmetas(request):
 
     atualiza_saldo = DivisaoDeMetasPorEscola.objects.get(id=id_filtro)
 
-    #atualiza_saldo.created_at = datetime.datetime.now()
+    # atualiza_saldo.created_at = datetime.datetime.now()
     atualiza_saldo.carga_horaria = saldo
     atualiza_saldo.save()
 
@@ -1313,10 +1315,56 @@ class AprovarCursosView(
                     situacao=action_list[id], jus_reprovacao='')
             else:
                 disapproved_list.append(id_list[id])
-        
+
         if disapproved_list:
             request.session['params'] = {'pks': disapproved_list, 'action': 1}
             return HttpResponseRedirect(reverse('ReprovaCursosUpdateView'))
+
+        CamundaSession = sessions.Session()
+        CamundaSession.auth = auth.HTTPBasicAuth(
+            username='admin',
+            password='CETT@root.8401'
+        )
+
+        GetTasks = CamundaTask.GetList(
+            url='http://processos.cett.dev.br/engine-rest',
+            task_definition_key='VerificaOPlanejamentoDeTurmasEAprovareprovaCOTECEFGTask',
+        )
+
+        GetTasks.session = CamundaSession
+
+        ApprovalList = set(Metas_efg.objects.all().values_list('situacao', flat=True))
+        
+        ApprovalLen = len(ApprovalList)
+        
+        ApprovalType = list(ApprovalList)[0]
+             
+        if len(GetTasks()) > 0 and ApprovalLen == 1 and ApprovalType == 3:
+            for task in GetTasks():
+                print(task.id_)
+                complete = CamundaTask.Complete(
+                    url='http://processos.cett.dev.br/engine-rest',
+                    id_=task.id_
+                )
+                
+                complete.session = CamundaSession
+
+                complete.add_variable(
+                    name='aprovacaodoscursos',
+                    value=1,
+                    type_='string',
+                    value_info='Variavei para gateway de aprovação'
+                )
+                
+            messages.success(
+                self.request, 'Planejamento de turmas foi aprovado')
+        elif len(GetTasks()) == 0 and ApprovalLen == 1:
+            messages.error(
+                self.request, 'Não foi encontrado tarefas para de aprovar o planejamento de turma')
+        elif ApprovalLen > 1:
+            messages.warning(
+                self.request, 'Para ter aprovação do planejamento de turmas, todas as turmas deveram ser aprovadas'
+            )
 
         if form.is_valid():
             return self.form_valid(form)
@@ -1569,6 +1617,7 @@ def salvar_permissoes(request):
         messages.success(request, 'Permissão realizada com sucesso!')
         return redirect('/permissoes-usuarios')
 
+
 @login_required(login_url='/')
 def enviar_planejamento(request):
 
@@ -1612,12 +1661,15 @@ def enviar_planejamento(request):
             messages.success(request, 'Planejamento enviado com sucesso!')
             return redirect('/cadastrar-metas')
 
+
 @login_required(login_url='/')
 def cadastrar_usuario(request):
 
-    user = User.objects.create_user(username=request.POST['nome_user'],email=request.POST['email_user'],password=request.POST['senha_user'])
+    user = User.objects.create_user(
+        username=request.POST['nome_user'], email=request.POST['email_user'], password=request.POST['senha_user'])
     id_user = Users.objects.filter(username=user).values()
-    
-    auth_user = User_permission.objects.create(user_id=id_user[0]['id'], permission='', escola_id=0)
+
+    auth_user = User_permission.objects.create(
+        user_id=id_user[0]['id'], permission='', escola_id=0)
     messages.success(request, 'Usuário cadastrado com sucesso!')
     return redirect('/permissoes-usuarios')
