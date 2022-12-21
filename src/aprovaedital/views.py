@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from appprojeto1.models import Users,User_permission,Edital
 from django.contrib import messages
 
+
 def getUserlogin(request):
     username = request.user
     id_user = Users.objects.filter(username=username).values()
@@ -20,6 +21,8 @@ def ajax_load_edital_v2(request):
     edital_id = request.GET['id']
     lancamentos = Edital.objects.filter(id=edital_id).select_related('escola').all()
     edital = lancamentos[0]
+    path_edital = request.get_full_path()
+    print(path_edital)
     
     return render(request, 'ajax_load_edital_v2.html', {'edital': edital})
 
