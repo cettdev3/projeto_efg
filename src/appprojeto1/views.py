@@ -36,13 +36,13 @@ from pycamunda import task as CamundaTask
 from requests import sessions, auth
 
 # DADOS DO SERVIDOR
-host = 'http://localhost:8080/engine-rest/'
-processName = "projetoteste"
-taskDefinitionKey = "task2"
-autentication = HTTPBasicAuth('demo', 'demo')
+host = 'http://processos.cett.dev.br/engine-rest/'
+processName = "SolicitarOfertaDeVaga"
+autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
 
-def getInstance(processName):
+def getInstance(processName,taskDefinition):
+    taskDefinitionKey = taskDefinition 
     url = f"{host}task?processDefinitionKey={processName}"
     requisicao = req.get(url, json={}, auth=autentication)
     retorno = requisicao.text
@@ -1473,6 +1473,7 @@ class DashboardAprovarCursosView(
 def verifica_turmas_edital(request):
 
     metas = Edital.objects.raw("Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is NULL group by Turmas_planejado_orcado.num_edital_id")
+   
 
     return render(request, 'verificacao_turmas_edital.html', {'metas': metas, 'permissoes': get_permission(request)})
 
@@ -1508,7 +1509,14 @@ def atualiza_edital(request):
     edital_update.dt_fim_insc = data_fim_insc
     edital_update.status = 0  # type: ignore
     edital_update.save()
-    messages.success(request, 'Edital atualizado com sucesso!')
+
+    edital_null = Edital.objects.filter(dt_ini_edit__isnull=True).count()
+    if edital_null == 0:
+        completeTask = getInstance(processName,"DefinirDatasDeEditalEDeInscricaoTask")
+        messages.success(request, 'Edital atualizado com sucesso! Task completada!')
+    else:
+        messages.success(request, 'Edital atualizado com sucesso!')
+    
     return redirect('/verifica-turmas-edital')
 
 
@@ -1674,7 +1682,7 @@ def enviar_planejamento(request):
             'where escola_id = 54 GROUP BY escola_id')
 
         if escola_luiz_rassi == 2 and escola_sara == 2 and escola_bittencourt == 2:
-            sendPlan = getInstance(processName)
+            sendPlan = getInstance(processName,"EnviarPlanejamentoTask")
 
             if sendPlan == True:
                 messages.success(
