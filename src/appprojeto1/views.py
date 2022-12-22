@@ -1352,8 +1352,9 @@ class AprovarCursosView(
                     value=0,
                     type_='Integer'
                 )
-                complete.session = CamundaSession
                 
+                complete.session = CamundaSession
+                complete()
             messages.success(
                 self.request, 'Planejamento de turmas foi aprovado')
         elif len(tasklist) == 0 and ApprovalLen == 1:
