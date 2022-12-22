@@ -1303,67 +1303,72 @@ class AprovarCursosView(
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-
-        id_list = form.data.getlist('id')  # type: ignore
-        action_list = form.data.getlist('situacao')  # type: ignore
-
-        disapproved_list = list()
-
-        for id in range(0, len(id_list)):
-            if action_list[id] != '1':
-                Metas_efg.objects.filter(pk=id_list[id]).exclude(situacao=action_list[id]).update(
-                    situacao=action_list[id], jus_reprovacao='')
-            else:
-                disapproved_list.append(id_list[id])
-
-        if disapproved_list:
-            request.session['params'] = {'pks': disapproved_list, 'action': 1}
-            return HttpResponseRedirect(reverse('ReprovaCursosUpdateView'))
-
-        CamundaSession = sessions.Session()
-        CamundaSession.auth = auth.HTTPBasicAuth(
-            username='admin',
-            password='CETT@root.8401'
-        )
-
-        GetTasks = CamundaTask.GetList(
-            url='https://processos.cett.dev.br/engine-rest',
-            task_definition_key='VerificaOPlanejamentoDeTurmasEAprovareprovaCOTECEFGTask',
-        )
-
-        GetTasks.session = CamundaSession
         
-        tasklist = GetTasks()
+        if 'aprovar' in self.request.POST:
 
-        ApprovalList = set(Metas_efg.objects.all().values_list('situacao', flat=True))
-        
-        ApprovalLen = len(ApprovalList)
-        
-        ApprovalType = list(ApprovalList)[0]
-             
-        if len(tasklist) > 0 and ApprovalLen == 1 and ApprovalType == 3:
-            for task in tasklist:
-                complete = CamundaTask.Complete(
-                    url='https://processos.cett.dev.br/engine-rest',
-                    id_=task.id_
-                )
-                complete.add_variable(
-                    name='aprovacaodoscursos',
-                    value=0,
-                    type_='Integer'
-                )
-                complete.session = CamundaSession
-                
-            messages.success(
-                self.request, 'Planejamento de turmas foi aprovado')
-        elif len(tasklist) == 0 and ApprovalLen == 1:
-            messages.error(
-                self.request, 'Não foi encontrado tarefas para de aprovar o planejamento de turma')
-        elif ApprovalLen > 1:
-            messages.warning(
-                self.request, 'Para ter aprovação do planejamento de turmas, todas as turmas deveram ser aprovadas'
+            id_list = form.data.getlist('id')  # type: ignore
+            action_list = form.data.getlist('situacao')  # type: ignore
+
+            disapproved_list = list()
+
+            for id in range(0, len(id_list)):
+                if action_list[id] != '1':
+                    Metas_efg.objects.filter(pk=id_list[id]).exclude(situacao=action_list[id]).update(
+                        situacao=action_list[id], jus_reprovacao='')
+                else:
+                    disapproved_list.append(id_list[id])
+
+            if disapproved_list:
+                request.session['params'] = {'pks': disapproved_list, 'action': 1}
+                return HttpResponseRedirect(reverse('ReprovaCursosUpdateView'))
+
+        elif 'edital' in self.request.POST:
+            CamundaSession = sessions.Session()
+            CamundaSession.auth = auth.HTTPBasicAuth(
+                username='admin',
+                password='CETT@root.8401'
             )
 
+            GetTasks = CamundaTask.GetList(
+                url='https://processos.cett.dev.br/engine-rest',
+                task_definition_key='VerificaOPlanejamentoDeTurmasEAprovareprovaCOTECEFGTask',
+            )
+
+            GetTasks.session = CamundaSession
+            
+            tasklist = GetTasks()
+
+            ApprovalList = set(Metas_efg.objects.all().values_list('situacao', flat=True))
+            
+            ApprovalLen = len(ApprovalList)
+            
+            ApprovalType = list(ApprovalList)[0]
+                
+            if len(tasklist) > 0 and ApprovalLen == 1 and ApprovalType == 3:
+                for task in tasklist:
+                    complete = CamundaTask.Complete(
+                        url='https://processos.cett.dev.br/engine-rest',
+                        id_=task.id_
+                    )
+                    complete.add_variable(
+                        name='aprovacaodoscursos',
+                        value=0,
+                        type_='Integer'
+                    )
+                    complete.session = CamundaSession
+                    
+                    complete()
+                    
+                messages.success(
+                    self.request, 'Planejamento de turmas foi aprovado')
+            elif len(tasklist) == 0 and ApprovalLen == 1:
+                messages.error(
+                    self.request, 'Não foi encontrado tarefas para de aprovar o planejamento de turma')
+            elif ApprovalLen > 1:
+                messages.warning(
+                    self.request, 'Para ter aprovação do planejamento de turmas, todas as turmas deveram ser aprovadas'
+                )
+        
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -1431,19 +1436,23 @@ class ReprovaCursosUpdateView(
             
             tasklist = GetTasks()
 
-            for task in tasklist:
-                complete = CamundaTask.Complete(
-                    url='https://processos.cett.dev.br/engine-rest',
-                    id_=task.id_
-                )
-                complete.add_variable(
-                    name='aprovacaodoscursos',
-                    value=1,
-                    type_='Integer'
-                )
-                complete.session = CamundaSession
-                
-                complete()
+            if len(tasklist) > 0:
+                for task in tasklist:
+                    complete = CamundaTask.Complete(
+                        url='https://processos.cett.dev.br/engine-rest',
+                        id_=task.id_
+                    )
+                    complete.add_variable(
+                        name='aprovacaodoscursos',
+                        value=1,
+                        type_='Integer'
+                    )
+                    complete.session = CamundaSession
+                    
+                    complete()
+            else:
+                messages.error(
+                    self.request, 'Não foram encontradas as tarefas de aprovação')
 
         return HttpResponseRedirect(reverse('AprovarCursosView'))
 

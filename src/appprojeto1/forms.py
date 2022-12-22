@@ -4,7 +4,7 @@ from crispy_forms.layout import Layout, Div
 from django.forms.forms import Form
 from django.forms import ModelForm
 from crispy_forms.layout import Layout, Submit, Button
-from crispy_forms.bootstrap import FormActions, StrictButton
+from crispy_forms.bootstrap import FormActions, StrictButton, FieldWithButtons
 from django.urls import reverse_lazy
 from appprojeto1.models import Metas_efg, Metas_escolas, Eixos, Udepi_municipio, Cadastrar_curso
 from appprojeto1.widgets import DatePickerInput
@@ -48,6 +48,18 @@ class AprovarCursosSubmitFormView(Form):
     def __init__(self, *args, **kwargs):
         super(AprovarCursosSubmitFormView, self).__init__(*args, **kwargs)
 
+        ApprovalList = set(
+            Metas_efg.objects.all().values_list('situacao', flat=True))
+
+        ApprovalLen = len(ApprovalList)
+
+        ApprovalType = list(ApprovalList)[0]
+
+        disable_edital = True
+
+        if ApprovalLen == 1 and ApprovalType == 3:
+            disable_edital = False
+
         self.helper = FormHelper(self)
 
         self.helper.layout.append(  # type: ignore
@@ -55,7 +67,7 @@ class AprovarCursosSubmitFormView(Form):
                 StrictButton('<i class="fas fa-check"></i><spam> Salvar</spam>',
                              type='submit', name='aprovar', value='3', css_class='btn-success'),
                 StrictButton('<i class="far fa-file"></i><spam> Gerar edital</spam>',
-                             type='submit', name='edital', value='gerar', css_class='btn-primary'),
+                             type='submit', name='edital', value='gerar', css_class='btn-primary', disabled=disable_edital),
                 css_class='d-flex justify-content-end gap-1'
             )
         )
