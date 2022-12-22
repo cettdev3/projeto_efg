@@ -36,7 +36,7 @@ from pycamunda import task as CamundaTask
 from requests import sessions, auth
 
 # DADOS DO SERVIDOR
-host = 'http://processos.cett.dev.br/engine-rest/'
+host = 'https://processos.cett.dev.br/engine-rest/'
 processName = "SolicitarOfertaDeVaga"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
@@ -1483,7 +1483,7 @@ def atualiza_edital(request):
     edital_update.status = 0  # type: ignore
     edital_update.save()
 
-    edital_null = Edital.objects.filter(dt_ini_edit__isnull=True).count()
+    edital_null = int(Edital.objects.filter(dt_ini_edit__isnull=True).count())
     if edital_null == 0:
         completeTask = getInstance(processName,"DefinirDatasDeEditalEDeInscricaoTask")
         messages.success(request, 'Edital atualizado com sucesso! Task completada!')
