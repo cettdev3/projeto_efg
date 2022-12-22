@@ -36,7 +36,7 @@ from pycamunda import task as CamundaTask
 from requests import sessions, auth
 
 # DADOS DO SERVIDOR
-host = 'http://processos.cett.dev.br/engine-rest/'
+host = 'https://processos.cett.dev.br/engine-rest/'
 processName = "SolicitarOfertaDeVaga"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
@@ -1368,7 +1368,7 @@ class AprovarCursosView(
                 messages.warning(
                     self.request, 'Para ter aprovação do planejamento de turmas, todas as turmas deveram ser aprovadas'
                 )
-        
+
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -1519,7 +1519,7 @@ def atualiza_edital(request):
     edital_update.status = 0  # type: ignore
     edital_update.save()
 
-    edital_null = Edital.objects.filter(dt_ini_edit__isnull=True).count()
+    edital_null = int(Edital.objects.filter(dt_ini_edit__isnull=True).count())
     if edital_null == 0:
         completeTask = getInstance(processName,"DefinirDatasDeEditalEDeInscricaoTask")
         messages.success(request, 'Edital atualizado com sucesso! Task completada!')
@@ -1690,7 +1690,7 @@ def enviar_planejamento(request):
         escola_bittencourt = get_escolas(
             'where escola_id = 54 GROUP BY escola_id')
 
-        if escola_luiz_rassi == 2 and escola_sara == 2 and escola_bittencourt == 2:
+        if escola_luiz_rassi == 2 or escola_luiz_rassi == 3 and escola_sara == 2 or escola_sara == 3 and escola_bittencourt == 2 or escola_bittencourt == 3:
             sendPlan = getInstance(processName,"EnviarPlanejamentoTask")
 
             if sendPlan == True:
