@@ -1,8 +1,9 @@
-from pyexpat import model
 from django.db import models
 from django.urls import reverse_lazy, reverse
-
+from django.core.validators import RegexValidator
 # Create your models here.
+
+
 class Users(models.Model):
     id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=255)
@@ -10,6 +11,7 @@ class Users(models.Model):
     class Meta:
         db_table = 'auth_user'
         managed = False
+
 
 class Cursos(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -23,6 +25,7 @@ class Cursos(models.Model):
     class Meta:
         db_table = 'qualificacoes'
 
+
 class Solicitacao(models.Model):
     id = models.IntegerField(primary_key=True)
     eixo = models.CharField(max_length=255)
@@ -34,10 +37,13 @@ class Solicitacao(models.Model):
     class Meta:
         db_table = 'appprojeto1_solicitacao'
 
+
 class Metas_escolas(models.Model):
     id = models.IntegerField(primary_key=True)
     escola = models.CharField(max_length=255)
     tipo = models.IntegerField()
+    email = models.EmailField(max_length=255)
+    telefone = models.CharField(max_length=16)
 
     def __str__(self):
         return self.escola
@@ -45,10 +51,11 @@ class Metas_escolas(models.Model):
     class Meta:
         db_table = 'escolas'
 
+
 class Eixos(models.Model):
     id = models.IntegerField(primary_key=True)
     eixo_id = models.IntegerField()
-    escola = models.ForeignKey(Metas_escolas,on_delete=models.CASCADE)
+    escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
     nome = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
 
@@ -62,51 +69,55 @@ class Eixos(models.Model):
 class Metas_tipo(models.Model):
     id = models.IntegerField(primary_key=True)
     tipo = models.CharField(max_length=255)
-   
+
     def __str__(self):
         return self.tipo
 
     class Meta:
         db_table = 'tipo_curso'
 
+
 class Metas_modalidade(models.Model):
     id = models.IntegerField(primary_key=True)
     modalidade = models.CharField(max_length=255)
-   
+
     def __str__(self):
         return self.modalidade
 
     class Meta:
         db_table = 'modalidade'
 
+
 class Metas_trimestre(models.Model):
     id = models.IntegerField(primary_key=True)
     trimestre = models.CharField(max_length=255)
-   
+
     def __str__(self):
         return self.trimestre
 
     class Meta:
         db_table = 'trimestre'
 
+
 class Metas_descricoes(models.Model):
     id = models.IntegerField(primary_key=True)
     descricao = models.CharField(max_length=255)
-   
+
     def __str__(self):
         return self.descricao
 
     class Meta:
         db_table = 'descricao'
 
+
 class Metas_sinteticas(models.Model):
     id = models.IntegerField(primary_key=True)
     diretoria = models.CharField(max_length=255)
-    escola = models.ForeignKey(Metas_escolas,on_delete=models.CASCADE)
+    escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
     ano = models.IntegerField()
-    modalidade = models.ForeignKey(Metas_modalidade,on_delete=models.CASCADE)
-    descricao = models.ForeignKey(Metas_descricoes,on_delete=models.CASCADE)
-    categoria = models.ForeignKey(Metas_tipo,on_delete=models.CASCADE)
+    modalidade = models.ForeignKey(Metas_modalidade, on_delete=models.CASCADE)
+    descricao = models.ForeignKey(Metas_descricoes, on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Metas_tipo, on_delete=models.CASCADE)
     ch_ofertada = models.IntegerField()
     vagas = models.IntegerField()
     repasse = models.FloatField()
@@ -115,12 +126,14 @@ class Metas_sinteticas(models.Model):
     class Meta:
         db_table = 'Metas_sinteticas_efg'
 
+
 class Rubrica(models.Model):
     id = models.IntegerField(primary_key=True)
     rubrica = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'rubrica'
+
 
 class Item_apoiado(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -130,6 +143,7 @@ class Item_apoiado(models.Model):
     class Meta:
         db_table = 'item_apoiado'
 
+
 class Unidades(models.Model):
     id = models.IntegerField(primary_key=True)
     und = models.CharField(max_length=255)
@@ -137,22 +151,24 @@ class Unidades(models.Model):
     class Meta:
         db_table = 'unidade'
 
+
 class Curso_escola(models.Model):
     id = models.IntegerField(primary_key=True)
     escola_id = models.IntegerField()
     curso_id = models.IntegerField()
     status = models.CharField(max_length=255)
+
     class Meta:
         db_table = 'curso_escola'
 
 
 class Cadastrar_curso(models.Model):
     id = models.IntegerField(primary_key=True)
-    escola = models.ForeignKey(Metas_escolas,on_delete=models.CASCADE)
-    tipo = models.ForeignKey(Metas_tipo,on_delete=models.CASCADE)
-    eixos = models.ForeignKey(Eixos,on_delete=models.CASCADE)
+    escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
+    tipo = models.ForeignKey(Metas_tipo, on_delete=models.CASCADE)
+    eixos = models.ForeignKey(Eixos, on_delete=models.CASCADE)
     curso = models.CharField(max_length=255)
-    modalidade = models.ForeignKey(Metas_modalidade,on_delete=models.CASCADE)
+    modalidade = models.ForeignKey(Metas_modalidade, on_delete=models.CASCADE)
     status = models.CharField(max_length=255)
     escolaridade = models.CharField(max_length=255)
     idade_min = models.IntegerField()
@@ -165,17 +181,18 @@ class Cadastrar_curso(models.Model):
     class Meta:
         db_table = 'cursos'
 
+
 class Orcamento_plano_trabalho(models.Model):
     id = models.IntegerField(primary_key=True)
-    tipo = models.CharField(max_length=255)   
-    rubrica = models.ForeignKey(Rubrica,on_delete=models.CASCADE)
-    item_apoiado =  models.ForeignKey(Item_apoiado,on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=255)
+    rubrica = models.ForeignKey(Rubrica, on_delete=models.CASCADE)
+    item_apoiado = models.ForeignKey(Item_apoiado, on_delete=models.CASCADE)
     und = models.CharField(max_length=255)
     qtd_global = models.DecimalField(max_digits=15, decimal_places=2)
-    valor_medio_unitario =  models.DecimalField(max_digits=15, decimal_places=2)
-    valor_global =  models.DecimalField(max_digits=15, decimal_places=2)
-    custeio =  models.DecimalField(max_digits=15, decimal_places=2)
-    capital =  models.DecimalField(max_digits=15, decimal_places=2)
+    valor_medio_unitario = models.DecimalField(max_digits=15, decimal_places=2)
+    valor_global = models.DecimalField(max_digits=15, decimal_places=2)
+    custeio = models.DecimalField(max_digits=15, decimal_places=2)
+    capital = models.DecimalField(max_digits=15, decimal_places=2)
 
     class Meta:
         db_table = 'planejamento_trabalho'
@@ -183,7 +200,7 @@ class Orcamento_plano_trabalho(models.Model):
 
 class Udepi_municipio(models.Model):
     id = models.IntegerField(primary_key=True)
-    escola = models.ForeignKey(Metas_escolas,on_delete=models.CASCADE)
+    escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
     municipio = models.CharField(max_length=255)
 
     def __str__(self):
@@ -191,6 +208,7 @@ class Udepi_municipio(models.Model):
 
     class Meta:
         db_table = 'udepi_municipio'
+
 
 class Edital(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -200,11 +218,11 @@ class Edital(models.Model):
     dt_fim_edit = models.DateField(null=True, blank=True)
     dt_ini_insc = models.DateField(null=True, blank=True)
     dt_fim_insc = models.DateField(null=True, blank=True)
-    escola = models.ForeignKey(Metas_escolas,on_delete=models.CASCADE)
+    escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
     status = models.CharField(max_length=255)
     pdf = models.CharField(max_length=255)
     motivo = models.CharField(max_length=255)
-    
+
     def __str__(self):
         return self.num_edital
 
@@ -284,5 +302,3 @@ class User_permission(models.Model):
 
     class Meta:
         db_table = 'user_permission'
-
-

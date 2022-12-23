@@ -41,8 +41,8 @@ processName = "SolicitarOfertaDeVaga"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
 
-def getInstance(processName,taskDefinition):
-    taskDefinitionKey = taskDefinition 
+def getInstance(processName, taskDefinition):
+    taskDefinitionKey = taskDefinition
     url = f"{host}task?processDefinitionKey={processName}"
     requisicao = req.get(url, json={}, auth=autentication)
     retorno = requisicao.text
@@ -1303,14 +1303,13 @@ class AprovarCursosView(
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        
+
         if 'aprovar' in self.request.POST:
 
             id_list = form.data.getlist('id')  # type: ignore
             action_list = form.data.getlist('situacao')  # type: ignore
 
             disapproved_list = list()
-
             for id in range(0, len(id_list)):
                 if action_list[id] != '1':
                     Metas_efg.objects.filter(pk=id_list[id]).exclude(situacao=action_list[id]).update(
@@ -1319,7 +1318,8 @@ class AprovarCursosView(
                     disapproved_list.append(id_list[id])
 
             if disapproved_list:
-                request.session['params'] = {'pks': disapproved_list, 'action': 1}
+                request.session['params'] = {
+                    'pks': disapproved_list, 'action': 1}
                 return HttpResponseRedirect(reverse('ReprovaCursosUpdateView'))
 
         elif 'edital' in self.request.POST:
@@ -1335,15 +1335,16 @@ class AprovarCursosView(
             )
 
             GetTasks.session = CamundaSession
-            
+
             tasklist = GetTasks()
 
-            ApprovalList = set(Metas_efg.objects.all().values_list('situacao', flat=True))
-            
+            ApprovalList = set(
+                Metas_efg.objects.all().values_list('situacao', flat=True))
+
             ApprovalLen = len(ApprovalList)
-            
+
             ApprovalType = list(ApprovalList)[0]
-                
+
             if len(tasklist) > 0 and ApprovalLen == 1 and ApprovalType == 3:
                 for task in tasklist:
                     complete = CamundaTask.Complete(
@@ -1356,9 +1357,9 @@ class AprovarCursosView(
                         type_='Integer'
                     )
                     complete.session = CamundaSession
-                    
+
                     complete()
-                    
+
                 messages.success(
                     self.request, 'Planejamento de turmas foi aprovado')
             elif len(tasklist) == 0 and ApprovalLen == 1:
@@ -1433,7 +1434,7 @@ class ReprovaCursosUpdateView(
             )
 
             GetTasks.session = CamundaSession
-            
+
             tasklist = GetTasks()
 
             if len(tasklist) > 0:
@@ -1442,13 +1443,29 @@ class ReprovaCursosUpdateView(
                         url='https://processos.cett.dev.br/engine-rest',
                         id_=task.id_
                     )
+
                     complete.add_variable(
                         name='aprovacaodoscursos',
                         value=1,
                         type_='Integer'
                     )
+
+                    escolas = Metas_efg.objects.filter(
+                        id__in=params['pks']).values_list('escola', flat=True)
+                    mails = json.dumps(list(Metas_escolas.objects.filter(
+                        id__in=escolas).values('email')))
+
+                    print(mails)
+                    complete.add_variable(
+                        name='emailsEscolasReprovadas',
+                        value=mails,
+                        type_='Json'
+                    )
+
                     complete.session = CamundaSession
                     
+                    print(complete)
+
                     complete()
             else:
                 messages.error(
@@ -1482,7 +1499,6 @@ class DashboardAprovarCursosView(
 def verifica_turmas_edital(request):
 
     metas = Edital.objects.raw("Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is NULL group by Turmas_planejado_orcado.num_edital_id")
-   
 
     return render(request, 'verificacao_turmas_edital.html', {'metas': metas, 'permissoes': get_permission(request)})
 
@@ -1521,11 +1537,13 @@ def atualiza_edital(request):
 
     edital_null = int(Edital.objects.filter(dt_ini_edit__isnull=True).count())
     if edital_null == 0:
-        completeTask = getInstance(processName,"DefinirDatasDeEditalEDeInscricaoTask")
-        messages.success(request, 'Edital atualizado com sucesso! Task completada!')
+        completeTask = getInstance(
+            processName, "DefinirDatasDeEditalEDeInscricaoTask")
+        messages.success(
+            request, 'Edital atualizado com sucesso! Task completada!')
     else:
         messages.success(request, 'Edital atualizado com sucesso!')
-    
+
     return redirect('/verifica-turmas-edital')
 
 
@@ -1691,7 +1709,7 @@ def enviar_planejamento(request):
             'where escola_id = 54 GROUP BY escola_id')
 
         if escola_luiz_rassi == 2 or escola_luiz_rassi == 3 and escola_sara == 2 or escola_sara == 3 and escola_bittencourt == 2 or escola_bittencourt == 3:
-            sendPlan = getInstance(processName,"EnviarPlanejamentoTask")
+            sendPlan = getInstance(processName, "EnviarPlanejamentoTask")
 
             if sendPlan == True:
                 messages.success(
