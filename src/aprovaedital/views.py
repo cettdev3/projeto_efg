@@ -28,7 +28,7 @@ def ajax_load_edital_v2(request):
 
 def aprovar_edital_gerado(request):
     print(request.POST)
-    edital = int(request.POST['id_edital_modal'])
+    edital = int(request.POST['n_edital'])
     aprovacao = int(request.POST['ap'])
     edital = Edital.objects.filter(num_edital = edital).values()[0]
     idtbledital = edital['id']
