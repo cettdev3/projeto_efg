@@ -6,7 +6,7 @@ import requests as req
 import json
 
 host = 'https://processos.cett.dev.br/engine-rest/'
-processName = "SolicitarOfertaDeVaga"
+processName = "ElaborarEdital"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
 def camundaPutVariable(taskId,variable,variableValue,type):
@@ -68,7 +68,7 @@ def aprovar_edital_gerado(request):
   
     aprovacao = int(request.POST['ap'])
     edital = Edital.objects.filter(num_edital = num_edital).values()
-    print(edital)
+
     
     if aprovacao == 3:
         for edit in edital:
@@ -85,8 +85,8 @@ def aprovar_edital_gerado(request):
             messages.success(request, 'Edital foi aprovado com sucesso!')
             return redirect('/aprovar-edital')
         else:
-            completeTask = getInstance(processName,'ElaborarEdital')
-            messages.success(request, 'Edital foi aprovado com sucesso!')
+            completeTask = getInstance(processName,'ConferiraprovarOEditalChecklistSGEVariavelEditalTemAlteracoesTask')
+            messages.success(request, 'Edital foi aprovado com sucesso! Task completada')
             return redirect('/aprovar-edital')
 
     elif aprovacao == 1:
