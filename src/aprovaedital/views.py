@@ -68,15 +68,14 @@ def aprovar_edital_gerado(request):
   
     aprovacao = int(request.POST['ap'])
     edital = Edital.objects.filter(num_edital = num_edital).values()
-
+    print(edital)
     
     if aprovacao == 3:
-        for edit in edital:
-            # print(edital)
-            idtbledital = edit['id']
-            atualiza_status = Edital.objects.get(id = idtbledital)
-            atualiza_status.status = 3
-            atualiza_status.save()
+
+        idtbledital = edital[0]['id']
+        atualiza_status = Edital.objects.get(id = idtbledital)
+        atualiza_status.status = 3
+        atualiza_status.save()
 
         todosEditais = Edital.objects.filter(status=0).filter(status=1).filter(status=2).values()
         print(todosEditais)
@@ -86,7 +85,7 @@ def aprovar_edital_gerado(request):
             return redirect('/aprovar-edital')
         else:
             completeTask = getInstance(processName,'ConferiraprovarOEditalChecklistSGEVariavelEditalTemAlteracoesTask')
-            messages.success(request, 'Edital foi aprovado com sucesso! Task completada')
+            messages.success(request, 'Edital foi aprovado com sucesso! Processo em andamento...')
             return redirect('/aprovar-edital')
 
     elif aprovacao == 1:
