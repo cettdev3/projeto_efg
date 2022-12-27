@@ -73,13 +73,13 @@ def aprovar_edital_gerado(request):
     if aprovacao == 3:
         for edit in edital:
             # print(edital)
-            idtbledital = edital['id']
+            idtbledital = edit['id']
             atualiza_status = Edital.objects.get(id = idtbledital)
             atualiza_status.status = 3
             atualiza_status.save()
 
         todosEditais = Edital.objects.filter(status=0).filter(status=1).filter(status=2).values()
-  
+        print(todosEditais)
         # todosEditais = todosEditais[0]
         if todosEditais:
             messages.success(request, 'Edital foi aprovado com sucesso!')
