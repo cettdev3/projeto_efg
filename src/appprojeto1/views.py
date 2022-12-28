@@ -766,7 +766,7 @@ def cad_metas(request):
             )
 
         atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(
-            escola=escola, tipo=tipo_curso, ano=ano).values()
+            escola=escola, tipo=tipo_curso,modalidade=modalidade_oferta, ano=ano).values()
         id_filtro = atualiza_saldo[0]['id']
         novo_saldo = int(
             atualiza_saldo[0]['carga_horaria']) - int(carga_horaria_total)
