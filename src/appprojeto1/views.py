@@ -875,12 +875,12 @@ def editarmetas(request):
 
     id_ = request.POST['id']
     carga_horaria_old = Metas_efg.objects.filter(id=id_).values()
-    cht_antiga = int(carga_horaria_old[0]['carga_horaria_total'])
+
 
     diretoria = request.POST['diretoria']
     escola = request.POST['escola']
     municipio = request.POST['municipio']
-    print(municipio)
+
     tipo_curso = request.POST['tipo']
     eixos = request.POST['eixo']
     modalidade_oferta = request.POST['modalidade']
@@ -916,30 +916,23 @@ def editarmetas(request):
     editmetas.dias_semana = dias_semana
     editmetas.save()
 
+    #BUSCA OS DADOS DA META DE ACORDO COM OS FILTROS SETADOS NA META
     atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(
         escola=escola, tipo=tipo_curso, modalidade=modalidade_oferta, semestre=trimestre, ano=ano).values()
 
-   
+    #ID DA META A QUAL DEVERÁ ATUALIZAR
     id_filtro = atualiza_saldo[0]['id']
-    saldo_atual = int(atualiza_saldo[0]['carga_horaria'])
 
-    cht_atual = int(request.POST['ch_total'])
-
-    print(saldo_atual)
-    print("Carga Antiga: " + str(cht_antiga) +
-          " | Carga Atual: " + str(cht_atual))
-
-    if cht_atual < cht_antiga:
-        saldo = saldo_atual + (cht_antiga - cht_atual)
-    elif cht_atual > cht_antiga:
-        saldo = saldo_atual - (cht_atual - cht_antiga)
-    else:
-        saldo = saldo_atual
+    chDisponivel = int(atualiza_saldo[0]['carga_horaria'])
+    
+    
+    diferenca = chDisponivel - int(carga_horaria_total)
+    
 
     atualiza_saldo = DivisaoDeMetasPorEscola.objects.get(id=id_filtro)
 
-    # atualiza_saldo.created_at = datetime.datetime.now()
-    atualiza_saldo.carga_horaria = saldo
+    atualiza_saldo.created_at = datetime.datetime.now()
+    atualiza_saldo.carga_horaria = diferenca
     atualiza_saldo.save()
 
     messages.success(request, 'Meta editada com sucesso!')
