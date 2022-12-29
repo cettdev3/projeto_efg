@@ -427,11 +427,7 @@
 
     var cht_p = pega_cht_atual()
     var d_a = pega_dias_atual()
-    if (carga_horaria_inicial == cht_p && dia_semana_atual == d_a ){
-        document.getElementById('total_de_horas_disponiveis').innerHTML = "Não houve alterações!"
-        document.getElementById('total_de_horas_disponiveis').style.color = "red"
-        $('#ops').modal('show');
-    }else{
+
       if (cht > limite || cht == 0){
 
         if (cht == 0){

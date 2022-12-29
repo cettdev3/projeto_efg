@@ -765,14 +765,24 @@ def cad_metas(request):
                 num_edital_id=0,
             )
 
+        #BUSCA OS DADOS DA META DE ACORDO COM OS FILTROS SETADOS NA META
         atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(
-            escola=escola, tipo=tipo_curso,modalidade=modalidade_oferta, ano=ano).values()
+            escola=escola, tipo=tipo_curso, modalidade=modalidade_oferta, semestre=trimestre, ano=ano).values()
+
+        #ID DA META A QUAL DEVERÁ ATUALIZAR
         id_filtro = atualiza_saldo[0]['id']
-        novo_saldo = int(
-            atualiza_saldo[0]['carga_horaria']) - int(carga_horaria_total)
-        atualiza_divisao = DivisaoDeMetasPorEscola.objects.get(id=id_filtro)
-        atualiza_divisao.carga_horaria = novo_saldo
-        atualiza_divisao.save()
+
+        chDisponivel = int(atualiza_saldo[0]['carga_horaria'])
+        
+        
+        diferenca = chDisponivel - int(carga_horaria_total)
+        
+
+        atualiza_saldo = DivisaoDeMetasPorEscola.objects.get(id=id_filtro)
+
+        atualiza_saldo.created_at = datetime.datetime.now()
+        atualiza_saldo.carga_horaria = diferenca
+        atualiza_saldo.save()
         messages.success(request, 'Meta cadastrada com sucesso!')
         return redirect('/cadastrar-metas')
 
@@ -874,8 +884,6 @@ def editar_meta(request, codigo):
 def editarmetas(request):
 
     id_ = request.POST['id']
-    carga_horaria_old = Metas_efg.objects.filter(id=id_).values()
-
 
     diretoria = request.POST['diretoria']
     escola = request.POST['escola']
