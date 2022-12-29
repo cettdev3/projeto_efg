@@ -772,7 +772,7 @@ def cad_metas(request):
         #ID DA META A QUAL DEVERÁ ATUALIZAR
         id_filtro = atualiza_saldo[0]['id']
 
-        chDisponivel = int(atualiza_saldo[0]['carga_horaria'])
+        chDisponivel = int(atualiza_saldo[0]['carga_horaria_total'])
         
         
         diferenca = chDisponivel - int(carga_horaria_total)
@@ -931,7 +931,7 @@ def editarmetas(request):
     #ID DA META A QUAL DEVERÁ ATUALIZAR
     id_filtro = atualiza_saldo[0]['id']
 
-    chDisponivel = int(atualiza_saldo[0]['carga_horaria'])
+    chDisponivel = int(atualiza_saldo[0]['carga_horaria_total'])
     
     
     diferenca = chDisponivel - int(carga_horaria_total)
