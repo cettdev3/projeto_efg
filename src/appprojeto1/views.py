@@ -917,9 +917,9 @@ def editarmetas(request):
     editmetas.save()
 
     atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(
-        escola=escola, tipo=tipo_curso, ano=ano).values()
+        escola=escola, tipo=tipo_curso, modalidade=modalidade_oferta, semestre=trimestre, ano=ano).values()
 
-    print('ok')
+   
     id_filtro = atualiza_saldo[0]['id']
     saldo_atual = int(atualiza_saldo[0]['carga_horaria'])
 
