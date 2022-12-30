@@ -428,19 +428,11 @@
     var cht_p = pega_cht_atual()
     var d_a = pega_dias_atual()
 
-      if (cht > limite || cht == 0){
-
-        if (cht == 0){
-          document.getElementById('total_de_horas_disponiveis').innerHTML = "Sem Registros"
-          document.getElementById('total_de_horas_disponiveis').style.color = "red"
-          $('#ops').modal('show');
-        }else{
+      if (cht > limite){
           var texto = "Carga Horária Total Excedida!<br>Disponível: "+limite+' horas'
           document.getElementById('total_de_horas_disponiveis').innerHTML = texto
           document.getElementById('total_de_horas_disponiveis').style.color = "red"
           $('#ops').modal('show');
-        }
-        
         
       }else{
         trimestre = $("#trimestre").val()
