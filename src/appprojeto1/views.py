@@ -766,22 +766,26 @@ def cad_metas(request):
             )
 
         #BUSCA OS DADOS DA META DE ACORDO COM OS FILTROS SETADOS NA META
-        atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(
-            escola=escola, tipo=tipo_curso, modalidade=modalidade_oferta, semestre=trimestre, ano=ano).values()
+        atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(escola=escola, tipo=tipo_curso, modalidade=modalidade_oferta, semestre=trimestre, ano=ano).values()
 
         #ID DA META A QUAL DEVERÁ ATUALIZAR
         id_filtro = atualiza_saldo[0]['id']
 
-        chDisponivel = int(atualiza_saldo[0]['carga_horaria_total'])
-        
-        
-        diferenca = chDisponivel - int(carga_horaria_total)
-        
+        #CARGA HORÁRIA TOTAL DA META
+        cht_meta = carga_horaria_total
 
+        #CARGA HORÁRIA TOTAL DA DIVISÃO
+        cht_divisao = int(atualiza_saldo[0]['carga_horaria_total'])
+        
+        #CARGA HORÁRIA DISPONÍVEL DA META
+        cht_disponivel_divisao = int(atualiza_saldo[0]['carga_horaria'])
+        
+        #SALDO A DEBITAR
+        saldo_total = int(cht_disponivel_divisao) - int(cht_meta)
         atualiza_saldo = DivisaoDeMetasPorEscola.objects.get(id=id_filtro)
 
         atualiza_saldo.created_at = datetime.datetime.now()
-        atualiza_saldo.carga_horaria = diferenca
+        atualiza_saldo.carga_horaria = saldo_total
         atualiza_saldo.save()
         messages.success(request, 'Meta cadastrada com sucesso!')
         return redirect('/cadastrar-metas')
@@ -925,22 +929,29 @@ def editarmetas(request):
     editmetas.save()
 
     #BUSCA OS DADOS DA META DE ACORDO COM OS FILTROS SETADOS NA META
-    atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(
-        escola=escola, tipo=tipo_curso, modalidade=modalidade_oferta, semestre=trimestre, ano=ano).values()
+    atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(escola=escola, tipo=tipo_curso, modalidade=modalidade_oferta, semestre=trimestre, ano=ano).values()
 
     #ID DA META A QUAL DEVERÁ ATUALIZAR
     id_filtro = atualiza_saldo[0]['id']
 
-    chDisponivel = int(atualiza_saldo[0]['carga_horaria_total'])
-    
-    
-    diferenca = chDisponivel - int(carga_horaria_total)
-    
+    #VALOR ORIGINAL DA META
+    cht_original_meta = int(request.POST['cht_meta'])
 
+    #CARGA HORÁRIA TOTAL DA META
+    cht_meta = carga_horaria_total
+
+    #CARGA HORÁRIA TOTAL DA DIVISÃO
+    cht_divisao = int(atualiza_saldo[0]['carga_horaria_total'])
+    
+    #CARGA HORÁRIA DISPONÍVEL DA META
+    cht_disponivel_divisao = int(atualiza_saldo[0]['carga_horaria']) + int(cht_original_meta)
+    
+    #SALDO A DEBITAR
+    saldo_total = int(cht_disponivel_divisao) - int(cht_meta)
     atualiza_saldo = DivisaoDeMetasPorEscola.objects.get(id=id_filtro)
 
     atualiza_saldo.created_at = datetime.datetime.now()
-    atualiza_saldo.carga_horaria = diferenca
+    atualiza_saldo.carga_horaria = saldo_total
     atualiza_saldo.save()
 
     messages.success(request, 'Meta editada com sucesso!')

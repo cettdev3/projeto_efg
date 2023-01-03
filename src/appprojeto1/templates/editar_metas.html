@@ -224,9 +224,10 @@
               readonly
               
             >
-            <input style="display: none;" id="limite" name="limite" value="0" >
+            
           </div>
-
+          <input style="display: inline;" id="limite" name="limite" value="0" >
+          <input style="display: inline;" id="cht_meta" name="cht_meta" value="{{cht}}" >
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>DATA PREVISTA PARA INÍCIO:</b></label>
             <input
@@ -423,13 +424,15 @@
    
     var limite = parseInt($("#limite").val());
     var cht = parseInt($("#ch_total").val());
+    var cht_meta = parseInt($("#cht_meta").val());
+    var limite_disponivel = cht_meta + limite
     document.getElementById('total_de_horas_disponiveis').innerHTML = limite
 
     var cht_p = pega_cht_atual()
     var d_a = pega_dias_atual()
 
-      if (cht > limite){
-          var texto = "Carga Horária Total Excedida!<br>Disponível: "+limite+' horas'
+      if (cht > limite_disponivel){
+          var texto = "Carga Horária Total Excedida!<br>Disponível: "+limite_disponivel+' horas'
           document.getElementById('total_de_horas_disponiveis').innerHTML = texto
           document.getElementById('total_de_horas_disponiveis').style.color = "red"
           $('#ops').modal('show');
