@@ -1261,6 +1261,7 @@ def editar_curso(request):
     editaCurso.carga_horaria = carga_horaria
     editaCurso.status = status
     editaCurso.siga_id = siga_id
+    editaCurso.modalidade_id = modalidade
     editaCurso.save()
     messages.success(request, 'Registros alterados com sucesso!')
     return redirect('/cadastrar-curso')

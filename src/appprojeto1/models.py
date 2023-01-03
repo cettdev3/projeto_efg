@@ -50,6 +50,7 @@ class Metas_escolas(models.Model):
 
     class Meta:
         db_table = 'escolas'
+        ordering = ('escola',)
 
 
 class Eixos(models.Model):
@@ -160,6 +161,7 @@ class Curso_escola(models.Model):
 
     class Meta:
         db_table = 'curso_escola'
+        
 
 
 class Cadastrar_curso(models.Model):
@@ -180,6 +182,7 @@ class Cadastrar_curso(models.Model):
 
     class Meta:
         db_table = 'cursos'
+        ordering = ('curso',)
 
 
 class Orcamento_plano_trabalho(models.Model):
