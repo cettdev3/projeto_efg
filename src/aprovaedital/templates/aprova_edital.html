@@ -225,6 +225,86 @@
     </div>
 </div>
 
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Status dos Editais</h4>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="cold-md-12" style="text-align: right;">
+        <button class="btn btn-primary mb-2" style="width: 15%;" onclick="exportData()" style="width:100%;height: 100%;">
+          <span class="fa fa-download"></span>
+          Exportar CSV</button>
+       </div>
+
+       <div class="cold-md-12">
+        <table id="myTable" class="myTable">
+          <thead>
+        
+              <th>N°</th>
+              <th>Escola</th>
+              <th>Tipo</th>
+              <th>Ano</th>
+              <th>Dt Inicial do Edital</th>
+              <th>Dt Final do Edital</th>
+              <th>Dt Inicial de Inscrição</th>
+              <th>Dt Final do Inscrição</th>
+              <th>Status</th>
+       
+          </thead>
+          <tbody id="tabela_metas">
+            {% for meta in metas_gerais %}
+            <!-- (0, 'Aguardando Análise'),
+            (1, 'Reprovado',),
+            (2, 'Em Análise'),
+            (3, 'Aprovado',), -->
+                    <tr>
+                      <td>{{meta.num_edital}}</td>
+                      <td>{{meta.escola}}</td>
+                      <td>{{meta.tipo}}</td>
+                      <td>{{meta.ano}}</td>
+                      <td>{{meta.dt_ini_edit|date:"d/m/Y"}}</td>
+                      <td>{{meta.dt_fim_edit|date:"d/m/Y"}}</td>
+                      <td>{{meta.dt_ini_insc|date:"d/m/Y"}}</td>
+                      <td>{{meta.dt_fim_insc|date:"d/m/Y"}}</td>
+                      {% if meta.status == 0 %}
+                      
+                      <td><a style="width: 100%; font-size: 10px; color: #000000; font-weight: bold;" class="btn btn-warning btn-icon-split">
+                        <span class="text">AGUARDANDO ANÁLISE</span>
+                      </a></td>
+
+                      {% elif meta.status == 1 %}
+
+                      <td><a style="width: 100%; font-size: 10px; color: #ffffff; font-weight: bold;" class="btn btn-danger btn-icon-split">
+                        <span class="text">REPROVADO</span>
+                      </a></td>
+
+                      {% elif meta.status == 2 %}
+
+                      <td><a style="width: 100%; font-size: 10px; color: #000000; font-weight: bold;" class="btn btn-warning btn-icon-split">
+                        <span class="text">EM ANÁLISE</span>
+                      </a></td>
+
+                      {% elif meta.status == 3 %}
+
+                      <td><a style="width: 100%; font-size: 10px; color: #ffffff; font-weight: bold;" class="btn btn-success btn-icon-split">
+                        <span class="text">APROVADO</span>
+                      </a></td>
+
+                     {% endif %}
+                    </tr>
+                          
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+       
+       
+      </div>
+      
+    </div>
+</div>
   {% else %}
 <div class="alert alert-danger" role="alert">
   :'( Desculpe, mas você não tem permissões para acessar esta funcionalidade do sistema!
@@ -293,6 +373,67 @@
 
 
 <script>
+
+function exportData(){
+    /* Get the HTML data using Element by Id */
+    var table = document.getElementById("tabela_metas");
+ 
+    /* Declaring array variable */
+    var rows =[];
+    header = ['N° Edital,Escola,Tipo,Ano,Data Inicial do Edital,Data Final do Edital,Data Inicial da Inscrição,Data Final da Inscrição,Status']
+    rows.push(header)
+    //iterate through rows of table
+    for(var i=0,row; row = table.rows[i];i++){
+        //rows would be accessed using the "row" variable assigned in the for loop
+        //Get each cell value/column from the row
+        column1 = row.cells[0].innerText;
+        column2 = row.cells[1].innerText;
+        column3 = row.cells[2].innerText;
+        column4 = row.cells[3].innerText;
+        column5 = row.cells[4].innerText;
+        column6 = row.cells[5].innerText;
+        column7 = row.cells[6].innerText;
+        column8 = row.cells[7].innerText;
+        column9 = row.cells[8].innerText;
+       
+  
+        
+ 
+    /* add a new records in the array */
+        rows.push(
+            [
+                column1,
+                column2,
+                column3,
+                column4,
+                column5,
+                column6,
+                column7,
+                column8,
+                column9
+
+            ]
+        );
+ 
+        }
+        csvContent = "data:text/csv;charset=utf-8,";
+         /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+        rows.forEach(function(rowArray){
+            row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+ 
+        /* create a hidden <a> DOM node and set its download attribute */
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Editais.csv");
+        document.body.appendChild(link);
+         /* download the data file named "Stock_Price_Report.csv" */
+        link.click();
+  }
+
+
   $("#edital").change(function(){
     const url = "/ajax/ajax-load-turmas-v2";
     // const url_table = "/ajax/ajax_load_turmas_edital_filtro";
@@ -323,6 +464,7 @@
       document.getElementById('dados_edital').innerHTML = edital_value
 
       }
+
 </script>
 
 

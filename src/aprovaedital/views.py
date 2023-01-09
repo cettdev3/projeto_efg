@@ -51,7 +51,8 @@ def get_permission(request):
 
 def aprova_edital(request):
     metas = Edital.objects.raw("Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is not NULL and status= 0  group by Turmas_planejado_orcado.num_edital_id")
-    return render(request, 'aprova_edital.html',{'permissoes': get_permission(request),'metas':metas})
+    metas_gerais = Edital.objects.raw('Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is not NULL  group by Turmas_planejado_orcado.num_edital_id')
+    return render(request, 'aprova_edital.html',{'permissoes': get_permission(request),'metas':metas,'metas_gerais':metas_gerais})
 
 def ajax_load_edital_v2(request):
     edital_id = request.GET['id']
