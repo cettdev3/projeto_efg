@@ -1568,7 +1568,6 @@ def gerenciar_usuarios(request):
 
 # ima,ims,opt,cc,dm,ac,vte,sicge,sat,gpu
 
-
 @login_required(login_url='/')
 def salvar_permissoes(request):
     print(request.POST)
@@ -1692,7 +1691,6 @@ def salvar_permissoes(request):
         messages.success(request, 'Permissão realizada com sucesso!')
         return redirect('/permissoes-usuarios')
 
-
 @login_required(login_url='/')
 def enviar_planejamento(request):
 
@@ -1735,7 +1733,6 @@ def enviar_planejamento(request):
         else:
             messages.success(request, 'Planejamento enviado com sucesso!')
             return redirect('/cadastrar-metas')
-
 
 @login_required(login_url='/')
 def cadastrar_usuario(request):

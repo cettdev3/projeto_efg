@@ -163,7 +163,6 @@ class Curso_escola(models.Model):
         db_table = 'curso_escola'
         
 
-
 class Cadastrar_curso(models.Model):
     id = models.IntegerField(primary_key=True)
     escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
