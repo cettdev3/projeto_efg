@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from appprojeto1.models import Cadastrar_curso, Udepi_municipio, Edital, Curso_escola, Cursos, Eixos, Item_apoiado, Metas_tipo, Metas_descricoes, Metas_efg, Metas_escolas, Metas_modalidade, Metas_sinteticas, Metas_trimestre, Orcamento_plano_trabalho, Rubrica, Solicitacao, Unidades, User_permission, Users
+from appprojeto1.models import Cadastrar_curso,Users_ids, Udepi_municipio, Edital, Curso_escola, Cursos, Eixos, Item_apoiado, Metas_tipo, Metas_descricoes, Metas_efg, Metas_escolas, Metas_modalidade, Metas_sinteticas, Metas_trimestre, Orcamento_plano_trabalho, Rubrica, Solicitacao, Unidades, User_permission, Users
 from DivisaoDeMetas.models import DivisaoDeMetasPorEscola
 from django.core import serializers
 from django.http import HttpResponse
@@ -1739,12 +1739,26 @@ def enviar_planejamento(request):
 
 @login_required(login_url='/')
 def cadastrar_usuario(request):
+    idSiga = request.POST['user_siga']
+    idSele = request.POST['user_selecao']
 
-    user = User.objects.create_user(
-        username=request.POST['nome_user'], email=request.POST['email_user'], password=request.POST['senha_user'])
-    id_user = Users.objects.filter(username=user).values()
+    users_sig = Users_ids.objects.filter(user_selecao_id = idSiga).all()
+    users_sel = Users_ids.objects.filter(user_siga_id = idSele).all()
 
-    auth_user = User_permission.objects.create(
-        user_id=id_user[0]['id'], permission='', escola_id=0)
-    messages.success(request, 'Usuário cadastrado com sucesso!')
-    return redirect('/permissoes-usuarios')
+    if users_sig or users_sel:
+        messages.error(request, 'Usuário siga ou usuário seleção já está cadastrado!')
+        return redirect('/permissoes-usuarios')
+    else:
+        user = User.objects.create_user(
+            username=request.POST['nome_user'],
+            email=request.POST['email_user'],
+            password=request.POST['senha_user'])
+
+        id_user = Users.objects.filter(username=user).values()
+
+        auth_user = User_permission.objects.create(
+            user_id=id_user[0]['id'], permission='', escola_id=0)
+        
+        users_ids = Users_ids.objects.create(user_id = id_user[0]['id'], user_selecao_id =idSele, user_siga_id = idSiga )
+        messages.success(request, 'Usuário cadastrado com sucesso!')
+        return redirect('/permissoes-usuarios')

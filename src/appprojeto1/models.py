@@ -305,3 +305,12 @@ class User_permission(models.Model):
 
     class Meta:
         db_table = 'user_permission'
+
+class Users_ids(models.Model):
+    id = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    user_selecao_id =  models.IntegerField()
+    user_siga_id = models.IntegerField()
+
+    class Meta:
+        db_table = 'users_siga_selecao'
