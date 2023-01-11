@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from appprojeto1.models import Users,User_permission,Edital
 from django.contrib import messages
+from django.db.models import Q
 from requests.auth import HTTPBasicAuth
 import requests as req
 import json
@@ -50,9 +51,21 @@ def get_permission(request):
     return perm[0]
 
 def aprova_edital(request):
+    try:
+        status_aproval = Edital.objects.filter(~Q(status=3)).values()[0]
+    except:
+        status_aproval = []
+
+    if status_aproval:
+        btn_enviar = False
+    else:
+        btn_enviar = True
     metas = Edital.objects.raw("Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is not NULL and status= 0  group by Turmas_planejado_orcado.num_edital_id")
     metas_gerais = Edital.objects.raw('Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is not NULL  group by Turmas_planejado_orcado.num_edital_id')
-    return render(request, 'aprova_edital.html',{'permissoes': get_permission(request),'metas':metas,'metas_gerais':metas_gerais})
+   
+
+
+    return render(request, 'aprova_edital.html',{'permissoes': get_permission(request),'metas':metas,'metas_gerais':metas_gerais,'btn_enviar':btn_enviar})
 
 def ajax_load_edital_v2(request):
     edital_id = request.GET['id']

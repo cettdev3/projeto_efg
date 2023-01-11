@@ -298,6 +298,14 @@
             {% endfor %}
           </tbody>
         </table>
+        
+        {% if btn_enviar == False %}
+        <div class="cold-md-12" style="text-align: right;">
+          <a class="btn btn-primary  mt-2" href="/enviar-editais" style="width: 40%;"  style="width:100%;height: 100%;">
+            <span class="fa fa-paper-plane"></span> 
+            ENVIAR EDITAIS PARA SISTEMA DE SELEÇÃO</a>
+         </div>
+        {% endif %}
       </div>
        
        
