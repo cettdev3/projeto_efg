@@ -34,6 +34,7 @@ from requests.auth import HTTPBasicAuth
 from django.views.generic.base import ContextMixin
 from pycamunda import task as CamundaTask
 from requests import sessions, auth
+from django.db.models import Q
 
 # DADOS DO SERVIDOR
 host = 'https://processos.cett.dev.br/engine-rest/'
@@ -1288,14 +1289,14 @@ class FilteredSingleTableView(SingleTableMixin, FilterView):
         kwargs = self.get_filterset_kwargs(filterset_class)
 
         if 'clean' in self.request.GET:
-            filterset = filterset_class()
-        else:
-            filterset = filterset_class(**kwargs)
-
-        filterset.form.helper = self.formhelper_class()  # type: ignore
-
+            kwargs['data'] = None
+        
+        filterset = filterset_class(**kwargs)
+        filterset.form.helper = self.formhelper_class()
         return filterset
 
+    def get_queryset(self):
+        return Metas_efg.objects.filter(~Q(situacao__in=[4]))
 
 class AprovarCursosView(
     LoginRequiredMixin,
@@ -1306,9 +1307,9 @@ class AprovarCursosView(
 ):
     login_url = '/'
     table_class = AprovarCursosTable
+    table_pagination = False
     filterset_class = AprovarCursosFilter
     formhelper_class = AprovarCursosFilterFormHelper
-    paginator_class = LazyPaginator
     exclude_columns = ('actions', )
     form_class = AprovarCursosSubmitFormView
     success_url = reverse_lazy('AprovarCursosView')
@@ -1372,6 +1373,8 @@ class AprovarCursosView(
                     complete.session = CamundaSession
 
                     complete()
+
+                    Metas_efg.objects.filter(situacao=3).update(sutuacao=4)
 
                 messages.success(
                     self.request, 'Planejamento de turmas foi aprovado')

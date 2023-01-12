@@ -29,10 +29,9 @@ class FilteredSingleTableView(SingleTableMixin, FilterView):
         kwargs = self.get_filterset_kwargs(filterset_class)
 
         if 'clean' in self.request.GET:
-            filterset = filterset_class()
-        else:
-            filterset = filterset_class(**kwargs)
+            kwargs['data'] = None
 
+        filterset = filterset_class(**kwargs)
         filterset.form.helper = self.formhelper_class()
         return filterset
 

@@ -1,5 +1,6 @@
 import django_tables2 as tables
 from appprojeto1.models import Metas_efg
+from django.db.models import Q
 
 class AprovarCursosTable(tables.Table):
 
@@ -22,6 +23,8 @@ class AprovarCursosTable(tables.Table):
             }
         }
     )
+    options = dict(Metas_efg.situacao.field.choices)  # type: ignore
+    options.popitem()
     
     situacao = tables.TemplateColumn(
         template_name='appprojeto1/select/select.html',
@@ -30,7 +33,7 @@ class AprovarCursosTable(tables.Table):
         extra_context={
             'name': 'situacao',
             'options':
-                dict(Metas_efg.situacao.field.choices), # type: ignore
+                options,
         }
     )
     
