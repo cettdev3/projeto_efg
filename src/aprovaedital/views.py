@@ -77,31 +77,33 @@ def ajax_load_edital_v2(request):
     return render(request, 'ajax_load_edital_v2.html', {'edital': edital})
 
 def aprovar_edital_gerado(request):
-    print(request.POST)
+    idEdital = request.POST['edital']
     num_edital = int(request.POST['n_edital'])
   
     aprovacao = int(request.POST['ap'])
     edital = Edital.objects.filter(num_edital = num_edital).values()
-    print(edital)
-    
-    if aprovacao == 3:
+    print('----------------------------')
+    print(edital[0])
 
+    if aprovacao == 3:
+        print('entrou')
         idtbledital = edital[0]['id']
-        atualiza_status = Edital.objects.get(id = idtbledital)
+        print(idtbledital)
+        atualiza_status = Edital.objects.get(id = idEdital)
         atualiza_status.status = 3
         atualiza_status.save()
 
-        todosEditais = Edital.objects.filter(status=0).filter(status=1).filter(status=2).values()
-        print(todosEditais)
+        todosEditais = Edital.objects.filter(~Q(status=3)).values()
+        print(len(todosEditais))
         # todosEditais = todosEditais[0]
-        if todosEditais:
+        if len(todosEditais) > 0:
             messages.success(request, 'Edital foi aprovado com sucesso!')
             return redirect('/aprovar-edital')
         else:
             completeTask = getInstance(processName,'ConferiraprovarOEditalChecklistSGEVariavelEditalTemAlteracoesTask')
             messages.success(request, 'Edital foi aprovado com sucesso! Processo em andamento...')
             return redirect('/aprovar-edital')
-
+        
     elif aprovacao == 1:
         motivo = request.POST['motivo']
         atualiza_status = Edital.objects.get(id = idtbledital)
