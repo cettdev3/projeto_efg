@@ -240,6 +240,7 @@ class Metas_efg(models.Model):
         (1, 'Reprovado',),
         (2, 'Em Análise'),
         (3, 'Aprovado',),
+        (4, 'Edital gerado',),
     )
 
     DIRETORIAS = (
@@ -260,25 +261,25 @@ class Metas_efg(models.Model):
     )
 
     id = models.IntegerField(primary_key=True)
-    diretoria = models.CharField(max_length=255, choices=DIRETORIAS)
-    escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
-    tipo_curso = models.ForeignKey(Metas_tipo, on_delete=models.CASCADE)
-    curso = models.ForeignKey(Cadastrar_curso, on_delete=models.CASCADE)
-    turno = models.CharField(max_length=255, choices=TURNOS)
+    diretoria = models.CharField(max_length=255, choices=DIRETORIAS, null=True)
+    escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE, null=True)
+    tipo_curso = models.ForeignKey(Metas_tipo, on_delete=models.CASCADE, null=True)
+    curso = models.ForeignKey(Cadastrar_curso, on_delete=models.CASCADE, null=True)
+    turno = models.CharField(max_length=255, choices=TURNOS, null=True)
     ano = models.IntegerField()
     modalidade = models.ForeignKey(Metas_modalidade, on_delete=models.CASCADE)
-    trimestre = models.IntegerField(choices=SEMESTRES)
-    vagas_totais = models.IntegerField()
-    carga_horaria = models.IntegerField()
-    carga_horaria_total = models.IntegerField()
-    previsao_inicio = models.DateField()
-    previsao_fim = models.DateField()
+    trimestre = models.IntegerField(choices=SEMESTRES, null=True)
+    vagas_totais = models.IntegerField(null=True)
+    carga_horaria = models.IntegerField(null=True)
+    carga_horaria_total = models.IntegerField(null=True)
+    previsao_inicio = models.DateField(null=True)
+    previsao_fim = models.DateField(null=True)
     dias_semana = models.CharField(max_length=255)
     previsao_abertura_edital = models.DateField(null=True, blank=True)
     previsao_fechamento_edital = models.DateField(null=True, blank=True)
     data_registro = models.DateField(null=True, blank=True)
-    eixo = models.ForeignKey(Eixos, on_delete=models.CASCADE)
-    udepi = models.ForeignKey(Udepi_municipio, on_delete=models.CASCADE)
+    eixo = models.ForeignKey(Eixos, on_delete=models.CASCADE, null=True)
+    udepi = models.ForeignKey(Udepi_municipio, on_delete=models.CASCADE, null=True)
     situacao = models.IntegerField(
         default=0, choices=SITUACAO, null=True, blank=True)
     jus_reprovacao = models.TextField(default=None, null=True, blank=True)

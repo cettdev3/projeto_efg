@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('appprojeto1', '0002_solicitacao'),
+        ('appprojeto1', '0002_auto_20221108_0405'),
     ]
 
     operations = [
@@ -19,9 +19,9 @@ class Migration(migrations.Migration):
                 ('ano', models.IntegerField()),
                 ('modalidade', models.CharField(max_length=255)),
                 ('descricao', models.CharField(max_length=255)),
-                ('categoria', models.CharField(max_length=255)),
-                ('carga_horaria_ofertada', models.IntegerField()),
-                ('vagas', models.IntegerField()),
+                ('dias_semana', models.CharField(max_length=255)),
+                ('carga_horaria', models.IntegerField()),
+                ('carga_horaria_total', models.IntegerField()),
                 ('repasse', models.FloatField()),
                 ('valor_unitario', models.FloatField()),
             ],
