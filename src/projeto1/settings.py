@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config.DJANGO_SECRET_KEY #type: ignore
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config.DJANGO_DEBUG #type: ignore
+DEBUG = bool(config.DJANGO_DEBUG) #type: ignore
 
 ALLOWED_HOSTS = ['*']
 
