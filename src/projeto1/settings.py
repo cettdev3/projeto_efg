@@ -65,7 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'projeto1.middlewares.SchoolMiddleware',
+    'projeto1.middlewares.DatabaseRouteMiddleware',
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'

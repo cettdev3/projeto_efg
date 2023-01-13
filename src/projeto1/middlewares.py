@@ -4,7 +4,7 @@ from .utils import tenant_db_from_the_request
 Thread_Local = threading.local()
 
 
-class SchoolMiddleware:
+class DatabaseRouteMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
