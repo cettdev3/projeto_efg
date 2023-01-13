@@ -3,6 +3,7 @@ version: '3'
 services:
     app:
         restart: always
+        image: projeto-cett
         build:
             context: .
             dockerfile: ./Dockerfile
@@ -21,32 +22,20 @@ services:
             COTEC_DOMAINS_PASS: ${COTEC_DOMAINS_PASS}
             PRIMARY_DOMAIN_NAME: ${PRIMARY_DOMAIN_NAME}
         labels:
+            #Enable Traefk 
             - "traefik.enable=true"
             - "traefik.docker.network=backend"
-            #EFG
-            - "traefik.constraint-label-stack=efg"
-            - "traefik.http.services.efg.loadbalancer.server.port=8000"
+            
+            - "traefik.constraint-label-stack=projeto-cett"
+            - "traefik.http.services.projeto-cett.loadbalancer.server.port=8000"
             #http
-            - "traefik.http.routers.efg_http.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
-            - "traefik.http.routers.efg_http.entrypoints=web"
-            - "traefik.http.routers.efg_http.middlewares=https_redirect"
+            - "traefik.http.routers.projeto-cett_http.entrypoints=web"
+            - "traefik.http.routers.projeto-cett_http.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.projeto-cett_http.middlewares=https_redirect"
             #https
-            - "traefik.http.routers.efg_https.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
-            - "traefik.http.routers.efg_https.entrypoints=websecure"
-            - "traefik.http.routers.efg_https.tls.certresolver=letsencryptresolver"
-
-            #COTEC
-            - "traefik.constraint-label-stack=cotec"
-            - "traefik.http.services.cotec.loadbalancer.server.port=8000"
-            #http
-            - "traefik.http.routers.cotec_http.rule=Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
-            - "traefik.http.routers.cotec_http.entrypoints=web"
-            - "traefik.http.routers.cotec_http.middlewares=https_redirect"
-            #https
-            - "traefik.http.routers.cotec_https.rule=Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
-            - "traefik.http.routers.cotec_https.entrypoints=websecure"
-            - "traefik.http.routers.cotec_https.tls.certresolver=letsencryptresolver"
-
+            - "traefik.http.routers.projeto-cett_https.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.projeto-cett_https.entrypoints=websecure"
+            - "traefik.http.routers.projeto-cett_https.tls.certresolver=letsencryptresolver"
         volumes:
             - ./src:/home/python/app
             - ${ACS_DOCS_PATH}/Ensino/gerarEdital/Editais:/home/python/app/static/editais:rw
