@@ -22,6 +22,7 @@ services:
             COTEC_DOMAINS_PASS: ${COTEC_DOMAINS_PASS}
             PRIMARY_DOMAIN_NAME: ${PRIMARY_DOMAIN_NAME}
         labels:
+            #Enable Traefk 
             - "traefik.enable=true"
             - "traefik.docker.network=backend"
             
