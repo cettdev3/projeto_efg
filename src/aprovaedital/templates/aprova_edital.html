@@ -292,6 +292,13 @@
                         <span class="text">APROVADO</span>
                       </a></td>
 
+                      {% elif meta.status == 4 %}
+
+                      <td><a style="width: 100%; font-size: 10px; color: #ffffff; font-weight: bold;" class="btn btn-info btn-icon-split">
+                        <span class="text">EDITAL ENVIADO</span>
+                      </a></td>
+
+
                      {% endif %}
                     </tr>
                           
@@ -299,7 +306,13 @@
           </tbody>
         </table>
         
- 
+        {% if btn_enviar == True %}
+        <div class="cold-md-12" style="text-align: right;">
+          <a class="btn btn-primary  mt-2" href="/enviar-editais" style="width: 40%; display: none;"  style="width:100%;height: 100%;">
+            <span class="fa fa-paper-plane"></span> 
+            ENVIAR EDITAIS PARA SISTEMA DE SELEÇÃO</a>
+         </div>
+        {% endif %}
       </div>
        
        
