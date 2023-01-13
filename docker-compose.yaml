@@ -22,19 +22,17 @@ services:
             PRIMARY_DOMAIN_NAME: ${PRIMARY_DOMAIN_NAME}
         labels:
             - "traefik.enable=true"
+            - "traefik.constraint-label-stack=projeto-cett"
             - "traefik.docker.network=backend"
-
-            - "traefik.constraint-label-stack=projeto_cett"
-            - "traefik.http.services.projeto_cett.loadbalancer.server.port=8000"
+            - "traefik.http.services.projeto-cett.loadbalancer.server.port=8000"
             #http
-            - "traefik.http.routers.projeto_cett_http.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
-            - "traefik.http.routers.projeto_cett_http.entrypoints=web"
-            - "traefik.http.routers.projeto_cett_http.middlewares=https_redirect"
+            - "traefik.http.routers.projeto-cett_http.entrypoints=web"
+            - "traefik.http.routers.projeto-cett_http.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.projeto-cett_http.middlewares=https_redirect"
             #https
-            - "traefik.http.routers.projeto_cett_https.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
-            - "traefik.http.routers.projeto_cett_https.entrypoints=websecure"
-            - "traefik.http.routers.projeto_cett_https.tls.certresolver=letsencryptresolver"
-
+            - "traefik.http.routers.projeto-cett_https.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.projeto-cett_https.entrypoints=websecure"
+            - "traefik.http.routers.projeto-cett_https.tls.certresolver=letsencryptresolver"
         volumes:
             - ./src:/home/python/app
             - ${ACS_DOCS_PATH}/Ensino/gerarEdital/Editais:/home/python/app/static/editais:rw
