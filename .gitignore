@@ -3,3 +3,5 @@ db.sqlite3
 .vscode-server/
 .git/
 static/editais
+static/COTEC
+static/EFG
