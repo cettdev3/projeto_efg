@@ -32,5 +32,5 @@ USER python
 
 WORKDIR /home/python/app
 
-CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
+CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000", "--insecure" ]
 # CMD [ "gunicorn", "--access-logfile", "-", "--workers", "3", "--bind", "0.0.0.0:8000", "projeto1.wsgi" ]
