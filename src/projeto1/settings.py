@@ -65,7 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'projeto1.middlewares.SchoolMiddleware',
+    # 'projeto1.middlewares.SchoolMiddleware',
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
@@ -107,26 +107,26 @@ DATABASES = {
 
         'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
     },
-    'efg': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config.EFG_DOMAINS_DB,  # type: ignore
-        'USER': config.EFG_DOMAINS_USER,  # type: ignore
-        'HOST': config.EFG_DOMAINS_HOST,  # type: ignore
-        'PASSWORD': config.EFG_DOMAINS_PASS,  # type: ignore
-        'PORT': config.EFG_DOMAINS_PORT,  # type: ignore
+    # 'efg': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': config.EFG_DOMAINS_DB,  # type: ignore
+    #     'USER': config.EFG_DOMAINS_USER,  # type: ignore
+    #     'HOST': config.EFG_DOMAINS_HOST,  # type: ignore
+    #     'PASSWORD': config.EFG_DOMAINS_PASS,  # type: ignore
+    #     'PORT': config.EFG_DOMAINS_PORT,  # type: ignore
 
-        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-    },
-    'cotec': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config.COTEC_DOMAINS_DB,  # type: ignore
-        'USER': config.COTEC_DOMAINS_USER,  # type: ignore
-        'HOST': config.COTEC_DOMAINS_HOST,  # type: ignore
-        'PASSWORD': config.COTEC_DOMAINS_PASS,  # type: ignore
-        'PORT': config.COTEC_DOMAINS_PORT,  # type: ignore
+    #     'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+    # },
+    # 'cotec': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': config.COTEC_DOMAINS_DB,  # type: ignore
+    #     'USER': config.COTEC_DOMAINS_USER,  # type: ignore
+    #     'HOST': config.COTEC_DOMAINS_HOST,  # type: ignore
+    #     'PASSWORD': config.COTEC_DOMAINS_PASS,  # type: ignore
+    #     'PORT': config.COTEC_DOMAINS_PORT,  # type: ignore
 
-        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-    },
+    #     'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+    # },
 }
 
 DATABASE_ROUTERS = ['projeto1.routers.DBRouter']
