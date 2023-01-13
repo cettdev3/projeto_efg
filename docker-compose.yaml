@@ -3,6 +3,7 @@ version: '3'
 services:
     app:
         restart: always
+        image: projeto-cett
         build:
             context: .
             dockerfile: ./Dockerfile
@@ -28,10 +29,10 @@ services:
             - "traefik.http.services.projeto-cett.loadbalancer.server.port=8000"
             #http
             - "traefik.http.routers.projeto-cett_http.entrypoints=web"
-            - "traefik.http.routers.projeto-cett_http.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.projeto-cett_http.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)"
             - "traefik.http.routers.projeto-cett_http.middlewares=https_redirect"
             #https
-            - "traefik.http.routers.projeto-cett_https.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.projeto-cett_https.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)"
             - "traefik.http.routers.projeto-cett_https.entrypoints=websecure"
             - "traefik.http.routers.projeto-cett_https.tls.certresolver=letsencryptresolver"
         volumes:
