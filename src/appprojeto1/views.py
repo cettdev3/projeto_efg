@@ -1374,7 +1374,7 @@ class AprovarCursosView(
 
                     complete()
 
-                    Metas_efg.objects.filter(situacao=3).update(sutuacao=4)
+                    Metas_efg.objects.filter(situacao=3).update(situacao=4)
 
                 messages.success(
                     self.request, 'Planejamento de turmas foi aprovado')
