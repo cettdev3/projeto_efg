@@ -65,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'projeto1.middlewares.SchoolMiddleware',
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
@@ -98,17 +99,37 @@ WSGI_APPLICATION = 'projeto1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': config.CAMUNDA_DOMAINS_DB,  # type: ignore
-        'USER': config.CAMUNDA_DOMAINS_USER,  # type: ignore
-        'HOST': config.CAMUNDA_DOMAINS_HOST,  # type: ignore
-        'PASSWORD': config.CAMUNDA_DOMAINS_PASS,  # type: ignore
-        'PORT': config.CAMUNDA_DOMAINS_PORT,  # type: ignore
+        'NAME': config.EFG_DOMAINS_DB,  # type: ignore
+        'USER': config.EFG_DOMAINS_USER,  # type: ignore
+        'HOST': config.EFG_DOMAINS_HOST,  # type: ignore
+        'PASSWORD': config.EFG_DOMAINS_PASS,  # type: ignore
+        'PORT': config.EFG_DOMAINS_PORT,  # type: ignore
+
+        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+    },
+    'efg': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config.EFG_DOMAINS_DB,  # type: ignore
+        'USER': config.EFG_DOMAINS_USER,  # type: ignore
+        'HOST': config.EFG_DOMAINS_HOST,  # type: ignore
+        'PASSWORD': config.EFG_DOMAINS_PASS,  # type: ignore
+        'PORT': config.EFG_DOMAINS_PORT,  # type: ignore
+
+        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+    },
+    'cotec': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config.COTEC_DOMAINS_DB,  # type: ignore
+        'USER': config.COTEC_DOMAINS_USER,  # type: ignore
+        'HOST': config.COTEC_DOMAINS_HOST,  # type: ignore
+        'PASSWORD': config.COTEC_DOMAINS_PASS,  # type: ignore
+        'PORT': config.COTEC_DOMAINS_PORT,  # type: ignore
 
         'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
     },
 }
 
-# DATABASE_ROUTERS = ['appprojeto1.dbrotas.EixosRota','appprojeto1.dbrotas.CamundaRota']
+DATABASE_ROUTERS = ['projeto1.routers.DBRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

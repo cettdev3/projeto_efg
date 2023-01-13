@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONFAULTHANDLER=1
 ENV PYTHONUNBUFFERED=1
 
-RUN adduser -u 2000 --disabled-password --gecos "" app && chown -R app /home/app
+RUN adduser -u 2000 --disabled-password --gecos "" python && chown -R python /home/python
 
 RUN apt-get update && apt-get install git -y
 
@@ -21,10 +21,10 @@ RUN sed -i '/pt_BR.UTF-8/s/^#//g' /etc/locale.gen \
 
 ENV PIPENV_VENV_IN_PROJECT=True
 ENV PIPENV_SITE_PACKAGES=True
-ENV PATH="/home/app/src/.venv/bin:$PATH"
+ENV PATH="/home/python/app/.venv/bin:$PATH"
 
-USER app
+USER python
 
-WORKDIR /home/app/src
+WORKDIR /home/python/app
 
 CMD [ "tail", "-f", "/dev/null" ]

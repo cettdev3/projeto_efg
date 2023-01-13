@@ -9,27 +9,49 @@ services:
         environment:
             DJANGO_DEBUG: ${DJANGO_DEBUG}
             DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-            CAMUNDA_DOMAINS_HOST: ${CAMUNDA_DOMAINS_HOST}
-            CAMUNDA_DOMAINS_PORT: ${CAMUNDA_DOMAINS_PORT}
-            CAMUNDA_DOMAINS_USER: ${CAMUNDA_DOMAINS_USER}
-            CAMUNDA_DOMAINS_DB: ${CAMUNDA_DOMAINS_DB}
-            CAMUNDA_DOMAINS_PASS: ${CAMUNDA_DOMAINS_PASS}
+            EFG_DOMAINS_HOST: ${EFG_DOMAINS_HOST}
+            EFG_DOMAINS_PORT: ${EFG_DOMAINS_PORT}
+            EFG_DOMAINS_USER: ${EFG_DOMAINS_USER}
+            EFG_DOMAINS_DB: ${EFG_DOMAINS_DB}
+            EFG_DOMAINS_PASS: ${EFG_DOMAINS_PASS}
+            COTEC_DOMAINS_HOST: ${COTEC_DOMAINS_HOST}
+            COTEC_DOMAINS_PORT: ${COTEC_DOMAINS_PORT}
+            COTEC_DOMAINS_USER: ${COTEC_DOMAINS_USER}
+            COTEC_DOMAINS_DB: ${COTEC_DOMAINS_DB}
+            COTEC_DOMAINS_PASS: ${COTEC_DOMAINS_PASS}
+            PRIMARY_DOMAIN_NAME: ${PRIMARY_DOMAIN_NAME}
         labels:
             - "traefik.enable=true"
-            - "traefik.constraint-label-stack=projeto-efg"
             - "traefik.docker.network=backend"
-            - "traefik.http.services.projeto-efg.loadbalancer.server.port=8000"
+            #EFG
+            - "traefik.constraint-label-stack=efg"
+            - "traefik.http.services.efg.loadbalancer.server.port=8000"
             #http
-            - "traefik.http.routers.projeto-efg_http.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
-            - "traefik.http.routers.projeto-efg_http.entrypoints=web"
-            - "traefik.http.routers.projeto-efg_http.middlewares=https_redirect"
+            - "traefik.http.routers.efg_http.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.efg_http.entrypoints=web"
+            - "traefik.http.routers.efg_http.middlewares=https_redirect"
             #https
-            - "traefik.http.routers.projeto-efg_https.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
-            - "traefik.http.routers.projeto-efg_https.entrypoints=websecure"
-            - "traefik.http.routers.projeto-efg_https.tls.certresolver=letsencryptresolver"
+            - "traefik.http.routers.efg_https.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.efg_https.entrypoints=websecure"
+            - "traefik.http.routers.efg_https.tls.certresolver=letsencryptresolver"
+
+            #COTEC
+            - "traefik.constraint-label-stack=cotec"
+            - "traefik.http.services.cotec.loadbalancer.server.port=8000"
+            #http
+            - "traefik.http.routers.cotec_http.rule=Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.cotec_http.entrypoints=web"
+            - "traefik.http.routers.cotec_http.middlewares=https_redirect"
+            #https
+            - "traefik.http.routers.cotec_https.rule=Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.cotec_https.entrypoints=websecure"
+            - "traefik.http.routers.cotec_https.tls.certresolver=letsencryptresolver"
+
         volumes:
-            - ./src:/home/app/src
-            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/Editais:/home/app/src/static/editais:ro
+            - ./src:/home/python/app
+            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/Editais:/home/python/app/static/editais:rw
+            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/EFG/Editais:/home/python/app/static/EFG/editais:rw
+            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/COTEC/Editais:/home/python/app/static/COTEC/editais:rw
 
 networks:
     default:
