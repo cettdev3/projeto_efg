@@ -97,16 +97,17 @@ WSGI_APPLICATION = 'projeto1.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config.EFG_DOMAINS_DB,  # type: ignore
-        'USER': config.EFG_DOMAINS_USER,  # type: ignore
-        'HOST': config.EFG_DOMAINS_HOST,  # type: ignore
-        'PASSWORD': config.EFG_DOMAINS_PASS,  # type: ignore
-        'PORT': config.EFG_DOMAINS_PORT,  # type: ignore
+    'default': {},
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': config.COTEC_DOMAINS_DB,  # type: ignore
+    #     'USER': config.COTEC_DOMAINS_USER,  # type: ignore
+    #     'HOST': config.COTEC_DOMAINS_HOST,  # type: ignore
+    #     'PASSWORD': config.COTEC_DOMAINS_PASS,  # type: ignore
+    #     'PORT': config.COTEC_DOMAINS_PORT,  # type: ignore
 
-        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-    },
+    #     'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+    # },
     'efg': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': config.EFG_DOMAINS_DB,  # type: ignore
@@ -127,9 +128,43 @@ DATABASES = {
 
         'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
     },
+    # 'cotec': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': 'db.sqlite3',  # type: ignore
+    # },
 }
 
-DATABASE_ROUTERS = ['projeto1.routers.DBRouter']
+DATABASE_ROUTERS = ['projeto1.routers.DataBaseRouter',]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }, 'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        }, 'django.db.backends.sqlite3': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        },
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

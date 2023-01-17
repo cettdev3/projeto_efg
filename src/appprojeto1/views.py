@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from appprojeto1.models import Cadastrar_curso,Users_ids, Udepi_municipio, Edital, Curso_escola, Cursos, Eixos, Item_apoiado, Metas_tipo, Metas_descricoes, Metas_efg, Metas_escolas, Metas_modalidade, Metas_sinteticas, Metas_trimestre, Orcamento_plano_trabalho, Rubrica, Solicitacao, Unidades, User_permission, Users
+from appprojeto1.models import Cadastrar_curso,Users_ids, Udepi_municipio, Edital, Curso_escola, Cursos, Eixos, Item_apoiado, Metas_tipo, Metas_descricoes, Metas_efg, Metas_escolas, Metas_modalidade, Metas_sinteticas, Metas_trimestre, Orcamento_plano_trabalho, Rubrica, Solicitacao, Unidades, User_permission, User
 from DivisaoDeMetas.models import DivisaoDeMetasPorEscola
 from django.core import serializers
 from django.http import HttpResponse
@@ -63,7 +63,7 @@ def getInstance(processName, taskDefinition):
 
 def getUserlogin(request):
     username = request.user
-    id_user = Users.objects.filter(username=username).values()
+    id_user = User.objects.filter(username=username).values()
     return id_user[0]['id']
 
 
@@ -1565,7 +1565,7 @@ def atualiza_edital(request):
 
 @login_required(login_url='/')
 def gerenciar_usuarios(request):
-    users = Users.objects.all()
+    users = User.objects.all()
     escolas = Metas_escolas.objects.filter(tipo=0).all()
     return render(request, 'user_perm.html', {'users': users, 'permissoes': get_permission(request), 'escolas': escolas})
 
@@ -1754,7 +1754,7 @@ def cadastrar_usuario(request):
             email=request.POST['email_user'],
             password=request.POST['senha_user'])
 
-        id_user = Users.objects.filter(username=user).values()
+        id_user = User.objects.filter(username=user).values()
 
         auth_user = User_permission.objects.create(
             user_id=id_user[0]['id'], permission='', escola_id=0)

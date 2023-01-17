@@ -53,8 +53,11 @@ class AprovarCursosSubmitFormView(Form):
 
         ApprovalLen = len(ApprovalList)
 
-        ApprovalType = list(ApprovalList)[0]
-
+        if len(ApprovalList) > 0:
+            ApprovalType = list(ApprovalList)[0]
+        else:
+            ApprovalType = list()
+            
         disable_edital = True
 
         if ApprovalLen == 1 and ApprovalType == 3:

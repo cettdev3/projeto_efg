@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from appprojeto1.models import Users,User_permission,Edital
+from appprojeto1.models import User, User_permission,Edital
 from django.contrib import messages
 from django.db.models import Q
 from requests.auth import HTTPBasicAuth
@@ -42,7 +42,7 @@ def getInstance(processName, taskDefinition):
 
 def getUserlogin(request):
     username = request.user
-    id_user = Users.objects.filter(username=username).values()
+    id_user = User.objects.filter(username=username).values()
     return id_user[0]['id']
 
 def get_permission(request):
