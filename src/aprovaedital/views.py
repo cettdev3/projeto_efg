@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from appprojeto1.models import Users,User_permission,Edital,Users_ids
+from appprojeto1.models import User, User_permission,Edital
 from django.contrib import messages
 from django.db.models import Q
 from requests.auth import HTTPBasicAuth
@@ -10,12 +10,6 @@ host = 'https://processos.cett.dev.br/engine-rest/'
 processName = "ElaborarEdital"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
-
-
-def getUserlogin(request):
-    username = request.user
-    id_user = Users.objects.filter(username=username).values()
-    return id_user[0]['id']
 
 def camundaPutVariable(taskId,variable,variableValue,type):
     #https://processos.cett.dev.br/engine-rest/task/bd7fa2eb-8536-11ed-ad45-0242ac130024/variables/alteracao
@@ -58,8 +52,10 @@ def getInstance(processName, taskDefinition,request):
             else:
                 return False
 
-
-
+def getUserlogin(request):
+    username = request.user
+    id_user = User.objects.filter(username=username).values()
+    return id_user[0]['id']
 
 def get_permission(request):
     user_id = getUserlogin(request)

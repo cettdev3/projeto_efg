@@ -1,16 +1,8 @@
 from django.db import models
 from django.urls import reverse_lazy, reverse
 from django.core.validators import RegexValidator
+from django.contrib.auth.models import User
 # Create your models here.
-
-
-class Users(models.Model):
-    id = models.IntegerField(primary_key=True)
-    username = models.CharField(max_length=255)
-
-    class Meta:
-        db_table = 'auth_user'
-        managed = False
 
 
 class Cursos(models.Model):
@@ -23,6 +15,7 @@ class Cursos(models.Model):
         return self.nome
 
     class Meta:
+        managed = True
         db_table = 'qualificacoes'
 
 
@@ -35,20 +28,31 @@ class Solicitacao(models.Model):
     justificativa = models.CharField(max_length=255)
 
     class Meta:
+        managed = True
         db_table = 'appprojeto1_solicitacao'
 
 
 class Metas_escolas(models.Model):
+    
+    TIPO = (
+        (0, 'EFG'),
+        (1, 'COTEC'),
+        (2, 'UDEPI'),
+        (3, 'CVT'),
+        (4, 'Salas de Extensão'),
+    )
+    
     id = models.IntegerField(primary_key=True)
-    escola = models.CharField(max_length=255)
-    tipo = models.IntegerField()
-    email = models.EmailField(max_length=255)
-    telefone = models.CharField(max_length=16)
+    escola = models.CharField(max_length=255, null=False, blank=False)
+    tipo = models.IntegerField(null=False, blank=False, choices=TIPO)
+    email = models.EmailField(max_length=255, null=True, blank=True)
+    telefone = models.CharField(max_length=16, null=True, blank=True)
 
     def __str__(self):
         return self.escola
 
     class Meta:
+        managed = True
         db_table = 'escolas'
         ordering = ('escola',)
 
@@ -64,10 +68,12 @@ class Eixos(models.Model):
         return self.nome
 
     class Meta:
+        managed = True
         db_table = 'eixos'
 
 
 class Metas_tipo(models.Model):
+    
     id = models.IntegerField(primary_key=True)
     tipo = models.CharField(max_length=255)
 
@@ -75,6 +81,7 @@ class Metas_tipo(models.Model):
         return self.tipo
 
     class Meta:
+        managed = True
         db_table = 'tipo_curso'
 
 
@@ -86,6 +93,7 @@ class Metas_modalidade(models.Model):
         return self.modalidade
 
     class Meta:
+        managed = True
         db_table = 'modalidade'
 
 
@@ -97,6 +105,7 @@ class Metas_trimestre(models.Model):
         return self.trimestre
 
     class Meta:
+        managed = True
         db_table = 'trimestre'
 
 
@@ -108,6 +117,7 @@ class Metas_descricoes(models.Model):
         return self.descricao
 
     class Meta:
+        managed = True
         db_table = 'descricao'
 
 
@@ -125,6 +135,7 @@ class Metas_sinteticas(models.Model):
     valor_unitario = models.DecimalField(max_digits=15, decimal_places=2)
 
     class Meta:
+        managed = True
         db_table = 'Metas_sinteticas_efg'
 
 
@@ -133,6 +144,7 @@ class Rubrica(models.Model):
     rubrica = models.CharField(max_length=255)
 
     class Meta:
+        managed = True
         db_table = 'rubrica'
 
 
@@ -142,6 +154,7 @@ class Item_apoiado(models.Model):
     item_apoiado = models.CharField(max_length=255)
 
     class Meta:
+        managed = True
         db_table = 'item_apoiado'
 
 
@@ -150,6 +163,7 @@ class Unidades(models.Model):
     und = models.CharField(max_length=255)
 
     class Meta:
+        managed = True
         db_table = 'unidade'
 
 
@@ -160,6 +174,7 @@ class Curso_escola(models.Model):
     status = models.CharField(max_length=255)
 
     class Meta:
+        managed = True
         db_table = 'curso_escola'
         
 
@@ -180,6 +195,7 @@ class Cadastrar_curso(models.Model):
         return self.curso
 
     class Meta:
+        managed = True
         db_table = 'cursos'
         ordering = ('curso',)
 
@@ -197,6 +213,7 @@ class Orcamento_plano_trabalho(models.Model):
     capital = models.DecimalField(max_digits=15, decimal_places=2)
 
     class Meta:
+        managed = True
         db_table = 'planejamento_trabalho'
 
 
@@ -209,6 +226,7 @@ class Udepi_municipio(models.Model):
         return self.municipio
 
     class Meta:
+        managed = True
         db_table = 'udepi_municipio'
 
 
@@ -229,9 +247,8 @@ class Edital(models.Model):
         return self.num_edital
 
     class Meta:
-
-        db_table = 'edital_ensino'
         managed = True
+        db_table = 'edital_ensino'
 
 
 class Metas_efg(models.Model):
@@ -299,18 +316,20 @@ class Metas_efg(models.Model):
 
 class User_permission(models.Model):
     id = models.IntegerField(primary_key=True)
-    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     permission = models.CharField(max_length=255)
     escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
 
     class Meta:
+        managed = True
         db_table = 'user_permission'
 
 class Users_ids(models.Model):
     id = models.IntegerField(primary_key=True)
-    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     user_selecao_id =  models.IntegerField()
     user_siga_id = models.IntegerField()
 
     class Meta:
+        managed = True
         db_table = 'users_siga_selecao'

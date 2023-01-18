@@ -22,7 +22,8 @@
 		"ms-python.python",
 		"batisteo.vscode-django",
 		"ms-azuretools.vscode-docker",
-		"EditorConfig.EditorConfig"
+		"EditorConfig.EditorConfig",
+        "monosans.djlint"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

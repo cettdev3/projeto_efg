@@ -16,12 +16,12 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
 
-    for index, arg in enumerate(sys.argv):
-        param = arg.split('=')
-        if '--database' in param and len(param) == 2:
-            db = param[1]
-            set_db_for_router(db)
-            del sys.argv[index]
+    # for index, arg in enumerate(sys.argv):
+    #     param = arg.split('=')
+    #     if '--database' in param and len(param) == 2:
+    #         db = param[1]
+    #         set_db_for_router(db)
+    #         del sys.argv[index]
     
     execute_from_command_line(sys.argv)
 

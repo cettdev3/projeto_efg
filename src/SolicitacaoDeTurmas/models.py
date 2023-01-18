@@ -1,5 +1,6 @@
 from multiselectfield import MultiSelectField
 from django.db import models
+from appprojeto1.models import Eixos, Cursos, Metas_escolas
 
 
 class DefaultTable(models.Model):
@@ -9,55 +10,6 @@ class DefaultTable(models.Model):
 
     class Meta:
         abstract = True
-
-
-class Eixo(models.Model):
-    id = models.IntegerField(primary_key=True)
-    nome = models.CharField(max_length=60, null=False, blank=False)
-
-    def __str__(self):
-        return self.nome
-
-    class Meta:
-        managed = False
-        db_table = 'eixos'
-
-
-class Curso(models.Model):
-    id = models.IntegerField(primary_key=True)
-    tipo_id = models.IntegerField(null=False, blank=False)
-    eixos = models.ForeignKey(Eixo, on_delete=models.DO_NOTHING)
-    curso = models.CharField(max_length=100, null=False, blank=False)
-    status = models.CharField(max_length=100, null=False, blank=False)
-
-    def __str__(self):
-        return self.curso
-
-    class Meta:
-        managed = False
-        db_table = 'cursos'
-
-
-class Escola(models.Model):
-
-    TIPO = (
-        (0, 'EFG'),
-        (1, 'COTEC'),
-        (2, 'UDEPI'),
-        (3, 'CVT'),
-        (4, 'Salas de Extensão'),
-    )
-
-    id = models.IntegerField(primary_key=True)
-    escola = models.CharField(max_length=255, null=False, blank=False)
-    tipo = models.IntegerField(null=False, blank=False, choices=TIPO)
-
-    def __str__(self):
-        return self.escola
-
-    class Meta:
-        managed = False
-        db_table = 'escolas'
 
 
 class SolicitacaoDeTurma(DefaultTable):
@@ -106,11 +58,11 @@ class SolicitacaoDeTurma(DefaultTable):
     instace_id = models.CharField(
         max_length=40, null=True, blank=True, verbose_name='ID da instância de processo')
     escola = models.ForeignKey(
-        Escola, on_delete=models.DO_NOTHING, related_name='escolas', verbose_name='Nome da escola')
+        Metas_escolas, on_delete=models.DO_NOTHING, related_name='nome_escola', verbose_name='Nome da escola')
     curso = models.ForeignKey(
-        Curso, on_delete=models.DO_NOTHING, verbose_name='Curso')
+        Cursos, on_delete=models.DO_NOTHING, verbose_name='Curso')
     eixo = models.ForeignKey(
-        Eixo, on_delete=models.DO_NOTHING, verbose_name='Eixo')
+        Eixos, on_delete=models.DO_NOTHING, verbose_name='Eixo')
     tipo = models.IntegerField(null=False, blank=False,
                             choices=TIPOS, verbose_name='Tipo')
     modalidade = models.CharField(max_length=255, null=False, blank=False,
@@ -129,7 +81,7 @@ class SolicitacaoDeTurma(DefaultTable):
     dias_semana = MultiSelectField(max_length=255, null=False, blank=False,
                                    choices=DIAS_SEMANA, verbose_name='Dias da semana')
     unidade_ensino = models.ForeignKey(
-        Escola, on_delete=models.DO_NOTHING, related_name='unidade_ensino', verbose_name='Unidade de ensino')
+        Metas_escolas, on_delete=models.DO_NOTHING, related_name='unidade_ensino', verbose_name='Unidade de ensino')
 
     def __str__(self) -> str:
         return super().__str__()

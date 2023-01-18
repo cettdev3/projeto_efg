@@ -1,14 +1,14 @@
-from django_filters import FilterSet, AllValuesFilter, ModelChoiceFilter
+from django_filters import FilterSet, AllValuesFilter, ModelChoiceFilter, ChoiceFilter
 from appprojeto1.models import Metas_efg, Metas_escolas, Cadastrar_curso
 from appprojeto1.forms import DashboardAprovarCursosFilterModelForm
 from django.db.models import Sum, Case, When, F
-
 
 class AprovarCursosFilter(FilterSet):
     ano = AllValuesFilter()
     escola = ModelChoiceFilter(queryset=Metas_escolas.objects.filter(tipo=0))
     curso = ModelChoiceFilter(queryset=Cadastrar_curso.objects.all())
     trimestre = AllValuesFilter()
+    situacao = ChoiceFilter(choices=Metas_efg.situacao.field.choices[:-1])  #type: ignore
 
     class Meta:
         model = Metas_efg

@@ -3,7 +3,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column, Button
 from crispy_forms.bootstrap import FormActions, InlineCheckboxes, InlineRadios
 from django import forms
 from .widgets import DatePickerInput
-from .models import Curso, Escola, SolicitacaoDeTurma, Eixo
+from .models import Cursos, Metas_escolas, SolicitacaoDeTurma, Eixos
 
 
 class SolicitacaoDeTurmas(forms.ModelForm):
@@ -71,14 +71,15 @@ class SolicitacaoDeTurmas(forms.ModelForm):
             )
         )
 
-        self.fields['escola'].queryset = Escola.objects.filter(tipo=0)
+        self.fields['escola'].queryset = Metas_escolas.objects.filter(tipo=0)
 
-        self.fields['unidade_ensino'].queryset = Escola.objects.filter(tipo=2)
+        self.fields['unidade_ensino'].queryset = Metas_escolas.objects.filter(
+            tipo=2)
 
-        self.fields['eixo'].queryset = Eixo.objects.order_by(
+        self.fields['eixo'].queryset = Eixos.objects.order_by(
         ).values_list('nome', flat=True).distinct()
 
-        self.fields['curso'].queryset = Curso.objects.order_by(
+        self.fields['curso'].queryset = Cursos.objects.order_by(
         ).values_list('curso', flat=True).distinct()
 
     class Meta:

@@ -2,7 +2,7 @@ from crispy_forms.layout import Layout, Submit
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Button, Div
 from crispy_forms.bootstrap import FormActions, StrictButton
-from .models import DivisaoDeMetasPorEscola, Escola
+from .models import DivisaoDeMetasPorEscola, Metas_escolas
 from django import forms
 from django.urls import reverse_lazy
 
@@ -51,7 +51,7 @@ class DivisaoDeMetasForm(forms.ModelForm):
             )
         )
 
-        self.fields['escola'].queryset = Escola.objects.filter(tipo=0)
+        self.fields['escola'].queryset = Metas_escolas.objects.filter(tipo=0)
 
         self.fields['carga_horaria'].disabled = True
 
