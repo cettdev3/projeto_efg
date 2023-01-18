@@ -5,3 +5,4 @@ db.sqlite3
 static/editais
 static/COTEC
 static/EFG
+staticfiles

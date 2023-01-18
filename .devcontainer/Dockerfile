@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/python:3.8-buster
+FROM mcr.microsoft.com/vscode/devcontainers/python:3.8-bullseye
 
 ENV LANG pt_BR.UTF-8
 ENV LC_ALL pt_BR.UTF-8
