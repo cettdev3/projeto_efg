@@ -98,16 +98,6 @@ WSGI_APPLICATION = 'projeto1.wsgi.application'
 
 DATABASES = {
     'default': {},
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': config.COTEC_DOMAINS_DB,  # type: ignore
-    #     'USER': config.COTEC_DOMAINS_USER,  # type: ignore
-    #     'HOST': config.COTEC_DOMAINS_HOST,  # type: ignore
-    #     'PASSWORD': config.COTEC_DOMAINS_PASS,  # type: ignore
-    #     'PORT': config.COTEC_DOMAINS_PORT,  # type: ignore
-
-    #     'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-    # },
     'efg': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': config.EFG_DOMAINS_DB,  # type: ignore

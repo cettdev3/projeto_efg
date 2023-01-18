@@ -10,6 +10,7 @@ host = 'https://processos.cett.dev.br/engine-rest/'
 processName = "ElaborarEdital"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
+
 def camundaPutVariable(taskId,variable,variableValue,type):
     #https://processos.cett.dev.br/engine-rest/task/bd7fa2eb-8536-11ed-ad45-0242ac130024/variables/alteracao
     headers = {'Content-type': 'application/json'}
@@ -17,7 +18,15 @@ def camundaPutVariable(taskId,variable,variableValue,type):
     putVariable = req.put(f"{host}task/{taskId}/variables/{variable}",json=bodyJson, auth=autentication, headers=headers)
     return True if putVariable.status_code == 204 else  False
 
-def getInstance(processName, taskDefinition):
+def getInstance(processName, taskDefinition,request):
+    #PEGA O ID DO USUÁRIO LOGADO
+    userLogged = getUserlogin(request)
+
+    #PEGA O ID DO SELEÇÃO e SIGA DO USUÁRIO LOGADO
+    infoUserLogged = Users_ids.objects.filter(user_id = userLogged).values()
+    idUserSelecao = infoUserLogged[0]['user_selecao_id']
+    idUserSiga = infoUserLogged[0]['user_siga_id']
+
     taskDefinitionKey = taskDefinition
     url = f"{host}task?processDefinitionKey={processName}"
     requisicao = req.get(url, json={}, auth=autentication)
@@ -28,7 +37,11 @@ def getInstance(processName, taskDefinition):
             idTask = dados['id']
             headers = {'Content-type': 'application/json'}
             putvariable = camundaPutVariable(idTask,'alteracao','não','String')
-            if putvariable == True:
+            putUserLogin = camundaPutVariable(idTask,'UserDjangoAuth',userLogged,'String')
+            putUserSelecao = camundaPutVariable(idTask,'UserSelecaoAuth',idUserSelecao,'String')
+            putUserSiga = camundaPutVariable(idTask,'UserSigaAuth',idUserSiga,'String')
+
+            if putvariable == True and putUserSelecao == True and putUserLogin == True and putUserSiga == True:
                 completeTask = req.post(
                     f"{host}task/{idTask}/complete", auth=autentication, headers=headers)
                 if completeTask.status_code == 204:
@@ -38,7 +51,6 @@ def getInstance(processName, taskDefinition):
                     return False
             else:
                 return False
-
 
 def getUserlogin(request):
     username = request.user
@@ -100,7 +112,7 @@ def aprovar_edital_gerado(request):
             messages.success(request, 'Edital foi aprovado com sucesso!')
             return redirect('/aprovar-edital')
         else:
-            completeTask = getInstance(processName,'ConferiraprovarOEditalChecklistSGEVariavelEditalTemAlteracoesTask')
+            completeTask = getInstance(processName,'ConferiraprovarOEditalChecklistSGEVariavelEditalTemAlteracoesTask',request)
             messages.success(request, 'Edital foi aprovado com sucesso! Processo em andamento...')
             return redirect('/aprovar-edital')
         
