@@ -79,6 +79,11 @@
                                             <a href="/orcamento-plano-trabalho">Orçamento de Plano de Trabalho</a>
                                         </li>
                                     {% endif %}
+                                    {% if 'ce' in permissoes.permission %}
+                                    <li class="submenu-item">
+                                        <a href="/cadastrar-curso">Cadastrar Escolas</a>
+                                    </li>
+                                    {% endif %}
                                     {% if 'cc' in permissoes.permission %}
                                         <li class="submenu-item">
                                             <a href="/cadastrar-curso">Cadastrar Curso</a>
