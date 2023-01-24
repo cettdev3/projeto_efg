@@ -10,13 +10,14 @@ def getUserlogin(request):
 def get_permission(request):
 
     user_id = getUserlogin(request)
+    print(user_id)
     perm = User_permission.objects.filter(user_id=user_id).values()
     return perm[0]
 # Create your views here.
 
 def cadastrar_escolas(request):
     escolas = Metas_escolas.objects.all()
-    print(escolas)
+
     
     return render(request, 'cadastrar_escolas.html', {'escolas': escolas,'permissoes': get_permission(request)})
 

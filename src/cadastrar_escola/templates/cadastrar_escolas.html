@@ -163,7 +163,7 @@
 
         <br>
         <div style="text-align: right;">
-          <a class="btn btn-warning"  id="aprovar"  type="submit" value="3"><i class="fa fa-backward"></i><spam> VOLTAR</spam></a>
+          <a class="btn btn-warning"   href="/cadastrar-metas"><i class="fa fa-backward"></i><spam> VOLTAR</spam></a>
           <button class="btn btn-success"  id="aprovar"  type="submit" value="3"><i class="fas fa-check"></i><spam> CADASTRAR</spam></button>
         </div>
        
@@ -207,7 +207,7 @@
                     <tr>
                       <td id="escola{{escola.id}}">{{escola.escola}}</td>
                       
-                      <td id="tipo{{escola.id}}">{% if escola.tipo == 1 %}COTEC{% elif escola.tipo == 2 %} UDEPI {% elif escola.tipo == 0 %} EFG {% endif %} </td>
+                      <td id="tipo{{escola.id}}">{% if escola.tipo == 0 %}EFG{% elif escola.tipo == 1 %} COTEC {% elif escola.tipo == 2 %} UDEPI {% endif %} </td>
                      
                       <td id="email{{escola.id}}">{{escola.email}}</td>
                       <td id="telefone{{escola.id}}">{{escola.telefone}}</td>

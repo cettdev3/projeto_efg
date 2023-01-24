@@ -501,7 +501,7 @@ def load_funcoes_gerencia_cursos(request):
 def load_funcoes_permissoes(request):
     userid = request.GET['userid']
     perm = User_permission.objects.filter(user_id=userid).values()[0]
-    escolas = Metas_escolas.objects.filter(tipo=0).all()
+    escolas = Metas_escolas.objects.filter(tipo__in=[0,1])
     return render(request, 'ajax/ajax_load_permissoes.html', {'perm': perm, 'escolas': escolas})
 
 
@@ -610,6 +610,7 @@ def Autenticar(request):
 def view_index(request):
 
     user_id = getUserlogin(request)
+
     perm = User_permission.objects.filter(user_id=user_id).values()
 
     return render(request, 'index.html', {'permissoes': perm[0]})
@@ -641,18 +642,22 @@ def cadastrar_metas(request):
 
     user_id = getUserlogin(request)
     perm = User_permission.objects.filter(user_id=user_id).values()
+
     perm_escolas = perm[0]['escola_id']
-    print(perm_escolas)
+
+
     tipo_curso = Metas_tipo.objects.all()
-    escolas_cad = Metas_escolas.objects.filter(tipo__in=[0,1])
+    
     modalidade = Metas_modalidade.objects.all()
-    if int(perm_escolas) != 0:
+    if perm_escolas != None:
         lancamentos = Metas_efg.objects.filter(escola=perm_escolas).all()
         btn_enviar_planejamento = Metas_efg.objects.filter(
-            escola_id=perm_escolas).values()[0]
+            escola_id=int(perm_escolas)).values()
+        escolas_cad = Metas_escolas.objects.filter(id=perm_escolas)
     else:
         lancamentos = Metas_efg.objects.all()
         btn_enviar_planejamento = Metas_efg.objects.all()
+        escolas_cad = Metas_escolas.objects.filter(tipo__in=[0,1])
 
     municipios = Udepi_municipio.objects.filter(escola_id=39)
     anos = Metas_efg.objects.raw(
@@ -1570,7 +1575,7 @@ def atualiza_edital(request):
 @login_required(login_url='/')
 def gerenciar_usuarios(request):
     users = User.objects.all()
-    escolas = Metas_escolas.objects.filter(tipo=0).all()
+    escolas = Metas_escolas.objects.filter(tipo__in=[0,1])
     return render(request, 'user_perm.html', {'users': users, 'permissoes': get_permission(request), 'escolas': escolas})
 
 # ima,ims,opt,cc,dm,ac,vte,sicge,sat,gpu
@@ -1581,7 +1586,9 @@ def salvar_permissoes(request):
 
     userId = request.POST['basicInput']
     escola_id = request.POST['escola']
-    print(escola_id)
+    if escola_id == '0':
+        escola_id = ''
+   
     checkbox = ''
     try:
         ima = request.POST['ima']
