@@ -206,8 +206,8 @@
                 <br>
                 <select style="text-align: center;font-weight: bold; background-color: #0C504B;color:#f1f1f1;" readonly type="text"" class="form-control" id="filtro_escola" name="filtro_escola">
                 <option value="" selected>ESCOLA</option>
-                {% for escola_cad in escolas_cad %}
-                <option value="{{escola_cad.escola_id}}">{{escola_cad.escola.escola}}</option>
+                {% for escola in escolas %}
+                <option value="{{escola.id}}">{{escola.escola}}</option>
                 {% endfor %}
                 </select>
                 <hr>
