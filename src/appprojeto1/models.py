@@ -182,7 +182,7 @@ class Cadastrar_curso(models.Model):
     id = models.IntegerField(primary_key=True)
     escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
     tipo = models.ForeignKey(Metas_tipo, on_delete=models.CASCADE)
-    eixos = models.ForeignKey(Eixos, on_delete=models.CASCADE)
+    eixos = models.ForeignKey(Eixos, on_delete=models.CASCADE, null=True)
     curso = models.CharField(max_length=255)
     modalidade = models.ForeignKey(Metas_modalidade, on_delete=models.CASCADE)
     status = models.CharField(max_length=255)
@@ -316,9 +316,9 @@ class Metas_efg(models.Model):
 
 class User_permission(models.Model):
     id = models.IntegerField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     permission = models.CharField(max_length=255)
-    escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
+    escola = models.ForeignKey(Metas_escolas, on_delete=models.DO_NOTHING, null=True)
 
     class Meta:
         managed = True
@@ -326,7 +326,7 @@ class User_permission(models.Model):
 
 class Users_ids(models.Model):
     id = models.IntegerField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     user_selecao_id =  models.IntegerField()
     user_siga_id = models.IntegerField()
 
