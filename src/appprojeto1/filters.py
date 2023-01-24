@@ -5,7 +5,7 @@ from django.db.models import Sum, Case, When, F
 
 class AprovarCursosFilter(FilterSet):
     ano = AllValuesFilter()
-    escola = ModelChoiceFilter(queryset=Metas_escolas.objects.filter(tipo=0))
+    escola = ModelChoiceFilter(queryset=Metas_escolas.objects.filter(tipo__in=[0, 1]))
     curso = ModelChoiceFilter(queryset=Cadastrar_curso.objects.all())
     trimestre = AllValuesFilter()
     situacao = ChoiceFilter(choices=Metas_efg.situacao.field.choices[:-1])  #type: ignore
@@ -21,7 +21,7 @@ class AprovarCursosFilter(FilterSet):
 
 class DashboardAprovarCursosFilter(FilterSet):
     ano = AllValuesFilter()
-    escola = ModelChoiceFilter(queryset=Metas_escolas.objects.filter(tipo=0))
+    escola = ModelChoiceFilter(queryset=Metas_escolas.objects.filter(tipo__in=[0, 1]))
     curso = ModelChoiceFilter(
         queryset=Cadastrar_curso.objects.all().order_by('curso'))
     trimestre = AllValuesFilter()
