@@ -51,7 +51,7 @@ class DivisaoDeMetasForm(forms.ModelForm):
             )
         )
 
-        self.fields['escola'].queryset = Metas_escolas.objects.filter(tipo=0)
+        self.fields['escola'].queryset = Metas_escolas.objects.filter(tipo__in=(0,1))
 
         self.fields['carga_horaria'].disabled = True
 

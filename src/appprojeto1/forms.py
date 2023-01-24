@@ -143,7 +143,7 @@ class AprovarCursosForm(ModelForm):
 
         self.fields['carga_horaria_total'].disabled = True
 
-        self.fields['escola'].queryset = Metas_escolas.objects.filter(tipo=0)
+        self.fields['escola'].queryset = Metas_escolas.objects.filter(tipo__in=(0, 1))
         # self.fields['udepi'].queryset = Udepi_municipio.objects.none()
         # self.fields['eixo'].queryset = Eixos.objects.none()
         # self.fields['curso'].queryset = Cadastrar_curso.objects.none()
