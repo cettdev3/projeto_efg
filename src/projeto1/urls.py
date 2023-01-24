@@ -98,4 +98,6 @@ urlpatterns = [
     path('cadastrar-usuario', cadastrar_usuario),
 
     path('', include('aprovaedital.urls')),
+    path('', include('cadastrar_escola.urls')),
 ]
+

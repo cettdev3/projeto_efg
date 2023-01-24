@@ -1,0 +1,565 @@
+{% extends "index.html" %} 
+{% load static %}
+{% block content %} 
+<style>
+    .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #000000}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+  #myInput {
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+
+
+
+#myTable {
+  border-collapse: collapse; /* Collapse borders */
+  width:100%; /* Full-width */
+  border: 1px solid #ddd; /* Add a grey border */
+
+}
+
+#myTable th, #myTable td {
+  text-align: center; /* Left-align text */
+  padding: 10px; /* Add padding */
+  overflow-wrap: break-word;
+}
+
+#myTable tr {
+  /* Add a bottom border to all table rows */
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #00f36d6c;
+}
+
+@media screen and (max-width: 1280px) {
+    .myTable {
+        border: 0px;
+    }
+    .myTable caption {
+        font-size: 22px;
+    }
+    .myTable thead {
+        display: none;
+    }
+    .TamyTableble tr {
+        margin-bottom: 8px;
+        border-bottom: 4px solid #ddd;
+        display: block;
+        
+    }
+    .myTable th, .table td {
+        font-size: 12px;
+        
+    }
+    .myTable td {
+        display: block;
+        border-bottom: 1px solid #ddd;
+        
+        
+    }
+    .myTable  td:last-child {
+        border-bottom: 0px;
+    }
+    .myTable td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: left;
+    }
+    .myTable button, btn_voltar{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+}
+    </style>
+    
+{% if 'ce' in permissoes.permission %}
+<div class="page-heading">
+  <h3>Cadastrar Escolas</h3>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Cadastrar Escolas</h4>
+  </div>
+
+  <div class="card-body">
+    <div class="column">
+      <div>
+        <form
+          name="Form"
+          id="Form"
+          class="form-control"
+          method="post"
+          action="/cad-escola"
+          
+        >
+          {% csrf_token %}
+         
+
+          
+            <div class="row" id="painel_edital">
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>ESCOLA:</b></label>
+                <input  type="text" class="form-control" id="escola" name="escola">
+              </div>
+  
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>TIPO:</b></label>
+                <select class="form-control" id="tipo" name="tipo">
+                  <option value="0">EFG</option> 
+                  <option value="1">COTEC</option> 
+                  <option value="2">UDEPI</option>  
+                </select>
+              </div>
+
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>EMAIL:</b></label>
+                <input  type="email" class="form-control" id="email" name="email">
+              </div>
+
+              <div class="col-md-6 form-group">
+                <label for="basicInput"><b>TELEFONE:</b></label>
+                <input  type="text" class="form-control" id="telefone" name="telefone">
+              </div>
+  
+            </div>
+          </div>
+
+        <br>
+        <div style="text-align: right;">
+          <a class="btn btn-warning"  id="aprovar"  type="submit" value="3"><i class="fa fa-backward"></i><spam> VOLTAR</spam></a>
+          <button class="btn btn-success"  id="aprovar"  type="submit" value="3"><i class="fas fa-check"></i><spam> CADASTRAR</spam></button>
+        </div>
+       
+        </form>
+      </div>
+    </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Escolas Cadastradas</h4>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="cold-md-12" style="text-align: right;">
+        <button class="btn btn-primary mb-2" style="width: 15%;" onclick="exportData()" style="width:100%;height: 100%;">
+          <span class="fa fa-download"></span>
+          Exportar CSV</button>
+       </div>
+
+       <div class="cold-md-12">
+        <table id="myTable" class="myTable">
+          <thead>
+        
+              <th>Escola</th>
+              <th>Tipo</th>
+              <th>Email</th>
+              <th>Telefone</th>
+              <th>Editar</th>
+            
+       
+          </thead>
+   
+          <tbody id="tabela_metas">
+            {% for escola in escolas %}
+            <!-- (0, 'Aguardando Análise'),
+            (1, 'Reprovado',),
+            (2, 'Em Análise'),
+            (3, 'Aprovado',), -->
+                    <tr>
+                      <td id="escola{{escola.id}}">{{escola.escola}}</td>
+                      
+                      <td id="tipo{{escola.id}}">{% if escola.tipo == 1 %}COTEC{% elif escola.tipo == 2 %} UDEPI {% elif escola.tipo == 0 %} EFG {% endif %} </td>
+                     
+                      <td id="email{{escola.id}}">{{escola.email}}</td>
+                      <td id="telefone{{escola.id}}">{{escola.telefone}}</td>
+                      <td>  <div class="dropdown">
+                        <button class="dropbtn btn icon btn-dark"><i class="fas fa-ellipsis-v"></i></button>
+                        <div class="dropdown-content">
+                          <a 
+                          type="button"
+                          onclick='insereTexto("{{escola.id}}")'
+                          class="btn icon btn-danger"
+                          data-bs-toggle="modal"
+                          data-bs-target="#warning"> <i class="bi bi-trash"></i> APAGAR</a>
+
+                          <a 
+                          type="button"
+                        onclick='atualiza("{{escola.id}}")'
+                        class="btn icon btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#xlarge"><i class="bi bi-pencil"></i> EDITAR</a>
+                        
+                        </div>
+                      </div></td>
+                     
+
+
+               
+                    </tr>
+                          
+            {% endfor %}
+          </tbody>
+        </table>
+        
+        {% if btn_enviar == True %}
+        <div class="cold-md-12" style="text-align: right;">
+          <a class="btn btn-primary  mt-2" href="/enviar-editais" style="width: 40%; display: none;"  style="width:100%;height: 100%;">
+            <span class="fa fa-paper-plane"></span> 
+            ENVIAR EDITAIS PARA SISTEMA DE SELEÇÃO</a>
+         </div>
+        {% endif %}
+      </div>
+       
+       
+      </div>
+      
+    </div>
+</div>
+  {% else %}
+<div class="alert alert-danger" role="alert">
+  :'( Desculpe, mas você não tem permissões para acessar esta funcionalidade do sistema! {{permission.permission}}
+</div>
+{% endif %}
+</div>
+
+<div
+  class="modal fade text-left"
+  id="warning"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel140"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+    role="document"
+  >
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title white" id="myModalLabel140">
+          Confirma a exclusão da escola?
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i data-feather="x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">Ao confirmar, todos os registros relacionados a escola serão apagados.</div>
+      <div class="modal-footer">
+        <form
+          name="Form"
+          id="Form"
+          method="POST"
+          action="/delete-escola"
+        >
+          {% csrf_token %}
+          <div style="display: none">
+            <input type="text" id="id_deleta" name="id_deleta" />
+          </div>
+          <button
+            type="button"
+            class="btn btn-light-secondary"
+            data-bs-dismiss="modal"
+          >
+            <i class="bx bx-x d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">Fechar</span>
+          </button>
+          <button class="btn btn-danger ml-1" type="submit">
+            Confirmar Exclusão
+          </button>
+        </form>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<div
+  class="modal fade text-left w-100"
+  id="xlarge"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel16"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+    role="document"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel16">Editar Dados</h4>
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          name="Form"
+          id="form_update"
+          class="form-control"
+          method="post"
+          action="/editar-metas-sintetica"
+        >
+          {% csrf_token %}
+
+          <input
+            type="Text"
+            class="form-control"
+            id="id_edit"
+            name="id_edit"
+            placeholder="Informe a escola:"
+            style="display: none;"
+          />
+
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label for="basicInput">Escola:</label>
+            
+              <input
+                  type="text"
+                  class="form-control"
+                  id="escolaModal"
+                  name="escolaModal"
+                  placeholder="Escola:"
+                 
+            />
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label for="basicInput"><b>TIPO:</b></label>
+              <select class="form-control" id="tipoModal" name="tipoModal">
+                <option value="0">EFG</option> 
+                <option value="1">COTEC</option> 
+                <option value="2">UDEPI</option>  
+              </select>
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label for="basicInput">Email:</label>
+            
+              <input
+                  type="email"
+                  class="form-control"
+                  id="emailModal"
+                  name="emailModal"
+                  placeholder="Email:"
+                 
+            />
+            </div>
+
+            
+            <div class="col-md-6 form-group">
+              <label for="basicInput">Telefone:</label>
+            
+              <input
+                  type="text"
+                  class="form-control"
+                  id="telefoneModal"
+                  name="telefoneModal"
+                  placeholder="Telefone:"
+                 
+            />
+            </div>
+
+          </div>
+
+          <div class="form-group" style="width: 100%; text-align: right">
+          <button data-bs-dismiss="modal" type="submit" class="btn btn-light-secondary">Fechar</button> <button type="submit" class="btn btn-success">Atualizar Escola</button>
+          </div>
+        </form>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+{% block javascript %}
+
+
+
+<script>
+
+function atualiza(id) {
+  let escola = document.getElementById("escola"+id).innerHTML
+  let tipo = document.getElementById("tipo"+id).innerHTML
+
+  if(tipo == "UDEPI"){
+    tipo = 2
+  }else if (tipo == "EFG"){
+    tipo = 0
+
+  }else{
+    tipo = 1
+  }
+  let email = document.getElementById("email"+id).innerHTML
+  let telefone = document.getElementById("telefone"+id).innerHTML
+  console.log(tipo)
+  document.getElementById("id_edit").value = id;
+  document.getElementById("escolaModal").value = escola;
+  $('#tipoModal').val(tipo).change();
+  document.getElementById("emailModal").value = email;
+  document.getElementById("telefoneModal").value = telefone;
+
+
+
+}
+
+
+function insereTexto(id) {
+    console.log(id,"lblaldskalskdaldksal")
+    document.getElementById("id_deleta").value = id;
+  }
+
+function exportData(){
+    /* Get the HTML data using Element by Id */
+    var table = document.getElementById("tabela_metas");
+ 
+    /* Declaring array variable */
+    var rows =[];
+    header = ['N° Edital,Escola,Tipo,Ano,Data Inicial do Edital,Data Final do Edital,Data Inicial da Inscrição,Data Final da Inscrição,Status']
+    rows.push(header)
+    //iterate through rows of table
+    for(var i=0,row; row = table.rows[i];i++){
+        //rows would be accessed using the "row" variable assigned in the for loop
+        //Get each cell value/column from the row
+        column1 = row.cells[0].innerText;
+        column2 = row.cells[1].innerText;
+        column3 = row.cells[2].innerText;
+        column4 = row.cells[3].innerText;
+        column5 = row.cells[4].innerText;
+        column6 = row.cells[5].innerText;
+        column7 = row.cells[6].innerText;
+        column8 = row.cells[7].innerText;
+        column9 = row.cells[8].innerText;
+       
+  
+        
+ 
+    /* add a new records in the array */
+        rows.push(
+            [
+                column1,
+                column2,
+                column3,
+                column4,
+                column5,
+                column6,
+                column7,
+                column8,
+                column9
+
+            ]
+        );
+ 
+        }
+        csvContent = "data:text/csv;charset=utf-8,";
+         /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+        rows.forEach(function(rowArray){
+            row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+ 
+        /* create a hidden <a> DOM node and set its download attribute */
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Editais.csv");
+        document.body.appendChild(link);
+         /* download the data file named "Stock_Price_Report.csv" */
+        link.click();
+  }
+
+
+  $("#edital").change(function(){
+    const url = "/ajax/ajax-load-turmas-v2";
+    // const url_table = "/ajax/ajax_load_turmas_edital_filtro";
+
+    edital_id = document.getElementById('edital').value
+
+
+    
+    $.ajax({
+          url : url,
+          data: {'id': edital_id,},
+          success: function(data){
+              $("#painel_edital").html(data);
+              $("#aprovar").show();
+              $("#reprovar").show();
+          }
+      });
+
+ 
+  })
+
+  function cancela_edital()
+    {
+      var edital_value = $( "#edital option:selected" ).text();
+      var edital_id = document.getElementById('edital').value
+
+      document.getElementById('id_edital_modal').value = edital_id
+      document.getElementById('dados_edital').innerHTML = edital_value
+
+      }
+
+</script>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+ <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+{% endblock %}
+
+{% endblock content %}

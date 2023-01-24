@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django_bootstrap_icons',
     'fontawesome_5',
     'aprovaedital',
+    'cadastrar_escola',
 ]
 
 MIDDLEWARE = [

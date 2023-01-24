@@ -15,6 +15,7 @@ from django_filters.views import FilterView
 from django_tables2.export.views import ExportMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django_tables2.paginators import LazyPaginator
+from django.db import connection, reset_queries
 from appprojeto1.forms import (
     AprovarCursosFilterFormHelper,
     AprovarCursosSubmitFormView,
@@ -643,7 +644,7 @@ def cadastrar_metas(request):
     perm_escolas = perm[0]['escola_id']
     print(perm_escolas)
     tipo_curso = Metas_tipo.objects.all()
-    escolas_cad = Metas_escolas.objects.filter(tipo=0)
+    escolas_cad = Metas_escolas.objects.filter(tipo__in=[0,1])
     modalidade = Metas_modalidade.objects.all()
     if int(perm_escolas) != 0:
         lancamentos = Metas_efg.objects.filter(escola=perm_escolas).all()
@@ -961,13 +962,15 @@ def editarmetas(request):
 
 @login_required(login_url='/')
 def cadastrar_meta_sintetica(request):
-    escolas = Metas_escolas.objects.filter(tipo=0)
+    escolas = Metas_escolas.objects.filter(tipo__in=[0,1])
     tipo_curso = Metas_tipo.objects.all()
     modalidade = Metas_modalidade.objects.all()
     trimestre = Metas_trimestre.objects.all()
     descricao = Metas_descricoes.objects.all()
-    meta_sintetica = Metas_sinteticas.objects.select_related('escola').select_related(
-        'modalidade').select_related('categoria').all().order_by('ano')
+    reset_queries()
+    meta_sintetica = Metas_sinteticas.objects.select_related('escola','modalidade').all()
+    print(connection.queries)
+    print(meta_sintetica)
     eixos = Eixos.objects.all()
     return render(request, 'cadastro_metas_sinteticas.html', {'meta_sinteticas': meta_sintetica,
                                                               'escolas': escolas,
@@ -1146,7 +1149,8 @@ def apaga_orcamento(request):
 
 @login_required(login_url='/')
 def cadastro_curso_escola(request):
-    escolas = Metas_escolas.objects.filter(tipo=0)
+    escolas = Metas_escolas.objects.filter(tipo__in=[0,1]).values()
+    print(escolas)
     curso = Cadastrar_curso.objects.all()
     return render(request, 'cadastro_curso_escola.html', {'escolas': escolas, 'cursos': curso, 'permissoes': get_permission(request)})
 
@@ -1204,7 +1208,7 @@ def cadastrar_curso(request):
     eixos_curso = Cadastrar_curso.objects.raw(
         'Select * from cursos group by eixos_id')
     modalidade = Metas_modalidade.objects.all()
-    escolas = Metas_escolas.objects.filter(tipo=0).all()
+    escolas = Metas_escolas.objects.filter(tipo__in=[0,1]).all()
     eixos_inicial = Eixos.objects.select_related('escola').filter(escola_id=39)
     return render(request, 'cadastro_curso.html', {"cursos": cursos, 'tipos': tipos, 'eixos': eixos, 'escolas_cursos': escolas_cursos, 'tipo_curso': tipo_cursos, 'eixos_curso': eixos_curso, 'eixos_inicial': eixos_inicial, 'modalidades': modalidade, 'escolas': escolas, 'permissoes': get_permission(request)})
 
