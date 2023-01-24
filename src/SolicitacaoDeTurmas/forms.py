@@ -71,7 +71,7 @@ class SolicitacaoDeTurmas(forms.ModelForm):
             )
         )
 
-        self.fields['escola'].queryset = Metas_escolas.objects.filter(tipo__in=(0,1))
+        self.fields['escola'].queryset = Metas_escolas.objects.filter(tipo__in=[0, 1])
 
         self.fields['unidade_ensino'].queryset = Metas_escolas.objects.filter(
             tipo=2)
