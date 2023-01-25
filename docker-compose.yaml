@@ -21,6 +21,8 @@ services:
             COTEC_DOMAINS_DB: ${COTEC_DOMAINS_DB}
             COTEC_DOMAINS_PASS: ${COTEC_DOMAINS_PASS}
             PRIMARY_DOMAIN_NAME: ${PRIMARY_DOMAIN_NAME}
+        external_links:
+            - database
         labels:
             #Enable Traefk 
             - "traefik.enable=true"
