@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+    database:
+        image: mariadb
+        restart: always
+        environment:
+            MARIADB_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+        volumes:
+            - ./data:/var/lib/mysql
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        links:
+            - database
+        environment:
+        PMA_HOST: database
+        PMA_PORT: 3306
+        PMA_ARBITRARY: 1
+        restart: always
+        labels:
+            #Enable Traefk 
+            - "traefik.enable=true"
+            - "traefik.docker.network=backend"
+            
+            - "traefik.constraint-label-stack=database_web_admin"
+            - "traefik.http.services.database_web_admin.loadbalancer.server.port=8000"
+            #http
+            - "traefik.http.routers.database_web_admin_http.entrypoints=web"
+            - "traefik.http.routers.database_web_admin_http.rule=Host(`pma.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.database_web_admin_http.middlewares=https_redirect"
+            #https
+            - "traefik.http.routers.database_web_admin_https.rule=Host(`pma.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.database_web_admin_https.entrypoints=websecure"
+            - "traefik.http.routers.database_web_admin_https.tls.certresolver=letsencryptresolver"
+networks:
+    default:
+        external: true
+        name: backend
