@@ -8,14 +8,15 @@ services:
             MARIADB_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
         volumes:
             - ./data:/var/lib/mysql
+
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         links:
             - database
         environment:
-        PMA_HOST: database
-        PMA_PORT: 3306
-        PMA_ARBITRARY: 1
+            PMA_HOST: database
+            PMA_PORT: 3306
+            PMA_ARBITRARY: 1
         restart: always
         labels:
             #Enable Traefk 
