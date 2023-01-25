@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3'
 
 services:
     database:
@@ -12,9 +12,9 @@ services:
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         links:
-            - database
+            - projeto_efg-database-1
         environment:
-            PMA_HOST: database
+            PMA_HOST: projeto_efg-database-1
             PMA_PORT: 3306
             PMA_ARBITRARY: 1
         restart: always

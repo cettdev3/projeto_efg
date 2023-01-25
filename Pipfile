@@ -19,6 +19,7 @@ django-bootstrap-icons = "*"
 django-fontawesome-5 = "*"
 tablib = {extras = ["xlsx"], version = "*"}
 pycamunda = "*"
+pyyaml = "*"
 
 [dev-packages]
 autopep8 = "*"
