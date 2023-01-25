@@ -4,6 +4,7 @@ services:
     database:
         image: mariadb
         restart: always
+        container_name: ensino_database
         environment:
             MARIADB_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
         volumes:
