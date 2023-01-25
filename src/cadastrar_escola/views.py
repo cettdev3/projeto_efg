@@ -35,8 +35,26 @@ def cad_escola(request):
 def delete_escola(request):
     codigo = request.POST['id_deleta']
     escola = Metas_escolas.objects.get(id=codigo)
-    print(escola)
     escola.delete()
 
     messages.success(request, 'Escola removida com sucesso!')
+    return redirect('/cadastrar-escola')
+
+def edit_escola(request):
+    codigo = request.POST['id_edit']
+    escola = request.POST['escolaModal']
+    tipo = request.POST['tipoModal']
+    email = request.POST['emailModal']
+    telefone = request.POST['telefoneModal']
+
+    escolaEdit = Metas_escolas.objects.get(id=codigo)
+
+    escolaEdit.escola = escola
+    escolaEdit.tipo = tipo
+    escolaEdit.email = email
+    escolaEdit.telefone = telefone
+
+    escolaEdit.save()
+
+    messages.success(request, 'Escola editada com sucesso!')
     return redirect('/cadastrar-escola')
