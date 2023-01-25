@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 
 class Cursos(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     id_eixos = models.IntegerField()
     tipo = models.IntegerField()
     nome = models.CharField(max_length=255)
@@ -20,7 +20,7 @@ class Cursos(models.Model):
 
 
 class Solicitacao(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     eixo = models.CharField(max_length=255)
     curso = models.CharField(max_length=255)
     modalidade = models.CharField(max_length=255)
@@ -42,7 +42,7 @@ class Metas_escolas(models.Model):
         (4, 'Salas de Extensão'),
     )
     
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     escola = models.CharField(max_length=255, null=False, blank=False)
     tipo = models.IntegerField(null=False, blank=False, choices=TIPO)
     email = models.EmailField(max_length=255, null=True, blank=True)
@@ -58,7 +58,7 @@ class Metas_escolas(models.Model):
 
 
 class Eixos(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     eixo_id = models.IntegerField()
     escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
     nome = models.CharField(max_length=255)
@@ -74,7 +74,7 @@ class Eixos(models.Model):
 
 class Metas_tipo(models.Model):
     
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     tipo = models.CharField(max_length=255)
 
     def __str__(self):
@@ -86,7 +86,7 @@ class Metas_tipo(models.Model):
 
 
 class Metas_modalidade(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     modalidade = models.CharField(max_length=255)
 
     def __str__(self):
@@ -98,7 +98,7 @@ class Metas_modalidade(models.Model):
 
 
 class Metas_trimestre(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     trimestre = models.CharField(max_length=255)
 
     def __str__(self):
@@ -110,7 +110,7 @@ class Metas_trimestre(models.Model):
 
 
 class Metas_descricoes(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     descricao = models.CharField(max_length=255)
 
     def __str__(self):
@@ -122,7 +122,7 @@ class Metas_descricoes(models.Model):
 
 
 class Metas_sinteticas(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     diretoria = models.CharField(max_length=255)
     escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
     ano = models.IntegerField()
@@ -140,7 +140,7 @@ class Metas_sinteticas(models.Model):
 
 
 class Rubrica(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     rubrica = models.CharField(max_length=255)
 
     class Meta:
@@ -149,7 +149,7 @@ class Rubrica(models.Model):
 
 
 class Item_apoiado(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     id_rubrica = models.IntegerField()
     item_apoiado = models.CharField(max_length=255)
 
@@ -159,7 +159,7 @@ class Item_apoiado(models.Model):
 
 
 class Unidades(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     und = models.CharField(max_length=255)
 
     class Meta:
@@ -168,7 +168,7 @@ class Unidades(models.Model):
 
 
 class Curso_escola(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     escola_id = models.IntegerField()
     curso_id = models.IntegerField()
     status = models.CharField(max_length=255)
@@ -179,7 +179,7 @@ class Curso_escola(models.Model):
         
 
 class Cadastrar_curso(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
     tipo = models.ForeignKey(Metas_tipo, on_delete=models.CASCADE)
     eixos = models.ForeignKey(Eixos, on_delete=models.CASCADE, null=True)
@@ -201,7 +201,7 @@ class Cadastrar_curso(models.Model):
 
 
 class Orcamento_plano_trabalho(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     tipo = models.CharField(max_length=255)
     rubrica = models.ForeignKey(Rubrica, on_delete=models.CASCADE)
     item_apoiado = models.ForeignKey(Item_apoiado, on_delete=models.CASCADE)
@@ -218,7 +218,7 @@ class Orcamento_plano_trabalho(models.Model):
 
 
 class Udepi_municipio(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
     municipio = models.CharField(max_length=255)
 
@@ -231,7 +231,7 @@ class Udepi_municipio(models.Model):
 
 
 class Edital(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     num_edital = models.IntegerField()
     ano = models.IntegerField()
     dt_ini_edit = models.DateField(null=True, blank=True)
@@ -277,7 +277,7 @@ class Metas_efg(models.Model):
         ('NOTURNO', 'NOTURNO'),
     )
 
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     diretoria = models.CharField(max_length=255, choices=DIRETORIAS, null=True)
     escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE, null=True)
     tipo_curso = models.ForeignKey(Metas_tipo, on_delete=models.CASCADE, null=True)
@@ -315,7 +315,7 @@ class Metas_efg(models.Model):
 
 
 class User_permission(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     permission = models.CharField(max_length=255)
     escola = models.ForeignKey(Metas_escolas, on_delete=models.DO_NOTHING, null=True)
@@ -325,7 +325,7 @@ class User_permission(models.Model):
         db_table = 'user_permission'
 
 class Users_ids(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     user_selecao_id =  models.IntegerField()
     user_siga_id = models.IntegerField()

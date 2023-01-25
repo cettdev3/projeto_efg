@@ -107,7 +107,9 @@ DATABASES = {
         'PASSWORD': config.EFG_DOMAINS_PASS,  # type: ignore
         'PORT': config.EFG_DOMAINS_PORT,  # type: ignore
 
-        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES,TRADITIONAL,NO_AUTO_VALUE_ON_ZERO'",
+        }
     },
     'cotec': {
         'ENGINE': 'django.db.backends.mysql',
@@ -117,9 +119,11 @@ DATABASES = {
         'PASSWORD': config.COTEC_DOMAINS_PASS,  # type: ignore
         'PORT': config.COTEC_DOMAINS_PORT,  # type: ignore
 
-        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES,TRADITIONAL,NO_AUTO_VALUE_ON_ZERO'",
+        }
     },
-    # 'cotec': {
+    # 'cotec_local': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': 'db.sqlite3',  # type: ignore
     # },
