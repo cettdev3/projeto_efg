@@ -1627,6 +1627,15 @@ def salvar_permissoes(request):
         pass
 
     try:
+        ce = request.POST['ce']
+        if checkbox != "":
+            checkbox += ",ce"
+        else:
+            checkbox += "ce"
+    except:
+        pass
+
+    try:
         dm = request.POST['dm']
         if checkbox != "":
             checkbox += ",dm"
