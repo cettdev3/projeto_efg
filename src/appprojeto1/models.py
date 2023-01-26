@@ -189,7 +189,7 @@ class Cadastrar_curso(models.Model):
     escolaridade = models.CharField(max_length=255)
     idade_min = models.IntegerField()
     carga_horaria = models.IntegerField()
-    siga_id = models.IntegerField()
+    siga_id = models.IntegerField(blank=False, null=True)
 
     def __str__(self):
         return self.curso
