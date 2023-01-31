@@ -239,7 +239,7 @@ class Edital(models.Model):
     escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
     status = models.CharField(max_length=255)
     pdf = models.CharField(max_length=255)
-    motivo = models.CharField(max_length=255)
+    motivo = models.CharField(max_length=255, blank=False, null=True)
 
     def __str__(self):
         return self.num_edital
