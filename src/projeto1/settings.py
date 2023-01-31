@@ -22,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config.DJANGO_SECRET_KEY #type: ignore
+SECRET_KEY = config.DJANGO_SECRET_KEY  # type: ignore
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(config.DJANGO_DEBUG) #type: ignore
+DEBUG = bool(config.DJANGO_DEBUG)  # type: ignore
 
 ALLOWED_HOSTS = ['*']
 
@@ -98,7 +98,10 @@ WSGI_APPLICATION = 'projeto1.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {},
+    'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': 'db.sqlite3',  # type: ignore
+    },
     'efg': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': config.EFG_DOMAINS_DB,  # type: ignore
@@ -122,11 +125,7 @@ DATABASES = {
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES,TRADITIONAL,NO_AUTO_VALUE_ON_ZERO'",
         }
-    },
-    # 'cotec_local': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': 'db.sqlite3',  # type: ignore
-    # },
+    }
 }
 
 DATABASE_ROUTERS = ['projeto1.routers.DataBaseRouter',]
