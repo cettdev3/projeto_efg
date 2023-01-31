@@ -1777,7 +1777,7 @@ def cadastrar_usuario(request):
         id_user = User.objects.filter(username=user).values()
 
         auth_user = User_permission.objects.create(
-            user_id=id_user[0]['id'], permission='', escola_id=0)
+            user_id=id_user[0]['id'], permission='', escola_id=None)
         
         users_ids = Users_ids.objects.create(user_id = id_user[0]['id'], user_selecao_id =idSele, user_siga_id = idSiga )
         messages.success(request, 'Usuário cadastrado com sucesso!')
