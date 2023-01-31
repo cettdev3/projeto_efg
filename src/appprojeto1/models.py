@@ -1,8 +1,6 @@
 from django.db import models
-from django.urls import reverse_lazy, reverse
-from django.core.validators import RegexValidator
+from django.urls import reverse_lazy
 from django.contrib.auth.models import User
-# Create your models here.
 
 
 class Cursos(models.Model):
@@ -33,7 +31,7 @@ class Solicitacao(models.Model):
 
 
 class Metas_escolas(models.Model):
-    
+
     TIPO = (
         (0, 'EFG'),
         (1, 'COTEC'),
@@ -41,7 +39,7 @@ class Metas_escolas(models.Model):
         (3, 'CVT'),
         (4, 'Salas de Extensão'),
     )
-    
+
     id = models.AutoField(primary_key=True)
     escola = models.CharField(max_length=255, null=False, blank=False)
     tipo = models.IntegerField(null=False, blank=False, choices=TIPO)
@@ -73,7 +71,7 @@ class Eixos(models.Model):
 
 
 class Metas_tipo(models.Model):
-    
+
     id = models.AutoField(primary_key=True)
     tipo = models.CharField(max_length=255)
 
@@ -176,7 +174,7 @@ class Curso_escola(models.Model):
     class Meta:
         managed = True
         db_table = 'curso_escola'
-        
+
 
 class Cadastrar_curso(models.Model):
     id = models.AutoField(primary_key=True)
@@ -188,7 +186,7 @@ class Cadastrar_curso(models.Model):
     status = models.CharField(max_length=255)
     escolaridade = models.CharField(max_length=255)
     idade_min = models.IntegerField()
-    carga_horaria = models.IntegerField()
+    carga_horaria = models.IntegerField(blank=False, null=True)
     siga_id = models.IntegerField(blank=False, null=True)
 
     def __str__(self):
@@ -279,9 +277,12 @@ class Metas_efg(models.Model):
 
     id = models.AutoField(primary_key=True)
     diretoria = models.CharField(max_length=255, choices=DIRETORIAS, null=True)
-    escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE, null=True)
-    tipo_curso = models.ForeignKey(Metas_tipo, on_delete=models.CASCADE, null=True)
-    curso = models.ForeignKey(Cadastrar_curso, on_delete=models.CASCADE, null=True)
+    escola = models.ForeignKey(
+        Metas_escolas, on_delete=models.CASCADE, null=True)
+    tipo_curso = models.ForeignKey(
+        Metas_tipo, on_delete=models.CASCADE, null=True)
+    curso = models.ForeignKey(
+        Cadastrar_curso, on_delete=models.CASCADE, null=True)
     turno = models.CharField(max_length=255, choices=TURNOS, null=True)
     ano = models.IntegerField()
     modalidade = models.ForeignKey(Metas_modalidade, on_delete=models.CASCADE)
@@ -296,7 +297,8 @@ class Metas_efg(models.Model):
     previsao_fechamento_edital = models.DateField(null=True, blank=True)
     data_registro = models.DateField(null=True, blank=True)
     eixo = models.ForeignKey(Eixos, on_delete=models.CASCADE, null=True)
-    udepi = models.ForeignKey(Udepi_municipio, on_delete=models.CASCADE, null=True)
+    udepi = models.ForeignKey(
+        Udepi_municipio, on_delete=models.CASCADE, null=True)
     situacao = models.IntegerField(
         default=0, choices=SITUACAO, null=True, blank=True)
     jus_reprovacao = models.TextField(default=None, null=True, blank=True)
@@ -318,16 +320,18 @@ class User_permission(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     permission = models.CharField(max_length=255)
-    escola = models.ForeignKey(Metas_escolas, on_delete=models.DO_NOTHING, null=True)
+    escola = models.ForeignKey(
+        Metas_escolas, on_delete=models.DO_NOTHING, null=True)
 
     class Meta:
         managed = True
         db_table = 'user_permission'
 
+
 class Users_ids(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    user_selecao_id =  models.IntegerField()
+    user_selecao_id = models.IntegerField()
     user_siga_id = models.IntegerField()
 
     class Meta:
