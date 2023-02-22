@@ -132,6 +132,12 @@
                                     <span>Processos</span>
                                 </a>
                                 <ul class="submenu">
+                                    <li class="sidebar-item has-sub">
+                                        <a href="#" class="sidebar-link">
+                                            <i class="bi bi-caret-right-fill"></i>
+                                            <span>Ensino</span>
+                                        </a>
+                                <ul class="submenu">
                                     {% if 'sicge' in permissoes.permission %}
                                         <li class="submenu-item">
                                             <a href="/eixos">Solicitar inclusão de curso na grade da escolas</a>
@@ -142,6 +148,8 @@
                                             <a href="/solicitacaodeturmas/form">Solicitação de abertura de turmas</a>
                                         </li>
                                     {% endif %}
+                                </ul>
+                                </li>
                                 </ul>
                             </li>
                         </ul>
