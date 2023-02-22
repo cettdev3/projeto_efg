@@ -58,87 +58,71 @@
                         </div>
                     </div>
                     <div class="sidebar-menu">
+
                         <ul class="menu">
-                            <li class="submenu-item has-sub">
-                                <i class="bi bi-arrow-right-square"></i>
-                                <a href="#" class="submenu-link">Planejamento</a>
-                                <ul class="menu">
-                                    <li class="submenu-item">
-                                        <i class="bi bi-arrow-right-square"></i>
-                                        <a href="#" class="submenu-link">Ensino</a>
-                                        <ul class="submenu">
-                                            <li class="submenu-item">
-                                                <a href="/cadastrar-escola">Cadastrar Escolas</a>
-                                            </li>
-                                            <li class="submenu-item">
-                                                <a href="/cadastrar-curso">Cadastrar Curso</a>
-                                            </li>
-                                            <!-- Adicione outros itens de menu para Ensino aqui -->
-                                        </ul>
-                                    </li>
-                                    <!-- Adicione outros itens de submenu de Planejamento aqui -->
-                                </ul>
-                            </li>
-                        </ul>
-                        
-                        <!-- <ul class="menu">
                             <li class="sidebar-item has-sub">
                                 <a href="#" class="sidebar-link">
                                     <i class="bi bi-arrow-right-square"></i>
                                     <span>Planejamento</span>
                                 </a>
-                                <ul class="submenu">
-                                    {% if 'ima' in permissoes.permission %}
+                                <li class="sidebar-item has-sub">
+                                    <a href="#" class="sidebar-link">
+                                        <i class="bi bi-arrow-right-square"></i>
+                                        <span>Ensino</span>
+                                    </a>
+                                    <ul class="submenu">
+                                        {% if 'ima' in permissoes.permission %}
+                                            <li class="submenu-item">
+                                                <a href="/cadastrar-metas">Incluir Metas Analíticas</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if 'ims' in permissoes.permission %}
+                                            <li class="submenu-item">
+                                                <a href="/cadastrar-metas-sinteticas">Incluir Metas Sintético</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if 'opt' in permissoes.permission %}
+                                            <li class="submenu-item">
+                                                <a href="/orcamento-plano-trabalho">Orçamento de Plano de Trabalho</a>
+                                            </li>
+                                        {% endif %}
+                                        
+                                        {% if 'ce' in permissoes.permission %}
                                         <li class="submenu-item">
-                                            <a href="/cadastrar-metas">Incluir Metas Analíticas</a>
+                                            <a href="/cadastrar-escola">Cadastrar Escolas</a>
                                         </li>
-                                    {% endif %}
-                                    {% if 'ims' in permissoes.permission %}
-                                        <li class="submenu-item">
-                                            <a href="/cadastrar-metas-sinteticas">Incluir Metas Sintético</a>
-                                        </li>
-                                    {% endif %}
-                                    {% if 'opt' in permissoes.permission %}
-                                        <li class="submenu-item">
-                                            <a href="/orcamento-plano-trabalho">Orçamento de Plano de Trabalho</a>
-                                        </li>
-                                    {% endif %}
-                                       
-                                    {% if 'ce' in permissoes.permission %}
-                                    <li class="submenu-item">
-                                        <a href="/cadastrar-escola">Cadastrar Escolas</a>
-                                    </li>
-                                    {% endif %}
+                                        {% endif %}
 
-                                    {% if 'cc' in permissoes.permission %}
-                                        <li class="submenu-item">
-                                            <a href="/cadastrar-curso">Cadastrar Curso</a>
-                                        </li>
-                                    {% endif %}
-                                    {% if 'dm' in permissoes.permission %}
-                                        <li class="submenu-item">
-                                            <a href="{% url 'DivisaoDeMetasList' %}">Divisão de Metas</a>
-                                        </li>
-                                    {% endif %}
-                                    {% if 'ac' in permissoes.permission %}
-                                        <li class="submenu-item">
-                                            <a href="{% url 'AprovarCursosView' %}">Aprovação de Cursos</a>
-                                        </li>
-                                    {% endif %}
-                                    {% if 'ac' in permissoes.permission %}
-                                        <li class="submenu-item">
-                                            <a href="/verifica-turmas-edital">Inserir datas do Edital</a>
-                                        </li>
-                                    {% endif %}
-                                    {% if 'ae' in permissoes.permission %}
-                                        <li class="submenu-item">
-                                            <a href="/aprovar-edital">Aprovar Editais</a>
-                                        </li>
-                                    {% endif %}
-                                </ul>
+                                        {% if 'cc' in permissoes.permission %}
+                                            <li class="submenu-item">
+                                                <a href="/cadastrar-curso">Cadastrar Curso</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if 'dm' in permissoes.permission %}
+                                            <li class="submenu-item">
+                                                <a href="{% url 'DivisaoDeMetasList' %}">Divisão de Metas</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if 'ac' in permissoes.permission %}
+                                            <li class="submenu-item">
+                                                <a href="{% url 'AprovarCursosView' %}">Aprovação de Cursos</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if 'ac' in permissoes.permission %}
+                                            <li class="submenu-item">
+                                                <a href="/verifica-turmas-edital">Inserir datas do Edital</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if 'ae' in permissoes.permission %}
+                                            <li class="submenu-item">
+                                                <a href="/aprovar-edital">Aprovar Editais</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                    </li>
                             </li>
                             
-                        </ul> -->
+                        </ul>
                         <ul class="menu">
                             <li class="sidebar-item has-sub">
                                 <a href="#" class="sidebar-link">
