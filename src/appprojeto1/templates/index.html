@@ -121,24 +121,14 @@
                                         {% endif %}
                                     </ul>
                                     </li>
-                                </ul>
-                            </li>
-                            
-                        </ul>
-                        <ul class="menu">
-                            <li class="sidebar-item has-sub">
-                                <a href="#" class="sidebar-link">
-                                    <i class="bi bi-arrow-right-square"></i>
-                                    <span>Processos</span>
-                                </a>
-                                <ul class="submenu">
+
                                     <li class="sidebar-item has-sub">
                                         <a href="#" class="sidebar-link">
-                                            <i class="bi bi-caret-right-fill"></i>
-                                            <span>Ensino</span>
+                                            <i class="fa fa-object-group"></i>
+                                            <span>Processos</span>
                                         </a>
-                                <ul class="submenu">
-                                    {% if 'sicge' in permissoes.permission %}
+                                        <ul class="submenu">
+                                            {% if 'sicge' in permissoes.permission %}
                                         <li class="submenu-item">
                                             <a href="/eixos">Solicitar inclusão de curso na grade da escolas</a>
                                         </li>
@@ -148,16 +138,18 @@
                                             <a href="/solicitacaodeturmas/form">Solicitação de abertura de turmas</a>
                                         </li>
                                     {% endif %}
-                                </ul>
-                                </li>
+                                        </ul>
+                                        </li>
                                 </ul>
                             </li>
+                            
                         </ul>
+ 
                         <ul class="menu">
                             <li class="sidebar-item has-sub">
                                 {% if 'gpu' in permissoes.permission %}
                                     <a href="#" class="sidebar-link">
-                                        <i class="bi bi-arrow-right-square"></i>
+                                        <i class="fa fa-lock"></i>
                                         <span>Permissões</span>
                                     </a>
                                 {% endif %}
