@@ -325,7 +325,7 @@
         
                               <div style="border-radius: 15px; background-color: #0C504B; padding: 10px;">
                               <div class="row" >
-                              <div class="col-md-5 ">
+                              <div class="col-md-3 ">
                                 <label for="basicInput" style="color: #FFFF;">INFORME A ESCOLA:</label>
                                 <select class="form-control" id="filtro_escola" name="filtro_escola" onchange="search_escola()">
                                   <option></option>
@@ -335,7 +335,16 @@
                                   {% endfor %}     
                                 </select>
                               </div>
+                              <div class="col-md-3 ">
+                                <label for="basicInput" style="color: #FFFF;">INFORME UM EIXO:</label>
+                                <select class="form-control" id="filtro_eixo" name="filtro_eixo" onchange="search_escola()">
+   
+                                  {% for eixo in eixos_curso %}
+                                  <option value="{{eixo.eixos.id}}">{{eixo.eixos.nome}}</option>
+                                  {% endfor %}     
+                                </select>
                         
+                              </div>
                               <div class="col-md-3 ">
                                 <label for="basicInput" style="color: #FFFF;">INFORME O TIPO:</label>
                                 <select class="form-control" id="filtro_tipo" name="filtro_tipo" onchange="search_escola()">
@@ -346,16 +355,18 @@
                                 </select>
                         
                               </div>
-                              <div class="col-md-4 ">
-                                <label for="basicInput" style="color: #FFFF;">INFORME UM EIXO:</label>
-                                <select class="form-control" id="filtro_eixo" name="filtro_eixo" onchange="search_escola()">
+
+                              <div class="col-md-3 ">
+                                <label for="basicInput" style="color: #FFFF;">INFORME A MODALIDADE:</label>
+                                <select class="form-control" id="filtro_modalidade" name="filtro_modalidade"onchange="search_escola()">
                                   <option></option>
-                                  {% for eixo in eixos_curso %}
-                                  <option value="{{eixo.eixos.id}}">{{eixo.eixos.nome}}</option>
+                                  {% for modalidade in modalidades%}
+                                  <option value="{{modalidade.id}}">{{modalidade.modalidade}}</option>
                                   {% endfor %}     
                                 </select>
                         
                               </div>
+                             
                             </div>
                         </div>
                          
@@ -374,9 +385,9 @@
                                     <th>Tipo</th>
                                     <th>Eixo</th>
                                     <th>Curso</th>
-                                    <th>ID Siga</th>
-                                    <th>Escolaridade</th>
-                                    <th>Modalidade</th>
+                                    <th style="display: none;">ID Siga</th>
+                                    <th style="display: none;">Escolaridade</th>
+                                    <th >Modalidade</th>
                                     <th>Status</th>
                                     <th></th>
                                     <th>On/Off</th>
@@ -396,8 +407,8 @@
                                             <span id="ch{{curso.id}}" style="display: none;">{{curso.carga_horaria}}</span>
                                             <span id="idade{{curso.id}}" style="display: none;">{{curso.idade_min}}</span>
                                             <td id="curso{{curso.id}}">{{curso.curso}}</td>
-                                            <td id="idsiga{{curso.id}}">{{curso.siga_id}}</td>
-                                            <td id="escolaridade{{curso.id}}">{{curso.escolaridade}}</td>
+                                            <td style="display: none;" id="idsiga{{curso.id}}">{{curso.siga_id}}</td>
+                                            <td style="display: none;"  id="escolaridade{{curso.id}}">{{curso.escolaridade}}</td>
                                             <td id="modalidade_curso{{curso.id}}">{{curso.modalidade}}</td>
                                             
                                             {% if curso.status == "ATIVO" %}
@@ -703,7 +714,7 @@
             id="id_edit"
             name="id_edit"
             placeholder="Informe a escola:"
-            style="display: inline;"
+            style="display: none;"
           />
 
           <div class="row">
@@ -753,7 +764,7 @@
             <div class="col-md-4 form-group">
               <label for="basicInput"><b>EIXO:</b></label>
               <select class="form-control" id="eixo_modal" name="eixo_modal">
-                {% for eixo in eixos_inicial %}
+                {% for eixo in eixos %}
                 <option value="{{eixo.id}}">{{eixo.nome}}</option>
                {% endfor %}
               </select>
@@ -899,12 +910,15 @@
     filter_escola = $('#filtro_escola option:selected').text();
     filter_tipo = $('#filtro_tipo option:selected').text();
     filter_eixo = $('#filtro_eixo option:selected').text();
+    filter_modalidade = $('#filtro_modalidade option:selected').text();
+
     let rows = $("#tabela_metas tr")
 
     rows.filter(function () {
         let valueEscola = $(this).children("td").eq(0).text()
         let valueTipo = $(this).children("td").eq(1).text()
         let valueEixo = $(this).children("td").eq(2).text()
+        let valueModalidade = $(this).children("td").eq(6).text()
 
         let showRowEscola = true
         if (filter_escola) {
@@ -923,9 +937,16 @@
           showRowEixo &= valueEixo.toUpperCase().trim() == filter_eixo.toUpperCase().trim()
         }
 
+        let showRowModalidade = true
+        if (filter_modalidade) {
+          showRowModalidade &= valueModalidade.toUpperCase().trim() == filter_modalidade.toUpperCase().trim()
+        }
+
+
         if (showRowEscola &&
           showRowTipo &&
-          showRowEixo) $(this).show()
+          showRowEixo &&
+          showRowModalidade) $(this).show()
         else $(this).hide() 
       })
   }
