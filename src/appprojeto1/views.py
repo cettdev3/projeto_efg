@@ -717,7 +717,8 @@ def cad_metas(request):
         previsao_fechamento_edital = request.POST['p_fechamento_edital']
     eixos = request.POST['eixo']
     udepi = request.POST['municipio']
-    
+    curso_tecnico = request.POST['curso_tecnico']
+    qualificacoes = request.POST['qualificacoes']
 
     meta_is_exist = Metas_efg.objects.filter(escola_id=escola, tipo_curso_id=tipo_curso,
                                              modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso, previsao_inicio=previsao_inicio, previsao_fim=previsao_fim).values()
@@ -749,6 +750,8 @@ def cad_metas(request):
                 previsao_fechamento_edital=previsao_fechamento_edital,  # type: ignore
                 jus_reprovacao='',
                 udepi_id=udepi,
+                curso_tecnico = curso_tecnico,
+                qualificacoes = qualificacoes,
                 num_edital_id=0,
             )
         else:
@@ -770,6 +773,8 @@ def cad_metas(request):
                 dias_semana=dias_semana,
                 jus_reprovacao='',
                 udepi_id=udepi,
+                curso_tecnico = curso_tecnico,
+                qualificacoes = qualificacoes,
                 num_edital_id=0,
             )
 
