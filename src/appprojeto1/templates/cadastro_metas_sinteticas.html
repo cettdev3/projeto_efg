@@ -312,6 +312,7 @@
           <div class="row" >
           <div class="col-md-10 form-group" >
             <select class="form-control" id="myInput" name="myInput" onchange="search_escola()" style="background-color: rgba(0, 97, 36, 0.922); color: #fff;">
+              <option value="TODOS">TODOS</option>
               {% for escola in escolas %}
               <option value="{{escola.id}}">{{escola.escola}}</option>
               {% endfor %}            
@@ -660,6 +661,9 @@ function search_escola() {
     let rows = $("#tabela_metas tr")
     console.log(rows)
 
+    if(filter_escola === "TODOS"){
+      rows.show();
+    }else{
     rows.filter(function () {
         let valueEscola = $(this).children("td").eq(1).text()
         str = valueEscola.replace(/[0-9]/g, '')
@@ -674,7 +678,8 @@ function search_escola() {
 
         if (showRowEscola) $(this).show()
         else $(this).hide() 
-      })
+      });
+    }
   }
   
   </script>
