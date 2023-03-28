@@ -315,15 +315,20 @@
           </select>
           </div>
 
-          <div class="col-md-10 form-group" style="text-align: right;">
-            <label for="basicInput" style="width: 100%; text-align: right;"><b> </b></label>
-            <a href="/cadastrar-metas" class="btn btn-secondary" >Voltar</a>
-           {% if jus_reprovacao != ""%}
-           <button type="button"   data-bs-toggle="modal"data-bs-target="#motivo"style="width: 34%;" class="btn btn-primary">Motivo</button>
-           {% endif %}
-          <button type="button" id="valida_form onclick="validaForm()" class="btn btn-success">Atualizar Metas</button>
-          
+          <div class="col-md-4 form-group">
+            {% if jus_reprovacao != ""%}
+            <button type="button"   data-bs-toggle="modal"data-bs-target="#motivo"style="width: 34%;" class="btn btn-primary">Motivo</button>
+            {% endif %}
           </div>
+
+          <div class="col-md-4 form-group">
+            <a href="/cadastrar-metas" class="btn btn-secondary" >Voltar</a>
+          </div>
+          
+          <div class="col-md-4 form-group">
+            <button type="button" id="valida_form" onclick="validaForm()" class="btn btn-success">Atualizar Metas</button>
+          </div>
+         
 
 
 
