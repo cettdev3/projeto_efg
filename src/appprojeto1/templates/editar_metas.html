@@ -308,7 +308,7 @@
           </div>
 
           <div class="col-md-4 form-group">
-            <label for="basicInput"><b>QUALIFICAÇÕES:{{qualificacoes}}</b></label>
+            <label for="basicInput"><b>QUALIFICAÇÕES:</b></label>
             <select class="form-control" id="qualificacoes" name="qualificacoes" required="">
             
            
@@ -495,7 +495,7 @@
           const option1 = document.createElement("option");
           option1.value = "E-commerce";
           option1.textContent = "E-commerce";
-          if({{qualificacoes}} == "E-commerce"){
+          if(qualificacoes.value == "E-commerce"){
             option1.selected = true;
           }
           qualificacoes.appendChild(option1);
