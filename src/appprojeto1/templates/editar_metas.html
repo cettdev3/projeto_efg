@@ -298,11 +298,11 @@
             <label for="basicInput"><b>CURSO TÉCNICO:</b></label>
             <select class="form-control" id="curso_tecnico" name="curso_tecnico" required="">
             <option selected="" value="">---------</option>
-            <option value="Aprendizado De Máquina">Aprendizado De Máquina</option>  
-            <option value="Técnico Em Desenvolvimento Web E Mobile">Técnico Em Desenvolvimento Web E Mobile</option>    
-            <option value="Empresas Digitais">Empresas Digitais</option>  
-            <option value="Marketing E Mídias Sociais">Marketing E Mídias Sociais</option>
-            <option value="Econômia Criativa">Econômia Criativa</option>
+            <option {% if curso_tecnico == 'Aprendizado De Máquina' %} selected {% endif %} value="Aprendizado De Máquina">Aprendizado De Máquina</option>  
+            <option {% if curso_tecnico == 'Técnico Em Desenvolvimento Web E Mobile' %} selected {% endif %} value="Técnico Em Desenvolvimento Web E Mobile">Técnico Em Desenvolvimento Web E Mobile</option>    
+            <option {% if curso_tecnico == 'Empresas Digitais' %} selected {% endif %} value="Empresas Digitais">Empresas Digitais</option>  
+            <option {% if curso_tecnico == 'Marketing E Mídias Sociais' %} selected {% endif %} value="Marketing E Mídias Sociais">Marketing E Mídias Sociais</option>
+            <option {% if curso_tecnico == 'Econômia Criativa' %} selected {% endif %} value="Econômia Criativa">Econômia Criativa</option>
            
           </select>
           </div>
