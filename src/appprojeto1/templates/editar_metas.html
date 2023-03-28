@@ -296,9 +296,20 @@
 
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>CURSO TÉCNICO:</b></label>
-          <select class="form-control" id="curso_tecnico" name="curso_tecnico" required="">
+            <select class="form-control" id="curso_tecnico" name="curso_tecnico" required="">
             <option selected="" value="">---------</option>
+            <option value="Aprendizado De Máquina">Aprendizado De Máquina</option>  
+            <option value="Técnico Em Desenvolvimento Web E Mobile">Técnico Em Desenvolvimento Web E Mobile</option>    
             <option value="Empresas Digitais">Empresas Digitais</option>  
+            <option value="Marketing E Mídias Sociais">Marketing E Mídias Sociais</option>
+           
+          </select>
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>Qualificações:</b></label>
+            <select class="form-control" id="qualificacoes" name="qualificacoes" required="">
+            
            
           </select>
           </div>
@@ -383,9 +394,62 @@
       </div>
 
  
-
-
-
+<script>
+      const curso_tecnico = document.getElementById("curso_tecnico");
+      const qualificacoes = document.getElementById("qualificacoes");
+      
+      curso_tecnico.addEventListener("change", function() {
+        // Limpa as opções existentes no Select2
+        qualificacoes.innerHTML = "";
+      
+        // Obtém o valor selecionado no Select1
+        const cursoSelecionado = curso_tecnico.value;
+      
+        // Define as opções do Select2 com base no curso selecionado
+        if (cursoSelecionado === "Aprendizado De Máquina") {
+          const option1 = document.createElement("option");
+          option1.value = "Python";
+          option1.textContent = "Python";
+          qualificacoes.appendChild(option1);
+      
+          const option2 = document.createElement("option");
+          option2.value = "Estatística";
+          option2.textContent = "Estatística";
+          qualificacoes.appendChild(option2);
+        } else if (cursoSelecionado === "Técnico Em Desenvolvimento Web E Mobile") {
+          const option1 = document.createElement("option");
+          option1.value = "HTML";
+          option1.textContent = "HTML";
+          qualificacoes.appendChild(option1);
+      
+          const option2 = document.createElement("option");
+          option2.value = "CSS";
+          option2.textContent = "CSS";
+          qualificacoes.appendChild(option2);
+        } else if (cursoSelecionado === "Empresas Digitais") {
+          const option1 = document.createElement("option");
+          option1.value = "Marketing Digital";
+          option1.textContent = "Marketing Digital";
+          qualificacoes.appendChild(option1);
+      
+          const option2 = document.createElement("option");
+          option2.value = "E-commerce";
+          option2.textContent = "E-commerce";
+          qualificacoes.appendChild(option2);
+        } else if (cursoSelecionado === "Marketing E Mídias Sociais") {
+          const option1 = document.createElement("option");
+          option1.value = "Redes Sociais";
+          option1.textContent = "Redes Sociais";
+          qualificacoes.appendChild(option1);
+      
+          const option2 = document.createElement("option");
+          option2.value = "Publicidade Online";
+          option2.textContent = "Publicidade Online";
+          qualificacoes.appendChild(option2);
+        }
+      });
+      
+</script>
 <script>
   var carga_horaria_inicial =  $("#ch_total").val()
   var dia_semana_atual = $("#dias_semana").val()
@@ -785,4 +849,3 @@
 </script>
 
   {% endblock content %}
-
