@@ -302,6 +302,7 @@
             <option value="Técnico Em Desenvolvimento Web E Mobile">Técnico Em Desenvolvimento Web E Mobile</option>    
             <option value="Empresas Digitais">Empresas Digitais</option>  
             <option value="Marketing E Mídias Sociais">Marketing E Mídias Sociais</option>
+            <option value="Econômia Criativa">Econômia Criativa</option>
            
           </select>
           </div>
@@ -408,44 +409,137 @@
         // Define as opções do Select2 com base no curso selecionado
         if (cursoSelecionado === "Aprendizado De Máquina") {
           const option1 = document.createElement("option");
-          option1.value = "Python";
-          option1.textContent = "Python";
+          option1.value = "Fundamentos de Aprendizado de Máquina";
+          option1.textContent = "Fundamentos de Aprendizado de Máquina";
           qualificacoes.appendChild(option1);
       
           const option2 = document.createElement("option");
-          option2.value = "Estatística";
-          option2.textContent = "Estatística";
+          option2.value = "Programação de Computadores";
+          option2.textContent = "Programação de Computadores";
           qualificacoes.appendChild(option2);
+
+          const option3 = document.createElement("option");
+          option3.value = "Planejamento e Criação de Novos Negócios (Start up)";
+          option3.textContent = "Planejamento e Criação de Novos Negócios (Start up)";
+          qualificacoes.appendChild(option3);
+
+          const option4 = document.createElement("option");
+          option4.value = "E-commerce";
+          option4.textContent = "E-commerce";
+          qualificacoes.appendChild(option4);
+
+          const option5 = document.createElement("option");
+          option5.value = "Empreendedorismo Criativo";
+          option5.textContent = "Empreendedorismo Criativo";
+          qualificacoes.appendChild(option5);
+
         } else if (cursoSelecionado === "Técnico Em Desenvolvimento Web E Mobile") {
           const option1 = document.createElement("option");
-          option1.value = "HTML";
-          option1.textContent = "HTML";
+          option1.value = "Tratamento e Análise de Dados";
+          option1.textContent = "Tratamento e Análise de Dados";
           qualificacoes.appendChild(option1);
       
           const option2 = document.createElement("option");
-          option2.value = "CSS";
-          option2.textContent = "CSS";
+          option2.value = "Desenvolvimento Web Front-End";
+          option2.textContent = "Desenvolvimento Web Front-End";
           qualificacoes.appendChild(option2);
+
+          const option3 = document.createElement("option");
+          option3.value = "Tecnologias e Inovação para Start ups";
+          option3.textContent = "Tecnologias e Inovação para Start ups";
+          qualificacoes.appendChild(option3);
+
+          const option4 = document.createElement("option");
+          option4.value = "Mídias Sociais";
+          option4.textContent = "Mídias Sociais";
+          qualificacoes.appendChild(option4);
+
+          const option5 = document.createElement("option");
+          option5.value = "Serviços Criativos Especializados";
+          option5.textContent = "Serviços Criativos Especializados";
+          qualificacoes.appendChild(option5);
+
         } else if (cursoSelecionado === "Empresas Digitais") {
           const option1 = document.createElement("option");
-          option1.value = "Marketing Digital";
-          option1.textContent = "Marketing Digital";
+          option1.value = "Reconhecimento de Padrões";
+          option1.textContent = "Reconhecimento de Padrões";
           qualificacoes.appendChild(option1);
-      
+
           const option2 = document.createElement("option");
-          option2.value = "E-commerce";
-          option2.textContent = "E-commerce";
+          option2.value = "Desenvolvimento Web Back-End";
+          option2.textContent = "Desenvolvimento Web Back-End";
           qualificacoes.appendChild(option2);
+
+          const option3 = document.createElement("option");
+          option3.value = "Gestão do Negócio e Criação de Valor";
+          option3.textContent = "Gestão do Negócio e Criação de Valor";
+          qualificacoes.appendChild(option3);
+
+          const option4 = document.createElement("option");
+          option4.value = "Experiência do Usuário/Consumidor (UX)";
+          option4.textContent = "Experiência do Usuário/Consumidor (UX)";
+          qualificacoes.appendChild(option4);
+
+          const option5 = document.createElement("option");
+          option5.value = "Produtos Criativos Especializados";
+          option5.textContent = "Produtos Criativos Especializados";
+          qualificacoes.appendChild(option5);
+      
+        
         } else if (cursoSelecionado === "Marketing E Mídias Sociais") {
           const option1 = document.createElement("option");
-          option1.value = "Redes Sociais";
-          option1.textContent = "Redes Sociais";
+          option1.value = "Aprendizado Profundo";
+          option1.textContent = "Aprendizado Profundo";
           qualificacoes.appendChild(option1);
-      
+
           const option2 = document.createElement("option");
-          option2.value = "Publicidade Online";
-          option2.textContent = "Publicidade Online";
+          option2.value = "Auxiliar de Análise e Processo de Software";
+          option2.textContent = "Auxiliar de Análise e Processo de Software";
           qualificacoes.appendChild(option2);
+
+          const option3 = document.createElement("option");
+          option3.value = "Competências Empreendedoras";
+          option3.textContent = "Competências Empreendedoras";
+          qualificacoes.appendChild(option3);
+
+          const option4 = document.createElement("option");
+          option4.value = "Criação de Conteúdo Digital";
+          option4.textContent = "Criação de Conteúdo Digital";
+          qualificacoes.appendChild(option4);
+
+          const option5 = document.createElement("option");
+          option5.value = "Economia Circular";
+          option5.textContent = "Economia Circular";
+          qualificacoes.appendChild(option5);
+          
+        } else if (cursoSelecionado === "Econômia Criativa") {
+          const option1 = document.createElement("option");
+          option1.value = "Aplicações de Aprendizagem de Máquina";
+          option1.textContent = "Aplicações de Aprendizagem de Máquina";
+          qualificacoes.appendChild(option1);
+
+          const option2 = document.createElement("option");
+          option2.value = "Desenvolvimento Mobile";
+          option2.textContent = "Desenvolvimento Mobile";
+          qualificacoes.appendChild(option2);
+
+          const option3 = document.createElement("option");
+          option3.value = "Marketing Digital";
+          option3.textContent = "Marketing Digital";
+          qualificacoes.appendChild(option3);
+
+          const option4 = document.createElement("option");
+          option4.value = "Assistente em Marketing";
+          option4.textContent = "Assistente em Marketing";
+          qualificacoes.appendChild(option4);
+
+          const option5 = document.createElement("option");
+          option5.value = "Tecnologias 4.0 e 5.0";
+          option5.textContent = "Tecnologias 4.0 e 5.0";
+          qualificacoes.appendChild(option5);
+
+          
+        
         }
       });
       
