@@ -851,7 +851,8 @@ def editar_meta(request, codigo):
     dia_semana = pega_eixos[0]['dias_semana']
     idEdit = pega_eixos[0]['id']
     jus_reprovacao = pega_eixos[0]['jus_reprovacao']
-
+    curso_tecnico = pega_eixos[0]['curso_tecnico']
+    qualificacoes = pega_eixos[0]['qualificacoes']
     tipos_cursos = Metas_tipo.objects.all()
 
     escolas = Metas_escolas.objects.filter(tipo=0)
@@ -894,7 +895,9 @@ def editar_meta(request, codigo):
                                                  'dia_semana': dia_semana,
                                                  'idEdit': idEdit,
                                                  'permissoes': get_permission(request),
-                                                 'jus_reprovacao': jus_reprovacao})
+                                                 'jus_reprovacao': jus_reprovacao,
+                                                 'curso_tecnico':curso_tecnico,
+                                                 'qualificacoes':qualificacoes})
 
 
 @login_required(login_url='/')
@@ -921,6 +924,9 @@ def editarmetas(request):
     previsao_fim = request.POST['data_p_fim']
     # previsao_fim = converter_data(previsao_fim)
     dias_semana = request.POST['dias_semana']
+    
+    curso_tecnico = request.POST['curso_tecnico']
+    qualificacao = request.POST['qualificacoes']
 
     editmetas = Metas_efg.objects.get(id=id_)
     editmetas.udepi_id = municipio  # type: ignore
@@ -939,6 +945,8 @@ def editarmetas(request):
     editmetas.previsao_inicio = previsao_inicio
     editmetas.previsao_fim = previsao_fim
     editmetas.dias_semana = dias_semana
+    editmetas.curso_tecnico = curso_tecnico
+    editmetas.qualificacoes = qualificacao
     editmetas.save()
 
     #BUSCA OS DADOS DA META DE ACORDO COM OS FILTROS SETADOS NA META
