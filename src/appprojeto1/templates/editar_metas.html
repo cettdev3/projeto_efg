@@ -402,6 +402,7 @@
       <script>
         const curso_tecnico = document.getElementById("curso_tecnico");
         const qualificacoes = document.getElementById("qualificacoes");
+        const qualificacao_view = "{{qualificacoes}}"
         $(document).ready(function(){
           qualificacoes.innerHTML = "";
         
@@ -413,7 +414,7 @@
           const option1 = document.createElement("option");
           option1.value = "Fundamentos de Aprendizado de Máquina";
           option1.textContent = "Fundamentos de Aprendizado de Máquina";
-          if(qualificacoes.value == "Fundamentos de Aprendizado de Máquina"){
+          if(qualificacao_view == "Fundamentos de Aprendizado de Máquina"){
             option1.selected = true;
           }
           qualificacoes.appendChild(option1);
@@ -421,7 +422,7 @@
           const option2 = document.createElement("option");
           option2.value = "Tratamento e Análise de Dados";
           option2.textContent = "Tratamento e Análise de Dados";
-          if(qualificacoes.value == "Tratamento e Análise de Dados"){
+          if(qualificacao_view == "Tratamento e Análise de Dados"){
             option2.selected = true;
           }
           qualificacoes.appendChild(option2);
@@ -429,7 +430,7 @@
           const option3 = document.createElement("option");
           option3.value = "Reconhecimento de Padrões";
           option3.textContent = "Reconhecimento de Padrões";
-          if(qualificacoes.value == "Reconhecimento de Padrões"){
+          if(qualificacao_view == "Reconhecimento de Padrões"){
             option3.selected = true;
           }
           qualificacoes.appendChild(option3);
@@ -437,7 +438,7 @@
           const option4 = document.createElement("option");
           option4.value = "Aprendizado Profundo";
           option4.textContent = "Aprendizado Profundo";
-          if(qualificacoes.value == "Aprendizado Profundo"){
+          if(qualificacao_view == "Aprendizado Profundo"){
             option4.selected = true;
           }
           qualificacoes.appendChild(option4);
@@ -445,7 +446,7 @@
           const option5 = document.createElement("option");
           option5.value = "Aplicações de Aprendizagem de Máquina";
           option5.textContent = "Aplicações de Aprendizagem de Máquina";
-          if(qualificacoes.value == "Aplicações de Aprendizagem de Máquina"){
+          if(qualificacao_view == "Aplicações de Aprendizagem de Máquina"){
             option5.selected = true;
           }
           qualificacoes.appendChild(option5);
@@ -454,7 +455,7 @@
           const option1 = document.createElement("option");
           option1.value = "Programação de Computadores";
           option1.textContent = "Programação de Computadores";
-          if(qualificacoes.value == "Programação de Computadores"){
+          if(qualificacao_view == "Programação de Computadores"){
             option1.selected = true;
           }
           qualificacoes.appendChild(option1);
@@ -462,7 +463,7 @@
           const option2 = document.createElement("option");
           option2.value = "Desenvolvimento Web Front-End";
           option2.textContent = "Desenvolvimento Web Front-End";
-          if(qualificacoes.value == "Desenvolvimento Web Front-End"){
+          if(qualificacao_view == "Desenvolvimento Web Front-End"){
             option2.selected = true;
           }
           qualificacoes.appendChild(option2);
@@ -470,7 +471,7 @@
           const option3 = document.createElement("option");
           option3.value = "Desenvolvimento Web Back-End";
           option3.textContent = "Desenvolvimento Web Back-End";
-          if(qualificacoes.value == "Desenvolvimento Web Back-End"){
+          if(qualificacao_view == "Desenvolvimento Web Back-End"){
             option3.selected = true;
           }
           qualificacoes.appendChild(option3);
@@ -478,7 +479,7 @@
           const option4 = document.createElement("option");
           option4.value = "Auxiliar de Análise e Processo de Software";
           option4.textContent = "Auxiliar de Análise e Processo de Software";
-          if(qualificacoes.value == "Auxiliar de Análise e Processo de Software"){
+          if(qualificacao_view == "Auxiliar de Análise e Processo de Software"){
             option4.selected = true;
           }
           qualificacoes.appendChild(option4);
@@ -486,7 +487,7 @@
           const option5 = document.createElement("option");
           option5.value = "Desenvolvimento Mobile";
           option5.textContent = "Desenvolvimento Mobile";
-          if(qualificacoes.value == "Desenvolvimento Mobilee"){
+          if(qualificacao_view == "Desenvolvimento Mobilee"){
             option5.selected = true;
           }
           qualificacoes.appendChild(option5);
@@ -495,7 +496,7 @@
           const option1 = document.createElement("option");
           option1.value = "E-commerce";
           option1.textContent = "E-commerce";
-          if(qualificacoes.value == "E-commerce"){
+          if(qualificacao_view == "E-commerce"){
             option1.selected = true;
           }
           qualificacoes.appendChild(option1);
@@ -503,7 +504,7 @@
           const option2 = document.createElement("option");
           option2.value = "Tecnologias e Inovação para Start ups";
           option2.textContent = "Tecnologias e Inovação para Start ups";
-          if(qualificacoes.value == "Tecnologias e Inovação para Start ups"){
+          if(qualificacao_view == "Tecnologias e Inovação para Start ups"){
             option2.selected = true;
           }
           qualificacoes.appendChild(option2);
@@ -511,7 +512,7 @@
           const option3 = document.createElement("option");
           option3.value = "Gestão do Negócio e Criação de Valor";
           option3.textContent = "Gestão do Negócio e Criação de Valor";
-          if(qualificacoes.value == "Gestão do Negócio e Criação de Valor"){
+          if(qualificacao_view == "Gestão do Negócio e Criação de Valor"){
             option3.selected = true;
           }
           qualificacoes.appendChild(option3);
@@ -519,7 +520,7 @@
           const option4 = document.createElement("option");
           option4.value = "Competências Empreendedoras";
           option4.textContent = "Competências Empreendedoras";
-          if(qualificacoes.value == "Competências Empreendedoras"){
+          if(qualificacao_view == "Competências Empreendedoras"){
             option4.selected = true;
           }
           qualificacoes.appendChild(option4);
@@ -527,7 +528,7 @@
           const option5 = document.createElement("option");
           option5.value = "Marketing Digital";
           option5.textContent = "Marketing Digital";
-          if(qualificacoes.value == "Marketing Digital"){
+          if(qualificacao_view == "Marketing Digital"){
             option5.selected = true;
           }
           qualificacoes.appendChild(option5);
@@ -537,7 +538,7 @@
           const option1 = document.createElement("option");
           option1.value = "E-commerce";
           option1.textContent = "E-commerce";
-          if(qualificacoes.value == "E-commerce"){
+          if(qualificacao_view == "E-commerce"){
             option1.selected = true;
           }
           qualificacoes.appendChild(option1);
@@ -545,7 +546,7 @@
           const option2 = document.createElement("option");
           option2.value = "Mídias Sociais";
           option2.textContent = "Mídias Sociais";
-          if(qualificacoes.value == "Mídias Sociais"){
+          if(qualificacao_view == "Mídias Sociais"){
             option2.selected = true;
           }
           qualificacoes.appendChild(option2);
@@ -553,7 +554,7 @@
           const option3 = document.createElement("option");
           option3.value = "Experiência do Usuário/Consumidor (UX)";
           option3.textContent = "Experiência do Usuário/Consumidor (UX)";
-          if(qualificacoes.value == "Mídias Sociais"){
+          if(qualificacao_view == "Mídias Sociais"){
             option3.selected = true;
           }
           qualificacoes.appendChild(option3);
@@ -561,7 +562,7 @@
           const option4 = document.createElement("option");
           option4.value = "Criação de Conteúdo Digital";
           option4.textContent = "Criação de Conteúdo Digital";
-          if(qualificacoes.value == "Criação de Conteúdo Digital"){
+          if(qualificacao_view == "Criação de Conteúdo Digital"){
             option4.selected = true;
           }
           qualificacoes.appendChild(option4);
@@ -569,7 +570,7 @@
           const option5 = document.createElement("option");
           option5.value = "Assistente em Marketing";
           option5.textContent = "Assistente em Marketing";
-          if(qualificacoes.value == "Assistente em Marketing"){
+          if(qualificacao_view == "Assistente em Marketing"){
             option5.selected = true;
           }
           qualificacoes.appendChild(option5);
@@ -578,7 +579,7 @@
           const option1 = document.createElement("option");
           option1.value = "Empreendedorismo Criativo";
           option1.textContent = "Empreendedorismo Criativo";
-          if(qualificacoes.value == "Empreendedorismo Criativo"){
+          if(qualificacao_view == "Empreendedorismo Criativo"){
             option1.selected = true;
           }
           qualificacoes.appendChild(option1);
@@ -586,7 +587,7 @@
           const option2 = document.createElement("option");
           option2.value = "Serviços Criativos Especializados";
           option2.textContent = "Serviços Criativos Especializados";
-          if(qualificacoes.value == "Serviços Criativos Especializados"){
+          if(qualificacao_view == "Serviços Criativos Especializados"){
             option2.selected = true;
           }
           qualificacoes.appendChild(option2);
@@ -594,7 +595,7 @@
           const option3 = document.createElement("option");
           option3.value = "Produtos Criativos Especializados";
           option3.textContent = "Produtos Criativos Especializados";
-          if(qualificacoes.value == "Produtos Criativos Especializados"){
+          if(qualificacao_view == "Produtos Criativos Especializados"){
             option3.selected = true;
           }
           qualificacoes.appendChild(option3);
@@ -602,7 +603,7 @@
           const option4 = document.createElement("option");
           option4.value = "Economia Circular";
           option4.textContent = "Economia Circular";
-          if(qualificacoes.value == "Economia Circular"){
+          if(qualificacao_view == "Economia Circular"){
             option4.selected = true;
           }
           qualificacoes.appendChild(option4);
@@ -610,7 +611,7 @@
           const option5 = document.createElement("option");
           option5.value = "Tecnologias 4.0 e 5.0";
           option5.textContent = "Tecnologias 4.0 e 5.0";
-          if(qualificacoes.value == "Tecnologias 4.0 e 5.0"){
+          if(qualificacao_view == "Tecnologias 4.0 e 5.0"){
             option5.selected = true;
           }
           qualificacoes.appendChild(option5);
