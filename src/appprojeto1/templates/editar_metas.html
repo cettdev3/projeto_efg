@@ -303,7 +303,7 @@
             <option {% if curso_tecnico == 'Empresas Digitais' %} selected {% endif %} value="Empresas Digitais">Empresas Digitais</option>  
             <option {% if curso_tecnico == 'Marketing E Mídias Sociais' %} selected {% endif %} value="Marketing E Mídias Sociais">Marketing E Mídias Sociais</option>
             <option {% if curso_tecnico == 'Econômia Criativa' %} selected {% endif %} value="Econômia Criativa">Econômia Criativa</option>
-           
+            <option {% if curso_tecnico == 'Capacitação Fora da Trilha' %} selected {% endif %} value="Capacitação Fora da Trilha">Capacitação Fora da Trilha</option>
           </select>
           </div>
 
@@ -616,8 +616,16 @@
           }
           qualificacoes.appendChild(option5);
 
-          
-        
+
+      } else if (cursoSelecionado === "Capacitação Fora da Trilha") {
+          const option1 = document.createElement("option");
+          option1.value = "Capacitação Fora da Trilha";
+          option1.textContent = "Capacitação Fora da Trilha";
+          if(qualificacao_view == "Capacitação Fora da Trilha"){
+            option1.selected = true;
+          }
+          qualificacoes.appendChild(option1);
+
         }
         });
         curso_tecnico.addEventListener("change", function() {
@@ -759,7 +767,16 @@
             option5.textContent = "Tecnologias 4.0 e 5.0";
             qualificacoes.appendChild(option5);
   
-            
+          } else if (cursoSelecionado === "Capacitação Fora da Trilha") {
+          const option1 = document.createElement("option");
+          option1.value = "Capacitação Fora da Trilha";
+          option1.textContent = "Capacitação Fora da Trilha";
+          if(qualificacao_view == "Capacitação Fora da Trilha"){
+            option1.selected = true;
+          }
+          qualificacoes.appendChild(option1);
+
+        
           
           }
         });
