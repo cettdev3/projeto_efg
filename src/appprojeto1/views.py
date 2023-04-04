@@ -39,7 +39,7 @@ from django.db.models import Q
 
 # DADOS DO SERVIDOR
 host = 'https://processos.cett.dev.br/engine-rest/'
-processName = "SolicitarOfertaDeVaga"
+processName = "SolicitarOfertaDeVagas"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
 
