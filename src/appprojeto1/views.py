@@ -653,6 +653,13 @@ def cadastrar_metas(request):
         lancamentos = Metas_efg.objects.filter(escola=perm_escolas).all()
         btn_enviar_planejamento = Metas_efg.objects.filter(
             escola_id=int(perm_escolas)).values()
+        
+        btn_enviar_planejamento_reprovados = Metas_efg.objects.filter(
+            escola_id=int(perm_escolas),situacao=1).all().count()
+        
+        btn_enviar_planejamento_aanalise = Metas_efg.objects.filter(
+            escola_id=int(perm_escolas),situacao=0).all().count()
+        
         escolas_cad = Metas_escolas.objects.filter(id=perm_escolas)
     else:
         lancamentos = Metas_efg.objects.all()
@@ -691,7 +698,8 @@ def cadastrar_metas(request):
                                                    'cursos': cursos,
                                                    'municipios': municipios,
                                                    'perm_escola': perm_escolas,
-                                                   'btn_enviar_planejamento': btn_enviar_planejamento,
+                                                   'btn_enviar_planejamento_reprovados': btn_enviar_planejamento_reprovados,
+                                                   'btn_enviar_planejamento_aanalise': btn_enviar_planejamento_aanalise,
                                                    'permissoes': get_permission(request)})
 
 
