@@ -664,6 +664,11 @@ def cadastrar_metas(request):
     else:
         lancamentos = Metas_efg.objects.all()
         btn_enviar_planejamento = Metas_efg.objects.all()
+        btn_enviar_planejamento_reprovados = Metas_efg.objects.filter(
+            escola_id=int(perm_escolas),situacao=1).all().count()
+        
+        btn_enviar_planejamento_aanalise = Metas_efg.objects.filter(
+            escola_id=int(perm_escolas),situacao=0).all().count()
         escolas_cad = Metas_escolas.objects.filter(tipo__in=[0,1])
 
     municipios = Udepi_municipio.objects.filter(escola_id=39)
