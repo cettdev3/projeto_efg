@@ -1784,7 +1784,7 @@ def enviar_planejamento(request):
         escola_sara = get_escolas('where escola_id = 48 GROUP BY escola_id')
         escola_bittencourt = get_escolas(
             'where escola_id = 54 GROUP BY escola_id')
-
+        print( escola_luiz_rassi,escola_sara,escola_bittencourt)
         if escola_luiz_rassi == 2 or escola_luiz_rassi == 3 and escola_sara == 2 or escola_sara == 3 and escola_bittencourt == 2 or escola_bittencourt == 3:
             sendPlan = getInstance(processName, "EnviarPlanejamentoTask")
 
