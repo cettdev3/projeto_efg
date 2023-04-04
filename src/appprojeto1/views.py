@@ -718,7 +718,10 @@ def cad_metas(request):
     eixos = request.POST['eixo']
     udepi = request.POST['municipio']
     curso_tecnico = request.POST['curso_tecnico']
-    qualificacoes = request.POST['qualificacoes']
+    try:
+        qualificacoes = request.POST['qualificacoes']
+    except:
+        qualificacoes = ''
 
     meta_is_exist = Metas_efg.objects.filter(escola_id=escola, tipo_curso_id=tipo_curso,
                                              modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso, previsao_inicio=previsao_inicio, previsao_fim=previsao_fim).values()
