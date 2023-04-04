@@ -507,7 +507,7 @@
               <option value="Empresas Digitais">Empresas Digitais</option>  
               <option value="Marketing E Mídias Sociais">Marketing E Mídias Sociais</option>
               <option value="Econômia Criativa">Econômia Criativa</option>
-             
+              <option value="Capacitação Fora da Trilha">Capacitação Fora da Trilha</option>
             </select>
             </div>
 
@@ -908,8 +908,26 @@
   
             
           
+          }else if (cursoSelecionado === "Capacitação Fora da Trilha") {
+        const option1 = document.createElement("option");
+          option1.value = "";
+          option1.textContent = "";
+          if(qualificacao_view == ""){
+            option1.selected = true;
           }
+          qualificacoes.appendChild(option1);
+
+          const option2 = document.createElement("option");
+          option2.value = "Capacitação Fora da Trilha";
+          option2.textContent = "Capacitação Fora da Trilha";
+          if(qualificacao_view == "Capacitação Fora da Trilha"){
+            option2.selected = true;
+          }
+          qualificacoes.appendChild(option2);
+
+        }
         });
+
         
   </script>
 

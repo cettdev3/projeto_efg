@@ -273,6 +273,7 @@ class Metas_efg(models.Model):
         ('MATUTINO', 'MATUTINO'),
         ('VESPERTINO', 'VESPERTINO'),
         ('NOTURNO', 'NOTURNO'),
+        ('INTEGRAL', 'INTEGRAL')
     )
 
     id = models.AutoField(primary_key=True)
@@ -305,7 +306,7 @@ class Metas_efg(models.Model):
     num_edital = models.ForeignKey(
         Edital, on_delete=models.CASCADE, default=None, null=True, blank=True)
     curso_tecnico = models.CharField(default=None, null=True, blank=True, max_length=255)
-    qualificacoes = models.CharField(default='', null=True, blank=True,max_length=255)
+    qualificacoes = models.CharField(default='',max_length=255)
     def get_absolute_url(self):
         return reverse_lazy('AprovarCursosView')
 
