@@ -567,7 +567,8 @@
   </div>
   <section class="section">
     <div class="row">
-      
+      {{btn_enviar_planejamento_reprovados}}
+      {{btn_enviar_planejamento_aanalise}}
         {% if btn_enviar_planejamento_reprovados > 0 or btn_enviar_planejamento_aanalise > 0 and permissoes != 0  %}
         <div class="col-sm-12" style="text-align: right;">
           <a type="button" style="text-align: right;" href="/enviar-planejamento" class="btn icon btn-danger">ENVIAR PLANEJAMENTO</a>
