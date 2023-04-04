@@ -568,7 +568,7 @@
   <section class="section">
     <div class="row">
 
-        {% if btn_enviar_planejamento.situacao == 0 or btn_enviar_planejamento.situacao == 1 and permissoes != 0  %}
+        {% if '0' in btn_enviar_planejamento.situacao or '1' in btn_enviar_planejamento.situacao and permissoes != 0  %}
         <div class="col-sm-12" style="text-align: right;">
           <a type="button" style="text-align: right;" href="/enviar-planejamento" class="btn icon btn-danger">ENVIAR PLANEJAMENTO</a>
         </div>
