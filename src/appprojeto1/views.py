@@ -663,12 +663,7 @@ def cadastrar_metas(request):
         escolas_cad = Metas_escolas.objects.filter(id=perm_escolas)
     else:
         lancamentos = Metas_efg.objects.all()
-        btn_enviar_planejamento = Metas_efg.objects.values()
-        btn_enviar_planejamento_reprovados = Metas_efg.objects.filter(
-            escola_id=int(perm_escolas),situacao=1).all().count()
-        
-        btn_enviar_planejamento_aanalise = Metas_efg.objects.filter(
-            escola_id=int(perm_escolas),situacao=0).all().count()
+        btn_enviar_planejamento = Metas_efg.objects.all()
         escolas_cad = Metas_escolas.objects.filter(tipo__in=[0,1])
 
     municipios = Udepi_municipio.objects.filter(escola_id=39)
@@ -689,23 +684,41 @@ def cadastrar_metas(request):
     cursos = Cadastrar_curso.objects.filter(
         escola=39, tipo=0, modalidade=1, eixos=17, status="ATIVO").all()
 
-    return render(request, 'cadastro_metas.html', {"tipos": tipo_curso,
-                                                   'escolas': escolas_cad,
-                                                   'modalidades': modalidade,
-                                                   'lancamentos': lancamentos,
-                                                   'anos': anos,
-                                                   'mods': mod,
-                                                   'trimestres': trimestre,
-                                                   'escolas_cad': escolas,
-                                                   'cursos_cad': cursos_cad,
-                                                   'tipos_cad': tipos_cad,
-                                                   'eixos': eixos,
-                                                   'cursos': cursos,
-                                                   'municipios': municipios,
-                                                   'perm_escola': perm_escolas,
-                                                   'btn_enviar_planejamento_reprovados': btn_enviar_planejamento_reprovados,
-                                                   'btn_enviar_planejamento_aanalise': btn_enviar_planejamento_aanalise,
-                                                   'permissoes': get_permission(request)})
+    if perm_escolas != None:
+        return render(request, 'cadastro_metas.html', {"tipos": tipo_curso,
+                                                    'escolas': escolas_cad,
+                                                    'modalidades': modalidade,
+                                                    'lancamentos': lancamentos,
+                                                    'anos': anos,
+                                                    'mods': mod,
+                                                    'trimestres': trimestre,
+                                                    'escolas_cad': escolas,
+                                                    'cursos_cad': cursos_cad,
+                                                    'tipos_cad': tipos_cad,
+                                                    'eixos': eixos,
+                                                    'cursos': cursos,
+                                                    'municipios': municipios,
+                                                    'perm_escola': perm_escolas,
+                                                    'btn_enviar_planejamento_reprovados': btn_enviar_planejamento_reprovados,
+                                                    'btn_enviar_planejamento_aanalise': btn_enviar_planejamento_aanalise,
+                                                    'permissoes': get_permission(request)})
+    else:
+        return render(request, 'cadastro_metas.html', {"tipos": tipo_curso,
+                                                    'escolas': escolas_cad,
+                                                    'modalidades': modalidade,
+                                                    'lancamentos': lancamentos,
+                                                    'anos': anos,
+                                                    'mods': mod,
+                                                    'trimestres': trimestre,
+                                                    'escolas_cad': escolas,
+                                                    'cursos_cad': cursos_cad,
+                                                    'tipos_cad': tipos_cad,
+                                                    'eixos': eixos,
+                                                    'cursos': cursos,
+                                                    'municipios': municipios,
+                                                    'perm_escola': perm_escolas,
+                                                    'btn_enviar_planejamento':btn_enviar_planejamento,
+                                                    'permissoes': get_permission(request)})
 
 
 @login_required(login_url='/')
