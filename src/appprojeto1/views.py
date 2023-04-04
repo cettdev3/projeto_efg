@@ -663,7 +663,7 @@ def cadastrar_metas(request):
         escolas_cad = Metas_escolas.objects.filter(id=perm_escolas)
     else:
         lancamentos = Metas_efg.objects.all()
-        btn_enviar_planejamento = Metas_efg.objects.all()
+        btn_enviar_planejamento = Metas_efg.objects.values()
         btn_enviar_planejamento_reprovados = Metas_efg.objects.filter(
             escola_id=int(perm_escolas),situacao=1).all().count()
         
