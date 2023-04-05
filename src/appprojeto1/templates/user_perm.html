@@ -332,7 +332,25 @@
       });
     });
  </script>
-  
+
+  <script>
+    const cpfInput = document.getElementById("cpf");
+    
+    cpfInput.addEventListener("input", function() {
+      let value = cpfInput.value;
+    
+      // Remove qualquer caractere que não seja número
+      value = value.replace(/\D/g, "");
+    
+      // Adiciona a máscara do CPF
+      value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    
+      // Define o valor atualizado do input
+      cpfInput.value = value;
+    });
+    </script>
   {% endblock content %}
 
 </div>
