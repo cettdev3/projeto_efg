@@ -335,6 +335,7 @@ class Users_ids(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     user_selecao_id = models.IntegerField()
     user_siga_id = models.IntegerField()
+    cpf = models.CharField(max_length=14)
 
     class Meta:
         managed = True

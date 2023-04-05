@@ -1818,7 +1818,7 @@ def enviar_planejamento(request):
 def cadastrar_usuario(request):
     idSiga = request.POST['user_siga']
     idSele = request.POST['user_selecao']
-
+    cpfUser = request.POST['cpf']
     users_sig = Users_ids.objects.filter(user_selecao_id = idSiga).all()
     users_sel = Users_ids.objects.filter(user_siga_id = idSele).all()
 
@@ -1836,6 +1836,6 @@ def cadastrar_usuario(request):
         auth_user = User_permission.objects.create(
             user_id=id_user[0]['id'], permission='', escola_id=None)
         
-        users_ids = Users_ids.objects.create(user_id = id_user[0]['id'], user_selecao_id =idSele, user_siga_id = idSiga )
+        users_ids = Users_ids.objects.create(user_id = id_user[0]['id'], user_selecao_id =idSele, user_siga_id = idSiga, cpf=cpfUser)
         messages.success(request, 'Usuário cadastrado com sucesso!')
         return redirect('/permissoes-usuarios')
