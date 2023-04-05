@@ -335,13 +335,13 @@
 
   <script>
     const cpfInput = document.getElementById("cpf");
-    
+    cpfInput.maxLength = 14;
     cpfInput.addEventListener("input", function() {
       let value = cpfInput.value;
     
       // Remove qualquer caractere que não seja número
       value = value.replace(/\D/g, "");
-    
+      
       // Adiciona a máscara do CPF
       value = value.replace(/(\d{3})(\d)/, "$1.$2");
       value = value.replace(/(\d{3})(\d)/, "$1.$2");
