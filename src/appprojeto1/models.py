@@ -305,8 +305,11 @@ class Metas_efg(models.Model):
     jus_reprovacao = models.TextField(default=None, null=True, blank=True)
     num_edital = models.ForeignKey(
         Edital, on_delete=models.CASCADE, default=None, null=True, blank=True)
-    curso_tecnico = models.CharField(default=None, null=True, blank=True, max_length=255)
-    qualificacoes = models.CharField(default='',max_length=255)
+    curso_tecnico = models.CharField(
+        default=None, null=True, blank=True, max_length=255)
+    qualificacoes = models.CharField(
+        default='', null=True, blank=True, max_length=255)
+
     def get_absolute_url(self):
         return reverse_lazy('AprovarCursosView')
 
