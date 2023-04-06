@@ -40,6 +40,7 @@ services:
             - "traefik.http.routers.projeto-cett_https.tls.certresolver=letsencryptresolver"
         volumes:
             - ./src:/home/python/app
+            - ./backups:/home/python/app/backups
             - ${ACS_DOCS_PATH}/Ensino/gerarEdital/Editais:/home/python/app/static/editais:rw
             - ${ACS_DOCS_PATH}/Ensino/gerarEdital/EFG/Editais:/home/python/app/static/EFG/editais:rw
             - ${ACS_DOCS_PATH}/Ensino/gerarEdital/COTEC/Editais:/home/python/app/static/COTEC/editais:rw
