@@ -7,3 +7,4 @@ static/COTEC
 static/EFG
 staticfiles
 data
+__pycache__
