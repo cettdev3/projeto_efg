@@ -216,7 +216,7 @@
                   <div class="column">
                     <div class="row">
 
-                      <div class="col-md-12 form-group">
+                      <div class="col-md-9 form-group">
                         <label for="basicInput"><b>CPF:</b></label>
                           <input
                             type="text"
@@ -227,6 +227,10 @@
 
                             required
                           >
+                      </div>
+                      <div class="col-md-3 form-group">
+                        <label for="">    </label>
+                        <button id="search_user"  style="width: 100%;" class="btn btn-success" type="submit">Buscar</button>
                       </div>
 
                       <div class="col-md-12 form-group">
@@ -318,6 +322,35 @@
 </div>
 {% endif %}
   <script>
+
+$("#search_user").click(function(){
+    document.getElementById('user_siga').value = '';
+    document.getElementById('user_selecao').value = '';
+    url = '/buscar-siga-selecao';
+    cpf = document.getElementById('cpf').value;
+    $.ajax({
+        url: url,
+        data: {'cpf': cpf},
+        success: function(response){
+            var dados = response.data;
+            var total = dados.length;
+
+            for (var i = 0; i < total; i++) {
+                var nomeSistema = dados[i]['NM_Sistema'];
+                var idUsuario = dados[i]['NK_Usuario'];
+                if (nomeSistema == 'SIGA EFG'){
+                    document.getElementById('user_siga').value = idUsuario;
+                }
+
+                if (nomeSistema == 'SELEÇÃO'){
+                    document.getElementById('user_selecao').value = idUsuario;
+                }
+            }
+        }
+    });
+});
+
+
     $("#basicInput").change(function(){
       url = '/ajax/ajax_load_perm'
       userid = document.getElementById('basicInput').value

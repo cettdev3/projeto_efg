@@ -37,6 +37,9 @@ from pycamunda import task as CamundaTask
 from requests import sessions, auth
 from django.db.models import Q
 
+import json
+from django.http import JsonResponse
+
 # DADOS DO SERVIDOR
 host = 'https://processos.cett.dev.br/engine-rest/'
 processName = "SolicitarOfertaDeVagas"
@@ -172,7 +175,22 @@ def get_escolas(q):
     for l in c.fetchall():
         return int(l[21])
 
+def busca_usuario_siga(cpf):
+    mydb = MySQLdb.connect(
+        host='127.0.0.1',	   # seu host
+        user='root',	  # seu user
+        passwd='',		# sua senha
+        db='dw',
+        port=3306)
 
+    c = mydb.cursor()
+
+    query = "SELECT * FROM login_siga_selecao where cpf =  " + str(cpf)
+    c.execute(query)
+
+    for l in c.fetchall():
+        return int(l[21])
+    
 # @login_required(login_url='/')
 def select_vagas_horas_gerais():
     mydb = MySQLdb.connect(
@@ -1839,3 +1857,35 @@ def cadastrar_usuario(request):
         users_ids = Users_ids.objects.create(user_id = id_user[0]['id'], user_selecao_id =idSele, user_siga_id = idSiga, cpf=cpfUser)
         messages.success(request, 'Usuário cadastrado com sucesso!')
         return redirect('/permissoes-usuarios')
+
+def buscar_siga_selecao(request):
+    cpf = request.GET.get('cpf')
+    cpf = str(cpf).replace('.','')
+    cpf = cpf.replace('-','')
+
+    print(cpf)
+    # conexão com o banco de dados
+    mydb = MySQLdb.connect(
+        host='200.137.215.60',
+        user='consulta',
+        passwd='6XGZxc2gdx14ygv',
+        db='DW_CETT',
+        port=3306
+    )
+
+    c = mydb.cursor()
+    print(c)
+    query = "SELECT * FROM dbo.dUsuarios WHERE CPF = "+str(cpf)
+    c.execute(query)
+
+    # obter os resultados da consulta
+    results = c.fetchall()
+    print('resultados abaixo')
+    print(results)
+    # converter os resultados em um objeto JSONid
+
+
+    json_results = [dict(zip(('id', 'SK_Usuario', 'NK_Usuario', 'NM_Usuario', 'NM_Sistema', 'CPF'), item)) for item in results]
+    print(json_results)
+    # retornar a resposta em formato JSON
+    return JsonResponse({'data': json_results})
