@@ -1875,7 +1875,7 @@ def buscar_siga_selecao(request):
 
     c = mydb.cursor()
 
-    query = "SELECT * FROM dUsuarios WHERE CPF = "+str(cpf)
+    query = "SELECT * FROM dbo.dUsuarios WHERE CPF = "+str(cpf)
     c.execute(query)
 
     # obter os resultados da consulta
