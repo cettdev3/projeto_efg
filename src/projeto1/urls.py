@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from appprojeto1 import views
-from appprojeto1.views import Logout_Users, load_ch, verifica_turmas_edital, load_municipios, cadastrar_udepi, Autenticar, apaga_orcamento, apagar_curso_escola, cad_curso_escola, cad_novo_curso, cadastrar_curso, cadastro_curso_escola, del_curso, editar_curso, editar_curso_escola, editar_orcamento, load_cht, load_cursos, load_eixos, load_funcoes_gerencia_cursos, load_funcoes_gerencia_eixo, load_funcoes_rp, load_funcoes_tabela, load_funcoes_total_horas, load_funcoes_vagas, apagar_meta, apagar_meta_sintetica, cad_metas, cad_metas_sintetica, cad_orcamento, cadastrar_meta_sintetica, load_funcoes_filter, cadastrar_metas, editar_meta, editar_metas_sintetica, editarmetas, load_funcoes_rubrica, load_modalidade, orcamento_plano_trabalho, realizar_solicitacao, view_eixos, view_geral, view_index, load_funcoes, ajax_load_turmas_edital, ajax_load_turmas_edital_filtro, atualiza_edital, gerenciar_usuarios, salvar_permissoes, enviar_planejamento, load_funcoes_permissoes, cadastrar_usuario
+from appprojeto1.views import Logout_Users, load_ch, verifica_turmas_edital, load_municipios, cadastrar_udepi, Autenticar, apaga_orcamento, apagar_curso_escola, cad_curso_escola, cad_novo_curso, cadastrar_curso, cadastro_curso_escola, del_curso, editar_curso, editar_curso_escola, editar_orcamento, load_cht, load_cursos, load_eixos, load_funcoes_gerencia_cursos, load_funcoes_gerencia_eixo, load_funcoes_rp, load_funcoes_tabela, load_funcoes_total_horas, load_funcoes_vagas, apagar_meta, apagar_meta_sintetica, cad_metas, cad_metas_sintetica, cad_orcamento, cadastrar_meta_sintetica, load_funcoes_filter, cadastrar_metas, editar_meta, editar_metas_sintetica, editarmetas, load_funcoes_rubrica, load_modalidade, orcamento_plano_trabalho, realizar_solicitacao, view_eixos, view_geral, view_index, load_funcoes, ajax_load_turmas_edital, ajax_load_turmas_edital_filtro, atualiza_edital, gerenciar_usuarios, salvar_permissoes, enviar_planejamento, load_funcoes_permissoes, cadastrar_usuario,buscar_siga_selecao
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -96,6 +96,7 @@ urlpatterns = [
     path('salvar-permissoes', salvar_permissoes),
     path('enviar-planejamento', enviar_planejamento),
     path('cadastrar-usuario', cadastrar_usuario),
+    path('buscar-siga-selecao', buscar_siga_selecao),
 
     path('', include('aprovaedital.urls')),
     path('', include('cadastrar_escola.urls')),
