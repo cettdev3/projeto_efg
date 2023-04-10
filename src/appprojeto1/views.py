@@ -1874,12 +1874,13 @@ def buscar_siga_selecao(request):
     )
 
     c = mydb.cursor()
-
+    print(c)
     query = "SELECT * FROM dbo.dUsuarios WHERE CPF = "+str(cpf)
     c.execute(query)
 
     # obter os resultados da consulta
     results = c.fetchall()
+    print('resultados abaixo')
     print(results)
     # converter os resultados em um objeto JSONid
 
