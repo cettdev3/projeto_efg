@@ -7,7 +7,12 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONFAULTHANDLER=1
 ENV PYTHONUNBUFFERED=1
 
-RUN adduser -u 2000 --disabled-password --gecos "" python && chown -R python /home/python
+ARG APP_USER_NAME
+ARG APP_UID
+ARG APP_GID
+ARG APP_NAME
+
+RUN adduser -u $APP_UID --disabled-password --gecos "" $APP_USER_NAME && chown -R $APP_USER_NAME /home/$APP_USER_NAME
 
 RUN apt-get update && apt-get install git -y
 
@@ -21,7 +26,7 @@ RUN sed -i '/pt_BR.UTF-8/s/^#//g' /etc/locale.gen \
 
 ENV PIPENV_VENV_IN_PROJECT=True
 ENV PIPENV_SITE_PACKAGES=True
-ENV PATH="/home/python/app/.venv/bin:$PATH"
+ENV PATH="/home/$APP_USER_NAME/$APP_NAME/.venv/bin:$PATH"
 
 ADD Pipfile.lock ./
 ADD Pipfile ./
@@ -30,7 +35,7 @@ RUN pipenv install --system
 
 USER python
 
-WORKDIR /home/python/app
+WORKDIR /home/$APP_USER_NAME/$APP_NAME
 
 CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000", "--insecure" ]
 # CMD [ "gunicorn", "--access-logfile", "-", "--workers", "3", "--bind", "0.0.0.0:8000", "projeto1.wsgi" ]

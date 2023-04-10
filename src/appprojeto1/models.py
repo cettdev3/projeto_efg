@@ -238,7 +238,7 @@ class Edital(models.Model):
     dt_fim_insc = models.DateField(null=True, blank=True)
     escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE)
     status = models.CharField(max_length=255)
-    pdf = models.CharField(max_length=255)
+    pdf = models.CharField(max_length=255, null=True, blank=True)
     motivo = models.CharField(max_length=255, blank=False, null=True)
 
     def __str__(self):
