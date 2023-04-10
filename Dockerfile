@@ -33,7 +33,7 @@ ADD Pipfile ./
 
 RUN pipenv install --system
 
-USER python
+USER $APP_USER_NAME
 
 WORKDIR /home/$APP_USER_NAME/$APP_NAME
 
