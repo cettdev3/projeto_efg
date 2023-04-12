@@ -5,7 +5,8 @@ from django.db.models import Q
 from requests.auth import HTTPBasicAuth
 import requests as req
 import json
-
+import envconfiguration as config
+#host = config.CAMUNDA_URL #type:ignore
 host = 'https://processos.cett.dev.br/engine-rest/'
 processName = "ElaborarEdital"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
@@ -125,6 +126,7 @@ def aprovar_edital_gerado(request):
         atualiza_status.dt_fim_edit = None
         atualiza_status.dt_ini_insc = None
         atualiza_status.dt_fim_insc = None
+        atualiza_status.user_change = request.user.id
         atualiza_status.save()
         messages.success(request, 'Edital foi reprovado com sucesso!')
         return redirect('/aprovar-edital')
