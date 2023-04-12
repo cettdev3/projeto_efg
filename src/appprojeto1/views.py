@@ -36,12 +36,12 @@ from django.views.generic.base import ContextMixin
 from pycamunda import task as CamundaTask
 from requests import sessions, auth
 from django.db.models import Q
-
+import envconfiguration as config
 import json
 from django.http import JsonResponse
 
 # DADOS DO SERVIDOR
-host = 'https://processos.cett.dev.br/engine-rest/'
+host = config.CAMUNDA_URL # type: ignore
 processName = "SolicitarOfertaDeVagas"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
