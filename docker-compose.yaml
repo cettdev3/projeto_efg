@@ -7,6 +7,11 @@ services:
         build:
             context: .
             dockerfile: ./Dockerfile
+            args:
+                - APP_USER_NAME=${APP_USER_NAME}
+                - APP_UID=${APP_UID}
+                - APP_GID=${APP_GID}
+                - APP_NAME=${APP_NAME}
         environment:
             DJANGO_DEBUG: ${DJANGO_DEBUG}
             DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
@@ -39,11 +44,11 @@ services:
             - "traefik.http.routers.projeto-cett_https.entrypoints=websecure"
             - "traefik.http.routers.projeto-cett_https.tls.certresolver=letsencryptresolver"
         volumes:
-            - ./src:/home/python/app
-            - ./backups:/home/python/app/backups
-            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/Editais:/home/python/app/static/editais:rw
-            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/EFG/Editais:/home/python/app/static/EFG/editais:rw
-            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/COTEC/Editais:/home/python/app/static/COTEC/editais:rw
+            - ./src:/home/${APP_USER_NAME}/${APP_NAME}
+            - ./backups:/home/${APP_USER_NAME}/${APP_NAME}/backups
+            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/Editais:/home/${APP_USER_NAME}/${APP_NAME}/static/editais:rw
+            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/EFG/Editais:/home/${APP_USER_NAME}/${APP_NAME}/static/EFG/editais:rw
+            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/COTEC/Editais:/home/${APP_USER_NAME}/${APP_NAME}/static/COTEC/editais:rw
 
 networks:
     default:
