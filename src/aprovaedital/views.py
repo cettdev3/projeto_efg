@@ -6,8 +6,9 @@ from requests.auth import HTTPBasicAuth
 import requests as req
 import json
 import envconfiguration as config
-#host = config.CAMUNDA_URL #type:ignore
-host = 'https://processos.cett.dev.br/engine-rest/'
+
+host = config.CAMUNDA_URL #type:ignore
+# host = 'https://processos.cett.dev.br/engine-rest/'
 processName = "ElaborarEdital"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 

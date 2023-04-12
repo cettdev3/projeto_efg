@@ -41,8 +41,8 @@ import json
 from django.http import JsonResponse
 
 # DADOS DO SERVIDOR
-host = 'https://processos.cett.dev.br/engine-rest/'
-#host = config.CAMUNDA_URL # type: ignore
+# host = 'https://processos.cett.dev.br/engine-rest/'
+host = config.CAMUNDA_URL # type: ignore
 processName = "SolicitarOfertaDeVagas"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
@@ -1415,7 +1415,7 @@ class AprovarCursosView(
             )
 
             GetTasks = CamundaTask.GetList(
-                url='https://processos.cett.dev.br/engine-rest',
+                url=config.CAMUNDA_URL,
                 task_definition_key='VerificaOPlanejamentoDeTurmasEAprovareprovaCOTECEFGTask',
             )
 
@@ -1433,7 +1433,7 @@ class AprovarCursosView(
             if len(tasklist) > 0 and ApprovalLen == 1 and ApprovalType == 3:
                 for task in tasklist:
                     complete = CamundaTask.Complete(
-                        url='https://processos.cett.dev.br/engine-rest',
+                        url=config.CAMUNDA_URL,
                         id_=task.id_
                     )
                     complete.add_variable(
@@ -1516,7 +1516,7 @@ class ReprovaCursosUpdateView(
             )
 
             GetTasks = CamundaTask.GetList(
-                url='https://processos.cett.dev.br/engine-rest',
+                url=config.CAMUNDA_URL,
                 task_definition_key='VerificaOPlanejamentoDeTurmasEAprovareprovaCOTECEFGTask',
             )
 
@@ -1527,7 +1527,7 @@ class ReprovaCursosUpdateView(
             if len(tasklist) > 0:
                 for task in tasklist:
                     complete = CamundaTask.Complete(
-                        url='https://processos.cett.dev.br/engine-rest',
+                        url=config.CAMUNDA_URL,
                         id_=task.id_
                     )
 
