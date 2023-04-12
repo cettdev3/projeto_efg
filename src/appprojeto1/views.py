@@ -41,8 +41,8 @@ import json
 from django.http import JsonResponse
 
 # DADOS DO SERVIDOR
-host = 'https://processos.cett.dev.br/engine-rest/'
-# host = config.CAMUNDA_URL # type: ignore
+# host = 'https://processos.cett.dev.br/engine-rest/'
+host = config.CAMUNDA_URL # type: ignore
 processName = "SolicitarOfertaDeVagas"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
