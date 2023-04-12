@@ -54,16 +54,29 @@ def getInstance(processName, taskDefinition):
     retorno = requisicao.text
     json_object = json.loads(retorno)
     for dados in json_object:
-        if dados['taskDefinitionKey'] == taskDefinitionKey:
-            idTask = dados['id']
-            headers = {'Content-type': 'application/json'}
-            completeTask = req.post(
-                f"{host}task/{idTask}/complete", auth=autentication, headers=headers)
-            if completeTask.status_code == 204:
-                print('Taks is completed!')
-                return True
-            else:
-                return False
+        try:
+            if dados['taskDefinitionKey'] == taskDefinitionKey:
+                idTask = dados['id']
+                headers = {'Content-type': 'application/json'}
+                completeTask = req.post(
+                    f"{host}task/{idTask}/complete", auth=autentication, headers=headers)
+                if completeTask.status_code == 204:
+                    print('Taks is completed!')
+                    return True
+                else:
+                    return False
+        except:
+            if dados[0]['taskDefinitionKey'] == taskDefinitionKey:
+                idTask = dados['id']
+                headers = {'Content-type': 'application/json'}
+                completeTask = req.post(
+                    f"{host}task/{idTask}/complete", auth=autentication, headers=headers)
+                if completeTask.status_code == 204:
+                    print('Taks is completed!')
+                    return True
+                else:
+                    return False
+
 
 
 def getUserlogin(request):
@@ -178,9 +191,9 @@ def get_escolas(q):
 
 def busca_usuario_siga(cpf):
     mydb = MySQLdb.connect(
-        host='127.0.0.1',	   # seu host
-        user='root',	  # seu user
-        passwd='',		# sua senha
+        host='200.137.215.60',	   # seu host
+        user='consulta',	  # seu user
+        passwd='6XGZxc2gdx14ygv',		# sua senha
         db='dw',
         port=3306)
 
