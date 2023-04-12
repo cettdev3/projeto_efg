@@ -768,7 +768,7 @@ def cad_metas(request):
         qualificacoes = ''
 
     meta_is_exist = Metas_efg.objects.filter(escola_id=escola, tipo_curso_id=tipo_curso,
-                                             modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso, previsao_inicio=previsao_inicio, previsao_fim=previsao_fim).values()
+                                             modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso, previsao_inicio=previsao_inicio, previsao_fim=previsao_fim,turno = turno).values()
     print('-------------------------------------------------------\n\n\n\n' +
           str(meta_is_exist))
     if meta_is_exist:
@@ -1881,7 +1881,7 @@ def buscar_siga_selecao(request):
     # obter os resultados da consulta
     results = c.fetchall()
     print('resultados abaixo')
-    print(results)
+    print
     # converter os resultados em um objeto JSONid
 
 
