@@ -35,6 +35,7 @@ def getInstance(processName, taskDefinition,request):
     retorno = requisicao.text
     json_object = json.loads(retorno)
     for dados in json_object:
+        print(dados)
         try:
             if dados['taskDefinitionKey'] == taskDefinitionKey:
                 idTask = dados['id']
