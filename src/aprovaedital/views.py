@@ -34,6 +34,7 @@ def getInstance(processName, taskDefinition,request):
     requisicao = req.get(url, json={}, auth=autentication)
     retorno = requisicao.text
     json_object = json.loads(retorno)
+    print(json_object)
     for dados in json_object:
         print(dados)
         try:
