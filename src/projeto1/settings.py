@@ -29,6 +29,8 @@ DEBUG = bool(config.DJANGO_DEBUG)  # type: ignore
 
 ALLOWED_HOSTS = ['*']
 
+SESSION_COOKIE_NAME = 'cett_cookie'
+
 CSRF_TRUSTED_ORIGINS = [
     'https://*.cett.org.br',
     'http://*.cett.org.br',
