@@ -17,7 +17,7 @@ import envconfiguration as config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SESSION_COOKIE_NAME = 'cookie_cett'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -28,6 +28,8 @@ SECRET_KEY = config.DJANGO_SECRET_KEY  # type: ignore
 DEBUG = bool(config.DJANGO_DEBUG)  # type: ignore
 
 ALLOWED_HOSTS = ['*']
+
+SESSION_COOKIE_NAME = 'cett_cookie'
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.cett.org.br',
