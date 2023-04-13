@@ -17,7 +17,6 @@ def camundaPutVariable(taskId,variable,variableValue,type):
     #https://processos.cett.dev.br/engine-rest/task/bd7fa2eb-8536-11ed-ad45-0242ac130024/variables/alteracao
     headers = {'Content-type': 'application/json'}
     bodyJson = {"value" : variableValue, "type": type}
-    print(f"{host}/task/{taskId}/variables/{variable}")
     putVariable = req.put(f"{host}/task/{taskId}/variables/{variable}",json=bodyJson, auth=autentication, headers=headers)
     return True if putVariable.status_code == 204 else  False
 
