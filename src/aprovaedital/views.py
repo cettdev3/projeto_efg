@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from appprojeto1.models import User, User_permission,Edital
+from appprojeto1.models import User, User_permission,Edital,Users_ids
 from django.contrib import messages
 from django.db.models import Q
 from requests.auth import HTTPBasicAuth
