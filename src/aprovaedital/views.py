@@ -107,7 +107,7 @@ def aprovar_edital_gerado(request):
         atualiza_status.status = 3
         atualiza_status.save()
 
-        todosEditais = Edital.objects.filter(~Q(status=3)).values()
+        todosEditais = Edital.objects.filter(~Q(status=3)| Q(status=4)).values()
         print(len(todosEditais))
         # todosEditais = todosEditais[0]
         if len(todosEditais) > 0:
