@@ -35,25 +35,44 @@ def getInstance(processName, taskDefinition,request):
     retorno = requisicao.text
     json_object = json.loads(retorno)
     for dados in json_object:
-        if dados['taskDefinitionKey'] == taskDefinitionKey:
-            idTask = dados['id']
-            headers = {'Content-type': 'application/json'}
-            putvariable = camundaPutVariable(idTask,'alteracao','não','String')
-            putUserLogin = camundaPutVariable(idTask,'UserDjangoAuth',userLogged,'String')
-            putUserSelecao = camundaPutVariable(idTask,'UserSelecaoAuth',idUserSelecao,'String')
-            putUserSiga = camundaPutVariable(idTask,'UserSigaAuth',idUserSiga,'String')
+        try:
+            if dados['taskDefinitionKey'] == taskDefinitionKey:
+                idTask = dados['id']
+                headers = {'Content-type': 'application/json'}
+                putvariable = camundaPutVariable(idTask,'alteracao','não','String')
+                putUserLogin = camundaPutVariable(idTask,'UserDjangoAuth',userLogged,'String')
+                putUserSelecao = camundaPutVariable(idTask,'UserSelecaoAuth',idUserSelecao,'String')
+                putUserSiga = camundaPutVariable(idTask,'UserSigaAuth',idUserSiga,'String')
 
-            if putvariable == True and putUserSelecao == True and putUserLogin == True and putUserSiga == True:
-                completeTask = req.post(
-                    f"{host}task/{idTask}/complete", auth=autentication, headers=headers)
-                if completeTask.status_code == 204:
-                    print('Taks is completed!')
-                    return True
+                if putvariable == True and putUserSelecao == True and putUserLogin == True and putUserSiga == True:
+                    completeTask = req.post(
+                        f"{host}task/{idTask}/complete", auth=autentication, headers=headers)
+                    if completeTask.status_code == 204:
+                        print('Taks is completed!')
+                        return True
+                    else:
+                        return False
                 else:
                     return False
-            else:
-                return False
+        except:
+            if dados[0]['taskDefinitionKey'] == taskDefinitionKey:
+                idTask = dados['id']
+                headers = {'Content-type': 'application/json'}
+                putvariable = camundaPutVariable(idTask,'alteracao','não','String')
+                putUserLogin = camundaPutVariable(idTask,'UserDjangoAuth',userLogged,'String')
+                putUserSelecao = camundaPutVariable(idTask,'UserSelecaoAuth',idUserSelecao,'String')
+                putUserSiga = camundaPutVariable(idTask,'UserSigaAuth',idUserSiga,'String')
 
+                if putvariable == True and putUserSelecao == True and putUserLogin == True and putUserSiga == True:
+                    completeTask = req.post(
+                        f"{host}task/{idTask}/complete", auth=autentication, headers=headers)
+                    if completeTask.status_code == 204:
+                        print('Taks is completed!')
+                        return True
+                    else:
+                        return False
+                else:
+                    return False
 def getUserlogin(request):
     username = request.user
     id_user = User.objects.filter(username=username).values()
