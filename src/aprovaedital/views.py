@@ -30,7 +30,7 @@ def getInstance(processName, taskDefinition,request):
     idUserSiga = infoUserLogged[0]['user_siga_id']
 
     taskDefinitionKey = taskDefinition
-    url = f"{host}task?processDefinitionKey={processName}"
+    url = f"{host}/task?processDefinitionKey={processName}"
     requisicao = req.get(url, json={}, auth=autentication)
     retorno = requisicao.text
     json_object = json.loads(retorno)
@@ -48,7 +48,7 @@ def getInstance(processName, taskDefinition,request):
 
                 if putvariable == True and putUserSelecao == True and putUserLogin == True and putUserSiga == True:
                     completeTask = req.post(
-                        f"{host}task/{idTask}/complete", auth=autentication, headers=headers)
+                        f"{host}/task/{idTask}/complete", auth=autentication, headers=headers)
                     if completeTask.status_code == 204:
                         print('Taks is completed!')
                         return True
@@ -67,7 +67,7 @@ def getInstance(processName, taskDefinition,request):
 
                 if putvariable == True and putUserSelecao == True and putUserLogin == True and putUserSiga == True:
                     completeTask = req.post(
-                        f"{host}task/{idTask}/complete", auth=autentication, headers=headers)
+                        f"{host}/task/{idTask}/complete", auth=autentication, headers=headers)
                     if completeTask.status_code == 204:
                         print('Taks is completed!')
                         return True

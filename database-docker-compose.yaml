@@ -15,7 +15,7 @@ services:
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         links:
-            - projeto_efg-database-1
+            - database
         environment:
             PMA_HOST: projeto_efg-database-1
             PMA_PORT: 3306
