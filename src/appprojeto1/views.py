@@ -1884,7 +1884,7 @@ def buscar_siga_selecao(request):
         user='consulta',
         passwd='6XGZxc2gdx14ygv',
         db='DW_CETT',
-        port=3306
+        port=1443
     )
 
     c = mydb.cursor()
@@ -1895,7 +1895,6 @@ def buscar_siga_selecao(request):
     # obter os resultados da consulta
     results = c.fetchall()
     print('resultados abaixo')
-    print
     # converter os resultados em um objeto JSONid
 
 
