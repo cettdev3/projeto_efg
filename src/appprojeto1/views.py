@@ -195,7 +195,7 @@ def busca_usuario_siga(cpf):
         user='consulta',	  # seu user
         passwd='6XGZxc2gdx14ygv',		# sua senha
         db='DW_CETT',
-        port=3306)
+        port=1443)
 
     c = mydb.cursor()
 
