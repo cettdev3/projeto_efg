@@ -147,7 +147,7 @@ def aprovar_edital_gerado(request):
         cria_status.dt_fim_edit = None
         cria_status.dt_ini_insc = None
         cria_status.dt_fim_insc = None
-        cria_status.user_change = request.user.id
+        cria_status.user_change_id = request.user.id
         cria_status.save()
         messages.success(request, 'Edital foi reprovado com sucesso!')
         return redirect('/aprovar-edital')
