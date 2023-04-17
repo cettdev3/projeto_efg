@@ -194,12 +194,12 @@ def busca_usuario_siga(cpf):
         host='200.137.215.60',	   # seu host
         user='consulta',	  # seu user
         passwd='6XGZxc2gdx14ygv',		# sua senha
-        db='dw',
+        db='DW_CETT',
         port=3306)
 
     c = mydb.cursor()
 
-    query = "SELECT * FROM login_siga_selecao where cpf =  " + str(cpf)
+    query = "SELECT * FROM dbo.dUsuarios where cpf =  " + str(cpf)
     c.execute(query)
 
     for l in c.fetchall():
