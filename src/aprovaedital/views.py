@@ -122,7 +122,7 @@ def aprovar_edital_gerado(request):
 
     if aprovacao == 3:
         idtbledital = edital[0]['id']
-        atualiza_status = Edital.objects.get(id = idtbledital)
+        atualiza_status = Edital.objects.get(id = idEdital)
         atualiza_status.status = 3
         atualiza_status.user_change_id = request.user.id
         atualiza_status.save()
@@ -140,7 +140,7 @@ def aprovar_edital_gerado(request):
         
     elif aprovacao == 1:
         motivo = request.POST['motivo']
-        cria_status = Edital.objects.get(id = idtbledital)
+        cria_status = Edital.objects.get(id = idEdital)
         cria_status.status = 1
         cria_status.motivo = motivo
         cria_status.dt_ini_edit = None
