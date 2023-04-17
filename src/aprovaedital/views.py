@@ -126,6 +126,7 @@ def aprovar_edital_gerado(request):
         print(idtbledital)
         atualiza_status = Edital.objects.get(id = idEdital)
         atualiza_status.status = 3
+        atualiza_status.user_change = request.user.id
         atualiza_status.save()
 
         todosEditais = Edital.objects.filter(~Q(status=3)| Q(status=4)).values()
