@@ -121,12 +121,10 @@ def aprovar_edital_gerado(request):
     print(edital[0])
 
     if aprovacao == 3:
-        print('entrou')
         idtbledital = edital[0]['id']
-        print(idtbledital)
         atualiza_status = Edital.objects.get(id = idtbledital)
         atualiza_status.status = 3
-        atualiza_status.user_change = request.user.id
+        atualiza_status.user_change = int(request.user.id)
         atualiza_status.save()
 
         todosEditais = Edital.objects.filter(~Q(status=3)| Q(status=4)).values()
@@ -142,14 +140,14 @@ def aprovar_edital_gerado(request):
         
     elif aprovacao == 1:
         motivo = request.POST['motivo']
-        atualiza_status = Edital.objects.get(id = idtbledital)
-        atualiza_status.status = 1
-        atualiza_status.motivo = motivo
-        atualiza_status.dt_ini_edit = None
-        atualiza_status.dt_fim_edit = None
-        atualiza_status.dt_ini_insc = None
-        atualiza_status.dt_fim_insc = None
-        atualiza_status.user_change = request.user.id
-        atualiza_status.save()
+        cria_status = Edital.objects.get(id = idtbledital)
+        cria_status.status = 1
+        cria_status.motivo = motivo
+        cria_status.dt_ini_edit = None
+        cria_status.dt_fim_edit = None
+        cria_status.dt_ini_insc = None
+        cria_status.dt_fim_insc = None
+        cria_status.user_change = request.user.id
+        cria_status.save()
         messages.success(request, 'Edital foi reprovado com sucesso!')
         return redirect('/aprovar-edital')
