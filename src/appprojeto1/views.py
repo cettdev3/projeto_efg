@@ -584,7 +584,7 @@ def load_funcoes_tabela(request):
         query_start = " AND"
 
     if escola:
-        query += str(query_start) + " escola = '" + str(escola) + "'"
+        query += str(query_start) + " escola_id = '" + str(escola) + "'"
         query_start = " AND"
 
     if modalidade:
