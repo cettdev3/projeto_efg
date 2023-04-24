@@ -565,6 +565,7 @@ def load_funcoes_rp(request):
 
 @login_required(login_url='/')
 def load_funcoes_tabela(request):
+    print(request.GET)
     ano = request.GET['filtro_ano']
     trimestre = request.GET['filtro_trimestre']
     escola = request.GET['filtro_escola']
