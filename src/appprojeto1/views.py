@@ -565,12 +565,12 @@ def load_funcoes_rp(request):
 
 @login_required(login_url='/')
 def load_funcoes_tabela(request):
-    ano = request.GET['ano']
-    trimestre = request.GET['trimestre']
-    escola = request.GET['escola']
-    modalidade = request.GET['modalidade']
-    curso = request.GET['curso']
-    tipo = request.GET['tipo']
+    ano = request.GET['filtro_ano']
+    trimestre = request.GET['filtro_trimestre']
+    escola = request.GET['filtro_escola']
+    modalidade = request.GET['filtro_modalidade']
+    curso = request.GET['filtro_curso']
+    tipo = request.GET['filtro_tipo']
 
     query = "SELECT * FROM Turmas_planejado_orcado "
     query_start = "WHERE"
