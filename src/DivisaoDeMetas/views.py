@@ -99,7 +99,11 @@ class DivisaoDeMetasUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateVi
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['carga_horaria_total_atual'] = self.object.carga_horaria_total
+        # context['carga_horaria_total_atual'] = self.object.carga_horaria_total
+        context['form'] = DivisaoDeMetasForm(
+            instance=self.object,
+            initial={'carga_horaria_total_atual': self.object.carga_horaria_total}
+        )
         return context
 
 
