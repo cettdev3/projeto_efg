@@ -1885,7 +1885,7 @@ def buscar_siga_selecao(request):
         user='consulta',
         passwd='6XGZxc2gdx14ygv',
         db='DW_CETT',
-        port=1443
+        port=1433
     )
 
     c = mydb.cursor()
