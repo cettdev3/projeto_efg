@@ -1898,6 +1898,7 @@ def buscar_siga_selecao(request):
 
     # Obtendo os resultados
     results = cursor.fetchall()
+    print(results)
     print('resultados abaixo')
     # converter os resultados em um objeto JSONid
 
