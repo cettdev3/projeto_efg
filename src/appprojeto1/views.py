@@ -1893,7 +1893,7 @@ def buscar_siga_selecao(request):
 
     # Executando a consulta SQL
 
-    query = f"SELECT * FROM dbo.dUsuarios WHERE CPF = {cpf}"
+    query = "SELECT * FROM dbo.dUsuarios WHERE CPF = '" + str(cpf) + "'"
     cursor.execute(query)
 
     # Obtendo os resultados
