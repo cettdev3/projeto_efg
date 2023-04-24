@@ -22,6 +22,7 @@ from appprojeto1.forms import (
     AprovarCursosForm,
     ReprovaCursosForm
 )
+import pyodbc
 from appprojeto1.tables import AprovarCursosTable
 from appprojeto1.filters import AprovarCursosFilter, DashboardAprovarCursosFilter
 from django.urls import reverse_lazy, reverse
@@ -1880,21 +1881,23 @@ def buscar_siga_selecao(request):
 
     print(cpf)
     # conexão com o banco de dados
-    mydb = MySQLdb.connect(
-        host='200.137.215.60',
-        user='consulta',
-        passwd='6XGZxc2gdx14ygv',
-        db='DW_CETT',
-        port=1433
-    )
+    server = '200.137.215.60'
+    database = 'DW_CETT'
+    username = 'consulta'
+    password = '6XGZxc2gdx14ygv'
+    driver = '{ODBC Driver 17 for SQL Server}'
 
-    c = mydb.cursor()
-    print(c)
-    query = "SELECT * FROM dbo.dUsuarios WHERE CPF = "+str(cpf)
-    c.execute(query)
+    # Conectando ao banco de dados
+    conn = pyodbc.connect(f"DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}")
+    cursor = conn.cursor()
 
-    # obter os resultados da consulta
-    results = c.fetchall()
+    # Executando a consulta SQL
+
+    query = f"SELECT * FROM dbo.dUsuarios WHERE CPF = {cpf}"
+    cursor.execute(query)
+
+    # Obtendo os resultados
+    results = cursor.fetchall()
     print('resultados abaixo')
     # converter os resultados em um objeto JSONid
 
