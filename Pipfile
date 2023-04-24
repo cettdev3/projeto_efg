@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
 gunicorn = "*"
 envconfiguration = "*"
 django-multiselectfield = "*"
@@ -21,6 +20,7 @@ tablib = {extras = ["xlsx"], version = "*"}
 pycamunda = "*"
 pyyaml = "*"
 pyodbc = "*"
+django = "==4.1"
 
 [dev-packages]
 autopep8 = "*"
