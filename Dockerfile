@@ -15,11 +15,11 @@ ARG APP_NAME
 RUN adduser -u $APP_UID --disabled-password --gecos "" $APP_USER_NAME && chown -R $APP_USER_NAME /home/$APP_USER_NAME
 
 RUN apt-get update && apt-get install git -y
+RUN apt-get update && libodbc1 -y
 
 RUN curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list
 
-RUN apt-get update && libodbc1 -y
-RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17:
+RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql17:
 
 RUN pip install pipenv
 
