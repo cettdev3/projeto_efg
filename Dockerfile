@@ -15,6 +15,7 @@ ARG APP_NAME
 RUN adduser -u $APP_UID --disabled-password --gecos "" $APP_USER_NAME && chown -R $APP_USER_NAME /home/$APP_USER_NAME
 
 RUN apt-get update && apt-get install git -y
+RUN apt-get install libodbc1 -y
 
 RUN pip install pipenv
 
