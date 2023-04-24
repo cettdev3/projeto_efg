@@ -1885,7 +1885,7 @@ def buscar_siga_selecao(request):
     database = 'DW_CETT'
     username = 'consulta'
     password = '6XGZxc2gdx14ygv'
-    driver = '{ODBC Driver 18 for SQL Server}'
+    driver = '{ODBC Driver 17 for SQL Server}'
 
     # Conectando ao banco de dados
     conn = pyodbc.connect(f"DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}")
@@ -1893,16 +1893,17 @@ def buscar_siga_selecao(request):
 
     # Executando a consulta SQL
 
-    query = f"SELECT * FROM dbo.dUsuarios WHERE CPF = {cpf}"
+    query = "SELECT * FROM dbo.dUsuarios WHERE CPF = '" + str(cpf) + "'"
     cursor.execute(query)
 
     # Obtendo os resultados
     results = cursor.fetchall()
+    print(results)
     print('resultados abaixo')
     # converter os resultados em um objeto JSONid
 
 
-    json_results = [dict(zip(('id', 'SK_Usuario', 'NK_Usuario', 'NM_Usuario', 'NM_Sistema', 'CPF'), item)) for item in results]
+    json_results = [dict(zip(('SK_Usuario', 'NK_Usuario', 'NM_Usuario', 'NM_Sistema', 'CPF'), item)) for item in results]
     print(json_results)
     # retornar a resposta em formato JSON
     return JsonResponse({'data': json_results})

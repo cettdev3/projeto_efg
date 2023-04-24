@@ -338,6 +338,7 @@ $("#search_user").click(function(){
             for (var i = 0; i < total; i++) {
                 var nomeSistema = dados[i]['NM_Sistema'];
                 var idUsuario = dados[i]['NK_Usuario'];
+                console.log(nomeSistema,idUsuario)
                 if (nomeSistema == 'SIGA EFG'){
                     document.getElementById('user_siga').value = idUsuario;
                 }
