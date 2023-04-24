@@ -1903,7 +1903,7 @@ def buscar_siga_selecao(request):
     # converter os resultados em um objeto JSONid
 
 
-    json_results = [dict(zip(('SK_Usuario', 'NK_Usuario', 'NM_Usuario', 'NM_Sistema', 'CPF'), item)) for item in results]
+    json_results = [dict(zip(('SK_Usuario', 'NK_Usuario','NM_Login' 'NM_Usuario', 'NM_Sistema', 'CPF'), item)) for item in results]
     print(json_results)
     # retornar a resposta em formato JSON
     return JsonResponse({'data': json_results})
