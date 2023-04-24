@@ -20,6 +20,7 @@ django-fontawesome-5 = "*"
 tablib = {extras = ["xlsx"], version = "*"}
 pycamunda = "*"
 pyyaml = "*"
+pyodbc = "*"
 
 [dev-packages]
 autopep8 = "*"
