@@ -1885,7 +1885,7 @@ def buscar_siga_selecao(request):
     database = 'DW_CETT'
     username = 'consulta'
     password = '6XGZxc2gdx14ygv'
-    driver = '{ODBC Driver 18 for SQL Server}'
+    driver = '{ODBC Driver 17 for SQL Server}'
 
     # Conectando ao banco de dados
     conn = pyodbc.connect(f"DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}")
