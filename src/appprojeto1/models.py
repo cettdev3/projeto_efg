@@ -45,6 +45,7 @@ class Metas_escolas(models.Model):
     tipo = models.IntegerField(null=False, blank=False, choices=TIPO)
     email = models.EmailField(max_length=255, null=True, blank=True)
     telefone = models.CharField(max_length=16, null=True, blank=True)
+    selecao_id = models.IntegerField(null=True, default=None)
 
     def __str__(self):
         return self.escola
