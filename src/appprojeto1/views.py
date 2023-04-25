@@ -876,13 +876,14 @@ def apagar_meta(request):
     # carga_horaria_total = request.POST['cht']
 
     metas_filtro = Metas_efg.objects.filter(id=codigo).values()
+    print(metas_filtro[0])
     escola = metas_filtro[0]['escola'][0]
     tipo_curso = metas_filtro[0]['tipo'][0]
     modalidade = metas_filtro[0]['modalidade'][0]
     ano = metas_filtro[0]['ano'][0]
     ch_total = metas_filtro[0]['ch_total'][0]
     semestre = metas_filtro[0]['trimestre'][0]
-    print(metas_filtro[0])
+    
 
     meta = Metas_efg.objects.get(id=codigo)
     meta.delete()
