@@ -4,11 +4,12 @@ from DivisaoDeMetas.models import DivisaoDeMetasPorEscola, Metas_escolas
 
 class DivisaoDeMetasFilter(FilterSet):
     ano = AllValuesFilter()
-    escola = ModelChoiceFilter(queryset=Metas_escolas.objects.filter(tipo__in=[0 ,1]))
-    
+    escola = ModelChoiceFilter(
+        queryset=Metas_escolas.objects.filter(tipo__in=[0, 1]))
+
     class Meta:
         model = DivisaoDeMetasPorEscola
-        
+
         exclude = (
             'id',
             'created_at',

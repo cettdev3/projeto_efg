@@ -43,7 +43,7 @@ class DivisaoDeMetasView(LoginRequiredMixin, ExportMixin, FilteredSingleTableVie
     formhelper_class = DivisaoDeMetasFilterFormHelper
     paginator_class = LazyPaginator
     exclude_columns = ('actions', )
-    
+
 
 class DivisaoDeMetasDetailView(LoginRequiredMixin, ModelFormMixin, DetailView, DivisaoDeMetasContextMixin):
     login_url = '/'
@@ -81,6 +81,8 @@ class DivisaoDeMetasUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateVi
     model = DivisaoDeMetasPorEscola
 
     def form_valid(self, form):
+        print(self.object.carga_horaria_total,
+              form.cleaned_data['carga_horaria_total_atual'])
         self.object.carga_horaria = (
             self.object.carga_horaria_total -
             form.cleaned_data['carga_horaria_total_atual']
@@ -97,7 +99,11 @@ class DivisaoDeMetasUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateVi
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['carga_horaria_total_atual'] = self.object.carga_horaria_total
+        # context['carga_horaria_total_atual'] = self.object.carga_horaria_total
+        context['form'] = DivisaoDeMetasForm(
+            instance=self.object,
+            initial={'carga_horaria_total_atual': self.object.carga_horaria_total}
+        )
         return context
 
 
