@@ -870,22 +870,28 @@ def cad_metas(request):
 @login_required(login_url='/')
 def apagar_meta(request):
     codigo = request.POST['id_deleta']
-    escola = request.POST['escola_delete']
-    tipo_curso = request.POST['tipo_delete']
-    ano = request.POST['ano_delete']
-    carga_horaria_total = request.POST['cht']
+    # escola = request.POST['escola_delete']
+    # tipo_curso = request.POST['tipo_delete']
+    # ano = request.POST['ano_delete']
+    # carga_horaria_total = request.POST['cht']
 
     metas_filtro = Metas_efg.objects.filter(id=codigo).values()
+    escola = metas_filtro[0]['escola']
+    tipo_curso = metas_filtro[0]['tipo']
+    modalidade = metas_filtro[0]['modalidade']
+    ano = metas_filtro[0]['ano']
+    ch_total = metas_filtro[0]['ch_total']
+    semestre = metas_filtro[0]['trimestre']
     print(metas_filtro[0])
 
     meta = Metas_efg.objects.get(id=codigo)
     meta.delete()
-
+    #semestre e modalidade
     atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(
-        escola=escola, tipo=tipo_curso, ano=ano).values()
+        escola=escola, tipo=tipo_curso, ano=ano,modalidade = modalidade,semestre = semestre ).values()
     id_filtro = atualiza_saldo[0]['id']
     novo_saldo = int(
-        atualiza_saldo[0]['carga_horaria']) + int(carga_horaria_total)
+        atualiza_saldo[0]['carga_horaria']) + int(ch_total)
     atualiza_divisao = DivisaoDeMetasPorEscola.objects.get(id=id_filtro)
     atualiza_divisao.carga_horaria = novo_saldo
     atualiza_divisao.save()
