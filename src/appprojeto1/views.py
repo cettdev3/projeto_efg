@@ -874,6 +874,10 @@ def apagar_meta(request):
     tipo_curso = request.POST['tipo_delete']
     ano = request.POST['ano_delete']
     carga_horaria_total = request.POST['cht']
+
+    metas_filtro = Metas_efg.objects.filter(id=codigo).values()
+    print(metas_filtro[0])
+
     meta = Metas_efg.objects.get(id=codigo)
     meta.delete()
 
