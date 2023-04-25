@@ -881,7 +881,7 @@ def apagar_meta(request):
     tipo_curso = metas_filtro[0]['tipo_curso_id']
     modalidade = metas_filtro[0]['modalidade_id']
     ano = metas_filtro[0]['ano']
-    ch_total = metas_filtro[0]['ch_total']
+    ch_total = metas_filtro[0]['carga_horaria_total']
     semestre = metas_filtro[0]['trimestre']
     
 
