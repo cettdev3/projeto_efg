@@ -878,8 +878,8 @@ def apagar_meta(request):
     metas_filtro = Metas_efg.objects.filter(id=codigo).values()
     print(metas_filtro[0])
     escola = metas_filtro[0]['escola_id']
-    tipo_curso = metas_filtro[0]['tipo']
-    modalidade = metas_filtro[0]['modalidade']
+    tipo_curso = metas_filtro[0]['tipo_curso_id']
+    modalidade = metas_filtro[0]['modalidade_id']
     ano = metas_filtro[0]['ano']
     ch_total = metas_filtro[0]['ch_total']
     semestre = metas_filtro[0]['trimestre']
