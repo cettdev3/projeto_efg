@@ -1594,7 +1594,7 @@ class DashboardAprovarCursosView(
 ):
     login_url = '/'
     filterset_class = DashboardAprovarCursosFilter
-    template_name = 'appprojeto1/dasboard_cursos_form.html'
+    template_name = 'appprojeto1/dashboard_cursos_form.html'
     context_object_name = 'filter'
 
     def get_filterset(self, filterset_class):
