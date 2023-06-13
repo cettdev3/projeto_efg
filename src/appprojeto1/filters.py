@@ -1,14 +1,18 @@
 from django_filters import FilterSet, AllValuesFilter, ModelChoiceFilter, ChoiceFilter
 from appprojeto1.models import Metas_efg, Metas_escolas, Cadastrar_curso
+from DivisaoDeMetas.models import DivisaoDeMetasPorEscola
 from appprojeto1.forms import DashboardAprovarCursosFilterModelForm
 from django.db.models import Sum, Case, When, F
 
+
 class AprovarCursosFilter(FilterSet):
     ano = AllValuesFilter()
-    escola = ModelChoiceFilter(queryset=Metas_escolas.objects.filter(tipo__in=[0, 1]))
+    escola = ModelChoiceFilter(
+        queryset=Metas_escolas.objects.filter(tipo__in=[0, 1]))
     curso = ModelChoiceFilter(queryset=Cadastrar_curso.objects.all())
     trimestre = AllValuesFilter()
-    situacao = ChoiceFilter(choices=Metas_efg.situacao.field.choices[:-1])  #type: ignore
+    situacao = ChoiceFilter(
+        choices=Metas_efg.situacao.field.choices[:-1])  # type: ignore
 
     class Meta:
         model = Metas_efg
@@ -21,7 +25,8 @@ class AprovarCursosFilter(FilterSet):
 
 class DashboardAprovarCursosFilter(FilterSet):
     ano = AllValuesFilter()
-    escola = ModelChoiceFilter(queryset=Metas_escolas.objects.filter(tipo__in=[0, 1]))
+    escola = ModelChoiceFilter(
+        queryset=Metas_escolas.objects.filter(tipo__in=[0, 1]))
     curso = ModelChoiceFilter(
         queryset=Cadastrar_curso.objects.all().order_by('curso'))
     trimestre = AllValuesFilter()
@@ -80,3 +85,11 @@ class DashboardAprovarCursosFilter(FilterSet):
             recurso_planejado_sum = 0
 
         return recurso_planejado_sum
+
+    @property
+    def saldo_de_horas_sum(self):
+        saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.aggregate(
+            carga_horaria__sum=Sum('carga_horaria')
+        )['carga_horaria__sum']
+        print(saldo_de_horas_sum)
+        return 0
