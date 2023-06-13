@@ -30,6 +30,8 @@ class DashboardAprovarCursosFilter(FilterSet):
     curso = ModelChoiceFilter(
         queryset=Cadastrar_curso.objects.all().order_by('curso'))
     trimestre = AllValuesFilter()
+    modalidade = AllValuesFilter()
+    tipo_curso = AllValuesFilter()
 
     class Meta:
         model = Metas_efg
@@ -88,7 +90,13 @@ class DashboardAprovarCursosFilter(FilterSet):
 
     @property
     def saldo_de_horas_sum(self):
-        saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.aggregate(
+        saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.filter(
+            ano=self.ano,
+            semestre=self.trimestre,
+            escola=self.escola,
+            modalidade=self.modalidade,
+            tipo=self.tipo_curso,
+        ).aggregate(
             carga_horaria__sum=Sum('carga_horaria')
         )['carga_horaria__sum']
         print(saldo_de_horas_sum)
