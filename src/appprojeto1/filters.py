@@ -90,14 +90,8 @@ class DashboardAprovarCursosFilter(FilterSet):
 
     @property
     def saldo_de_horas_sum(self):
-        saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.filter(
-            ano=self.ano,
-            semestre=self.trimestre,
-            escola=self.escola,
-            modalidade=self.modalidade,
-            tipo=self.tipo_curso,
-        ).aggregate(
+        saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.aggregate(
             carga_horaria__sum=Sum('carga_horaria')
         )['carga_horaria__sum']
-        print(saldo_de_horas_sum)
+        print(self.data)
         return 0
