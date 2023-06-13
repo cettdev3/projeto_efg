@@ -41,7 +41,7 @@ class DivisaoDeMetasView(LoginRequiredMixin, ExportMixin, FilteredSingleTableVie
     table_class = DivisaoDeMetasTable
     filterset_class = DivisaoDeMetasFilter
     formhelper_class = DivisaoDeMetasFilterFormHelper
-    paginator_class = LazyPaginator
+    # paginator_class = LazyPaginator
     exclude_columns = ('actions', )
 
 
