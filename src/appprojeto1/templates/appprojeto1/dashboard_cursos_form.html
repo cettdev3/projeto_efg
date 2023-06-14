@@ -8,6 +8,7 @@
 {% endif %}
 {% load bootstrap_icons %}
 {% load fontawesome_5 %}
+{% load l10n %}
 <html lang="{{ LANGUAGE_CODE|default:'pt_br' }}">
     <head>
         <meta charset="UTF-8" />
@@ -20,15 +21,11 @@
         {% bootstrap_css %}
         <link rel="stylesheet" href={% static "assets/css/bootstrap.css" %} />
         <link rel="stylesheet" href={% static "assets/vendors/iconly/bold.css" %} />
-        <link rel="stylesheet"
-              href="{% static "assets/vendors/perfect-scrollbar/perfect-scrollbar.css" %}" />
-        <link rel="stylesheet"
-              href="{% static "assets/vendors/bootstrap-icons/bootstrap-icons.css" %}" />
+        <link rel="stylesheet" href="{% static "assets/vendors/perfect-scrollbar/perfect-scrollbar.css" %}" />
+        <link rel="stylesheet" href="{% static "assets/vendors/bootstrap-icons/bootstrap-icons.css" %}" />
         <link rel="stylesheet" href={% static "assets/css/app.css" %} />
-        <link rel="stylesheet"
-              href="{% static "assets/extensions/simple-datatables/style.css" %}" />
-        <link rel="stylesheet"
-              href="{% static "assets/css/pages/simple-datatables.css" %}" />
+        <link rel="stylesheet" href="{% static "assets/extensions/simple-datatables/style.css" %}" />
+        <link rel="stylesheet" href="{% static "assets/css/pages/simple-datatables.css" %}" />
         {% fontawesome_5_static %}
         {% load crispy_forms_tags %}
     </head>
@@ -45,19 +42,19 @@
                 <form class="card-body">
                     <h4 class="d-flex justify-content-between card-title form-control">
                         <spam> VAGAS TOTAIS </spam>
-                        <spam> {{ filter.vagas_totais_sum }} </spam>
+                        <spam> {{ filter.vagas_totais_sum|floatformat:"0g" }} </spam>
                     </h4>
                     <h4 class="d-flex justify-content-between card-title form-control">
                         <spam> CARGA HORÁRIA TOTAL </spam>
-                        <spam> {{ filter.carga_horaria_total_sum }} </spam>
+                        <spam> {{ filter.carga_horaria_total_sum|floatformat:"0g" }} </spam>
                     </h4>
                     <h4 class="d-flex justify-content-between card-title form-control">
                         <spam> RECURSO PLANEJADO </spam>
-                        <spam> {{ filter.recurso_planejado_sum }} </spam>
+                        <spam> R$ {{ filter.recurso_planejado_sum|floatformat:"2g" }} </spam>
                     </h4>
                     <h4 class="d-flex justify-content-between card-title form-control">
-                        <spam> SALDO </spam>
-                        <spam> {{ filter.saldo_de_horas_sum }} </spam>
+                        <spam> CRAGA HORÁRIA DISPONPIVEL </spam>
+                        <spam> {{ filter.saldo_de_horas_sum|floatformat:"0g" }} </spam>
                     </h4>
                 </form>
             </div>

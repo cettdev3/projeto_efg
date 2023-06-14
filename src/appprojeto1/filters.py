@@ -88,15 +88,18 @@ class DashboardAprovarCursosFilter(FilterSet):
 
     @property
     def saldo_de_horas_sum(self):
-        data = {}
-
-        for key, value in self.data.items():
-            if isinstance(value, list) and len(value) == 1:
-                data[key] = value[0]
-        print(data)
+        data = self.data.copy()
+        filters = {}
+        for key, value in data.items():
+            if len(value) >= 1 and key != 'csrfmiddlewaretoken':
+                key = 'tipo' if key == 'tipo_curso' else key
+                key = 'semestre' if key == 'trimestre' else key
+                if key == 'curso':
+                    continue
+                filters[key] = value
         saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.filter(
-            **data
+            **filters
         ).aggregate(
             carga_horaria__sum=Sum('carga_horaria')
         )['carga_horaria__sum']
-        return 0
+        return saldo_de_horas_sum
