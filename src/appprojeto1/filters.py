@@ -88,9 +88,9 @@ class DashboardAprovarCursosFilter(FilterSet):
 
     @property
     def saldo_de_horas_sum(self):
-        form = self.get_form_class()
-        saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.aggregate(
+        saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.filter(
+            **self.data
+        ).aggregate(
             carga_horaria__sum=Sum('carga_horaria')
         )['carga_horaria__sum']
-        print(self.data)
         return 0
