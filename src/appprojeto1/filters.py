@@ -94,6 +94,7 @@ class DashboardAprovarCursosFilter(FilterSet):
             if isinstance(value, list) and len(value) == 1:
                 data[key] = value[0]
 
+        print(data)
         saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.filter(
             **data
         ).aggregate(
