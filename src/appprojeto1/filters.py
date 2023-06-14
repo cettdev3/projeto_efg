@@ -88,12 +88,11 @@ class DashboardAprovarCursosFilter(FilterSet):
 
     @property
     def saldo_de_horas_sum(self):
-        data = self.data.copy()
+        data = {}
 
-        for key, value in data.items():
+        for key, value in self.data.items():
             if isinstance(value, list) and len(value) == 1:
                 data[key] = value[0]
-
         print(data)
         saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.filter(
             **data
