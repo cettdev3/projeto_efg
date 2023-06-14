@@ -30,8 +30,6 @@ class DashboardAprovarCursosFilter(FilterSet):
     curso = ModelChoiceFilter(
         queryset=Cadastrar_curso.objects.all().order_by('curso'))
     trimestre = AllValuesFilter()
-    modalidade = AllValuesFilter()
-    tipo_curso = AllValuesFilter()
 
     class Meta:
         model = Metas_efg
