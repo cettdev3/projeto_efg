@@ -94,5 +94,5 @@ class DashboardAprovarCursosFilter(FilterSet):
         saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.aggregate(
             carga_horaria__sum=Sum('carga_horaria')
         )['carga_horaria__sum']
-        print(form)
+        print(self.data)
         return 0
