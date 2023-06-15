@@ -599,7 +599,7 @@ def load_funcoes_rp(request):
     #     rp = rp = float(total_horas) * 3.56
         # print('Resultado do Recurso Planejado' + str(rp))
 
-    return render(request, 'ajax/ajax_load_recurso_planejado.html', {'rp': rp})
+    return render(request, 'ajax/ajax_load_recurso_planejado.html', {'rp': total_horas})
 
 
 @login_required(login_url='/')
