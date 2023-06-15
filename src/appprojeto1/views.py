@@ -36,7 +36,7 @@ from requests.auth import HTTPBasicAuth
 from django.views.generic.base import ContextMixin
 from pycamunda import task as CamundaTask
 from requests import sessions, auth
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, Case, When, F
 import envconfiguration as config
 import json
 from django.http import JsonResponse
@@ -579,16 +579,24 @@ def load_funcoes_rp(request):
         filters['tipo_curso'] = tipo
     total_horas = Metas_efg.objects.filter(
         **filters).aggregate(
-        carga_horaria_total__sum=Sum('carga_horaria_total')
+        carga_horaria_total__sum=Sum(
+            Case(
+                When(
+                    modalidade_id=1,
+                    then=F('carga_horaria_total') * 8.34
+                ),
+                default=F('carga_horaria_total') * 3.56
+            )
+        )
     )['carga_horaria_total__sum']
 
     # vagas = select_vagas_horas(ano,trimestre,escola,modalidade,curso,tipo,'vagas_totais')
     # total_horas = int(horas) * int(vagas)
 
-    if modalidade == "1":
-        rp = float(total_horas) * 8.34  # type: ignore
-    else:
-        rp = rp = float(total_horas) * 3.56
+    # if modalidade == "1":
+    #     rp = float(total_horas) * 8.34  # type: ignore
+    # else:
+    #     rp = rp = float(total_horas) * 3.56
         # print('Resultado do Recurso Planejado' + str(rp))
 
     return render(request, 'ajax/ajax_load_recurso_planejado.html', {'rp': rp})
