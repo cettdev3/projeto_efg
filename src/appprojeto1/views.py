@@ -36,7 +36,7 @@ from requests.auth import HTTPBasicAuth
 from django.views.generic.base import ContextMixin
 from pycamunda import task as CamundaTask
 from requests import sessions, auth
-from django.db.models import Q
+from django.db.models import Q, Sum
 import envconfiguration as config
 import json
 from django.http import JsonResponse
@@ -62,7 +62,7 @@ def getInstance(processName, taskDefinition):
                 completeTask = req.post(
                     f"{host}/task/{idTask}/complete", auth=autentication, headers=headers)
                 if completeTask.status_code == 204:
-                    print('Taks is completed!')
+                    # print('Taks is completed!')
                     return True
                 else:
                     return False
@@ -73,7 +73,7 @@ def getInstance(processName, taskDefinition):
                 completeTask = req.post(
                     f"{host}/task/{idTask}/complete", auth=autentication, headers=headers)
                 if completeTask.status_code == 204:
-                    print('Taks is completed!')
+                    # print('Taks is completed!')
                     return True
                 else:
                     return False
@@ -140,7 +140,6 @@ def select_vagas_horas(ano, trimestre, escola, modalidade, curso, tipo, type_cou
         query_start = " AND"
 
     if modalidade:
-        print(modalidade)
         query += str(query_start) + " modalidade_id = '" + \
             str(modalidade) + "'"
         query_start = " AND"
@@ -153,7 +152,8 @@ def select_vagas_horas(ano, trimestre, escola, modalidade, curso, tipo, type_cou
         query += str(query_start) + " tipo_curso_id = '" + str(tipo) + "'"
         query_start = " AND"
 
-    print(query)
+
+    # print(query)
     # Executa o comando SQL
     c.execute(query)
 
@@ -161,7 +161,7 @@ def select_vagas_horas(ano, trimestre, escola, modalidade, curso, tipo, type_cou
 
     for l in c.fetchall():
         vagas = str(l[0])
-        print(vagas)
+        # print(vagas)
         if vagas == "None":
             vagas = "0"
         return vagas
@@ -405,13 +405,10 @@ def load_cht(request):
     semestre = request.GET.get('semestre')
 
     ch_total_geral = DivisaoDeMetasPorEscola.objects.filter(
-        escola=escola, tipo=tipo_curso, ano=ano, modalidade=modalidade, semestre=semestre).all()
-    try:
-        chTotal = int(ch_total_geral.values()[0]['carga_horaria'])
-
-    except:
-        chTotal = 0
-    return render(request, 'ajax/ajax_load_cht.html', {'ch_total_geral': chTotal})
+        escola=escola, tipo=tipo_curso, ano=ano, modalidade=modalidade, semestre=semestre).aggregate(
+            carga_horaria__sum=Sum('carga_horaria')
+    )['carga_horaria__sum']
+    return render(request, 'ajax/ajax_load_cht.html', {'ch_total_geral': ch_total_geral})
 
 
 def load_ch(request):
@@ -420,17 +417,12 @@ def load_ch(request):
     tipocurso = request.GET.get('tipo_id')
     modalidade = request.GET.get('modalidade_id')
     eixo = request.GET.get('eixo_id')
-    print(str(escola)+'|'+str(curso_selected)+'|'+str(escola) +
-          '|'+str(tipocurso)+'|'+str(modalidade)+'|'+str(eixo))
+    # print(str(escola)+'|'+str(curso_selected)+'|'+str(escola) +
+    #       '|'+str(tipocurso)+'|'+str(modalidade)+'|'+str(eixo))
     carga_horaria = Cadastrar_curso.objects.filter(
-        escola=escola, tipo=tipocurso, eixos=eixo, modalidade=modalidade, curso=curso_selected).all()
-    print('>>>>>>>>>>>>>>>>>')
-    print(carga_horaria.values())
-    try:
-        carga_horaria = int(carga_horaria.values()[0]['carga_horaria'])
-        print(carga_horaria)
-    except:
-        carga_horaria = 0
+        escola=escola, tipo=tipocurso, eixos=eixo, modalidade=modalidade, curso=curso_selected).aggregate(
+            carga_horaria__sum=Sum('carga_horaria')
+    )['carga_horaria__sum']
     return render(request, 'ajax/ajax_load_carga_hr_curso.html', {'carga_hr': carga_horaria})
 
 
@@ -476,7 +468,7 @@ def load_municipios(request):
 
 @login_required(login_url='/')
 def load_funcoes_filter(request):
-    print(request)
+    # print(request)
     info = request.GET['filter_select']
     vagas = []
     results = Metas_efg.objects.raw(
@@ -487,7 +479,7 @@ def load_funcoes_filter(request):
 
 @login_required(login_url='/')
 def load_funcoes_vagas(request):
-    print(request)
+    # print(request)
     ano = request.GET['ano']
     trimestre = request.GET['trimestre']
     escola = request.GET['escola']
@@ -561,14 +553,14 @@ def load_funcoes_rp(request):
         rp = float(total_horas) * 3.56   # type: ignore
     else:
         rp = select_vagas_horas_gerais()
-        print('Resultado do Recurso Planejado' + str(rp))
+        # print('Resultado do Recurso Planejado' + str(rp))
 
     return render(request, 'ajax/ajax_load_recurso_planejado.html', {'rp': rp})
 
 
 @login_required(login_url='/')
 def load_funcoes_tabela(request):
-    print(request.GET)
+    # print(request.GET)
     ano = request.GET['ano']
     trimestre = request.GET['trimestre']
     escola = request.GET['escola']
@@ -667,7 +659,7 @@ def realizar_solicitacao(request):
     modalidade = request.POST['modalidade']
     tipo = request.POST['tipo']
     justificativa = request.POST['justificativa']
-    print(eixo)
+    # print(eixo)
     submit = Solicitacao.objects.create(
         eixo=neweixo, curso=newcurso, modalidade=modalidade, tipo=tipo, justificativa=justificativa)
     return redirect('/eixos')
@@ -758,7 +750,7 @@ def cadastrar_metas(request):
 
 @login_required(login_url='/')
 def cad_metas(request):
-    print(request.POST)
+    # print(request.POST)
     diretoria = request.POST['basicInput']
     escola = request.POST['escola']
     tipo_curso = request.POST['tipo']
@@ -786,8 +778,8 @@ def cad_metas(request):
 
     meta_is_exist = Metas_efg.objects.filter(escola_id=escola, tipo_curso_id=tipo_curso,
                                              modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso, previsao_inicio=previsao_inicio, previsao_fim=previsao_fim, turno=turno).values()
-    print('-------------------------------------------------------\n\n\n\n' +
-          str(meta_is_exist))
+    # print('-------------------------------------------------------\n\n\n\n' +
+    #       str(meta_is_exist))
     if meta_is_exist:
         messages.error(
             request, '): Desculpe, mas já existe uma meta adicionada com estes dados!')
@@ -878,7 +870,7 @@ def apagar_meta(request):
     # carga_horaria_total = request.POST['cht']
 
     metas_filtro = Metas_efg.objects.filter(id=codigo).values()
-    print(metas_filtro[0])
+    # print(metas_filtro[0])
     escola = metas_filtro[0]['escola_id']
     tipo_curso = metas_filtro[0]['tipo_curso_id']
     modalidade = metas_filtro[0]['modalidade_id']
@@ -936,8 +928,8 @@ def editar_meta(request, codigo):
     municipios = Udepi_municipio.objects.filter(escola_id=idEscola)
 
     cursos = Cadastrar_curso.objects.filter(eixos=idEixos, tipo_id=tipoCursos)
-    print(infoFiltro[0]['escola_id'], infoFiltro[0]
-          ['tipo_curso_id'], infoFiltro[0]['ano'])
+    # print(infoFiltro[0]['escola_id'], infoFiltro[0]
+    #       ['tipo_curso_id'], infoFiltro[0]['ano'])
     atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(
         escola=infoFiltro[0]['escola_id'], tipo=infoFiltro[0]['tipo_curso_id'], ano=infoFiltro[0]['ano']).values()
 
@@ -1066,8 +1058,8 @@ def cadastrar_meta_sintetica(request):
     reset_queries()
     meta_sintetica = Metas_sinteticas.objects.select_related(
         'escola', 'modalidade').all()
-    print(connection.queries)
-    print(meta_sintetica)
+    # print(connection.queries)
+    # print(meta_sintetica)
     eixos = Eixos.objects.all()
     return render(request, 'cadastro_metas_sinteticas.html', {'meta_sinteticas': meta_sintetica,
                                                               'escolas': escolas,
@@ -1247,7 +1239,7 @@ def apaga_orcamento(request):
 @login_required(login_url='/')
 def cadastro_curso_escola(request):
     escolas = Metas_escolas.objects.filter(tipo__in=[0, 1]).values()
-    print(escolas)
+    # print(escolas)
     curso = Cadastrar_curso.objects.all()
     return render(request, 'cadastro_curso_escola.html', {'escolas': escolas, 'cursos': curso, 'permissoes': get_permission(request)})
 
@@ -1269,7 +1261,7 @@ def cad_curso_escola(request):
 def apagar_curso_escola(request):
     codigo = request.POST['id_deleta']
     curso = Curso_escola.objects.get(id=codigo)
-    print(curso)
+    # print(curso)
     curso.delete()
     messages.success(request, 'Curso removido desta escola!')
     return redirect('/cadastrar-curso-escola')
@@ -1278,7 +1270,7 @@ def apagar_curso_escola(request):
 @login_required(login_url='/')
 def editar_curso_escola(request):
     id_ = request.POST['id_edit']
-    print(id_)
+    # print(id_)
     escola_id = request.POST['escola_modal']
     curso_id = request.POST['curso_modal']
     status = request.POST['status_modal']
@@ -1428,7 +1420,9 @@ class AprovarCursosView(
             disapproved_list = list()
             for id in range(0, len(id_list)):
                 if action_list[id] != '1':
-                    Metas_efg.objects.filter(pk=id_list[id]).exclude(situacao=action_list[id]).update(
+                    Metas_efg.objects.filter(
+                        pk=id_list[id]).exclude(
+                            situacao=action_list[id]).update(
                         situacao=action_list[id], jus_reprovacao='')
                 else:
                     disapproved_list.append(id_list[id])
@@ -1582,7 +1576,7 @@ class ReprovaCursosUpdateView(
 
                     complete.session = CamundaSession
 
-                    print(complete)
+                    # print(complete)
 
                     complete()
             else:
@@ -1634,7 +1628,7 @@ def ajax_load_turmas_edital(request):
 def ajax_load_turmas_edital_filtro(request):
     edital_id = request.GET['id']
     lancamentos = Metas_efg.objects.filter(num_edital_id=edital_id).all()
-    print(lancamentos.values())
+    # print(lancamentos.values())
     return render(request, 'ajax/ajax_load_turmas_edital_filtro.html', {'lancamentos': lancamentos})
 
 
@@ -1676,7 +1670,7 @@ def gerenciar_usuarios(request):
 
 @login_required(login_url='/')
 def salvar_permissoes(request):
-    print(request.POST)
+    # print(request.POST)
 
     userId = request.POST['basicInput']
     escola_id = request.POST['escola']
@@ -1909,7 +1903,7 @@ def buscar_siga_selecao(request):
     cpf = str(cpf).replace('.', '')
     cpf = cpf.replace('-', '')
 
-    print(cpf)
+    # print(cpf)
     # conexão com o banco de dados
     server = '200.137.215.60'
     database = 'DW_CETT'
@@ -1929,12 +1923,12 @@ def buscar_siga_selecao(request):
 
     # Obtendo os resultados
     results = cursor.fetchall()
-    print(results)
-    print('resultados abaixo')
+    # print(results)
+    # print('resultados abaixo')
     # converter os resultados em um objeto JSONid
 
     json_results = [dict(zip(('SK_Usuario', 'NK_Usuario', 'NM_Login',
                          'NM_Usuario', 'NM_Sistema', 'CPF'), item)) for item in results]
-    print(json_results)
+    # print(json_results)
     # retornar a resposta em formato JSON
     return JsonResponse({'data': json_results})
