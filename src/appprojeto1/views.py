@@ -152,7 +152,6 @@ def select_vagas_horas(ano, trimestre, escola, modalidade, curso, tipo, type_cou
         query += str(query_start) + " tipo_curso_id = '" + str(tipo) + "'"
         query_start = " AND"
 
-
     # print(query)
     # Executa o comando SQL
     c.execute(query)
@@ -486,9 +485,29 @@ def load_funcoes_vagas(request):
     modalidade = request.GET['modalidade']
     curso = request.GET['curso']
     tipo = request.GET['tipo']
+
+    filters = {}
+
+    if ano:
+        filters['ano'] = ano
+    if trimestre:
+        filters['trimestre'] = trimestre
+    if escola:
+        filters['escola'] = escola
+    if modalidade:
+        filters['modalidade'] = modalidade
+    if curso:
+        filters['curso'] = curso
+    if tipo:
+        filters['tipo_curso'] = tipo
+
     # idEscola = select_vagas_horas('escola',subfilter)
-    vagas = select_vagas_horas(
-        ano, trimestre, escola, modalidade, curso, tipo, 'vagas_totais')
+    vagas = Metas_efg.objects.filter(
+        **filters).aggregate(
+        vagas_totais__sum=Sum('vagas_totais')
+    )['vagas_totais__sum']
+    # vagas = select_vagas_horas(
+    #     ano, trimestre, escola, modalidade, curso, tipo, 'vagas_totais')
     return render(request, 'ajax/ajax_load_vagas.html', {'vagas': vagas})
 
 
@@ -541,18 +560,35 @@ def load_funcoes_rp(request):
     curso = request.GET['curso']
     tipo = request.GET['tipo']
     # idEscola = select_vagas_horas('escola',subfilter)
-    total_horas = select_vagas_horas(
-        ano, trimestre, escola, modalidade, curso, tipo, 'carga_horaria_total')
+    # total_horas = select_vagas_horas(
+    #     ano, trimestre, escola, modalidade, curso, tipo, 'carga_horaria_total')
+
+    filters = {}
+
+    if ano:
+        filters['ano'] = ano
+    if trimestre:
+        filters['trimestre'] = trimestre
+    if escola:
+        filters['escola'] = escola
+    if modalidade:
+        filters['modalidade'] = modalidade
+    if curso:
+        filters['curso'] = curso
+    if tipo:
+        filters['tipo_curso'] = tipo
+    total_horas = Metas_efg.objects.filter(
+        **filters).aggregate(
+        carga_horaria_total__sum=Sum('carga_horaria_total')
+    )['carga_horaria_total__sum']
+
     # vagas = select_vagas_horas(ano,trimestre,escola,modalidade,curso,tipo,'vagas_totais')
     # total_horas = int(horas) * int(vagas)
 
     if modalidade == "1":
         rp = float(total_horas) * 8.34  # type: ignore
-
-    elif modalidade == "2" or modalidade == "3":
-        rp = float(total_horas) * 3.56   # type: ignore
     else:
-        rp = select_vagas_horas_gerais()
+        rp = rp = float(total_horas) * 3.56
         # print('Resultado do Recurso Planejado' + str(rp))
 
     return render(request, 'ajax/ajax_load_recurso_planejado.html', {'rp': rp})
@@ -607,9 +643,27 @@ def load_funcoes_total_horas(request):
     modalidade = request.GET['modalidade']
     curso = request.GET['curso']
     tipo = request.GET['tipo']
-    total_horas = select_vagas_horas(
-        ano, trimestre, escola, modalidade, curso, tipo, 'carga_horaria_total')
+    # total_horas = select_vagas_horas(
+    #     ano, trimestre, escola, modalidade, curso, tipo, 'carga_horaria_total')
 
+    filters = {}
+
+    if ano:
+        filters['ano'] = ano
+    if trimestre:
+        filters['trimestre'] = trimestre
+    if escola:
+        filters['escola'] = escola
+    if modalidade:
+        filters['modalidade'] = modalidade
+    if curso:
+        filters['curso'] = curso
+    if tipo:
+        filters['tipo_curso'] = tipo
+    total_horas = Metas_efg.objects.filter(
+        **filters).aggregate(
+        carga_horaria_total__sum=Sum('carga_horaria_total')
+    )['carga_horaria_total__sum']
     # vagas = select_vagas_horas(ano,trimestre,escola,modalidade,curso,tipo,'vagas_totais')
     # total_horas = int(horas) * int(vagas)
     return render(request, 'ajax/ajax_load_total_horas.html', {'total_horas': total_horas})
