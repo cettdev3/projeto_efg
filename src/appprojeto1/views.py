@@ -1667,7 +1667,7 @@ def atualiza_edital(request):
 
 @login_required(login_url='/')
 def gerenciar_usuarios(request):
-    users = User.objects.all()
+    users = User.objects.all().order_by('username')
     escolas = Metas_escolas.objects.filter(tipo__in=[0, 1])
     return render(request, 'user_perm.html', {'users': users, 'permissoes': get_permission(request), 'escolas': escolas})
 
