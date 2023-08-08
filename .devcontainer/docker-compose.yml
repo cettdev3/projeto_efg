@@ -29,10 +29,14 @@ services:
     volumes:
       # Update this to wherever you want VS Code to mount the folder of your project
       - .:/home/${APP_USER_NAME}/${APP_NAME}:cached
+      - ./.devcontainer/.zshrc:/home/${APP_USER_NAME}/.zshrc:rw
+      - ./.devcontainer/.antigenrc:/home/${APP_USER_NAME}/.antigenrc:rw
+      - ./.devcontainer/.p10k.zsh:/home/${APP_USER_NAME}/.p10k.zsh:rw
+      - ./data/uploads:/home/${APP_USER_NAME}/${APP_NAME}/src/uploads
       # - ~/.gitconfig:~/.gitconfig:ro
 
       # Uncomment the next line to use Docker from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker-compose for details.
-      - /var/run/docker.sock:/var/run/docker.sock 
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
     environment:
       DJANGO_DEBUG: True

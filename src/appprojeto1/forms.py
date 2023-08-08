@@ -57,7 +57,7 @@ class AprovarCursosSubmitFormView(Form):
             ApprovalType = list(ApprovalList)[0]
         else:
             ApprovalType = list()
-            
+
         disable_edital = True
 
         if ApprovalLen == 1 and ApprovalType == 3:
@@ -143,7 +143,8 @@ class AprovarCursosForm(ModelForm):
 
         self.fields['carga_horaria_total'].disabled = True
 
-        self.fields['escola'].queryset = Metas_escolas.objects.filter(tipo__in=[0, 1])
+        self.fields['escola'].queryset = Metas_escolas.objects.filter(tipo__in=[
+                                                                      0, 1])
         # self.fields['udepi'].queryset = Udepi_municipio.objects.none()
         # self.fields['eixo'].queryset = Eixos.objects.none()
         # self.fields['curso'].queryset = Cadastrar_curso.objects.none()
@@ -223,16 +224,16 @@ class DashboardAprovarCursosFilterModelForm(ModelForm):
                     tipo_id=tipo_id,
                 ).order_by('curso')
                 self.fields['curso'].disabled = False
-                
+
             except (ValueError, TypeError):
                 self.fields['curso'].queryset = Cadastrar_curso.objects.none()
                 self.fields['curso'].disabled = True
         else:
             self.fields['curso'].queryset = Cadastrar_curso.objects.none()
             self.fields['curso'].disabled = True
-            
+
         self.helper = FormHelper(self)
-        
+
         self.helper.layout = Layout(
             Div(
                 Div(
