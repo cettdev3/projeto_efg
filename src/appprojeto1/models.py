@@ -310,7 +310,7 @@ class Metas_efg(models.Model):
         default=None, null=True, blank=True, max_length=255)
     qualificacoes = models.CharField(
         default='', null=True, blank=True, max_length=255)
-    replan = models.CharField(null=True,max_length=15)
+
 
     def get_absolute_url(self):
         return reverse_lazy('AprovarCursosView')
