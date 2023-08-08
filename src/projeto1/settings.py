@@ -101,8 +101,8 @@ WSGI_APPLICATION = 'projeto1.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',  # type: ignore
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': 'db.sqlite3',  # type: ignore
     },
     'efg': {
         'ENGINE': 'django.db.backends.mysql',
