@@ -253,10 +253,11 @@ class Edital(models.Model):
 class Metas_efg(models.Model):
     SITUACAO = (
         (0, 'Aguardando Análise'),
-        (1, 'Reprovado',),
+        (1, 'Reprovado'),
         (2, 'Em Análise'),
-        (3, 'Aprovado',),
-        (4, 'Edital gerado',),
+        (3, 'Aprovado'),
+        (4, 'Edital gerado'),
+        (5, 'Replanejado'),
     )
 
     DIRETORIAS = (
@@ -345,3 +346,13 @@ class Users_ids(models.Model):
     class Meta:
         managed = True
         db_table = 'users_siga_selecao'
+
+class Saldo_replanejamento(models.Model):
+    id = models.AutoField(primary_key=True)
+    tipo = models.ForeignKey(Metas_tipo,on_delete=models.DO_NOTHING)
+    modalidade =  models.ForeignKey(Metas_modalidade,on_delete=models.DO_NOTHING)
+    saldo = models.DecimalField(decimal_places=2, max_digits=11)
+
+    class Meta:
+        managed = True
+        db_table = 'saldo_replanejamento'
