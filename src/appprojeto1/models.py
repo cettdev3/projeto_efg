@@ -351,7 +351,7 @@ class Saldo_replanejamento(models.Model):
     id = models.AutoField(primary_key=True)
     tipo = models.ForeignKey(Metas_tipo,on_delete=models.DO_NOTHING)
     modalidade =  models.ForeignKey(Metas_modalidade,on_delete=models.DO_NOTHING)
-    saldo = models.DecimalField(decimal_places=2, max_digits=11)
+    saldo = models.IntegerField()
 
     class Meta:
         managed = True
