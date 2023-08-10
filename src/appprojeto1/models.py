@@ -351,8 +351,6 @@ class Saldo_replanejamento(models.Model):
     id = models.AutoField(primary_key=True)
     tipo = models.ForeignKey(Metas_tipo,on_delete=models.DO_NOTHING)
     modalidade =  models.ForeignKey(Metas_modalidade,on_delete=models.DO_NOTHING)
-    ano = models.IntegerField(default=None)
-    semestre = models.IntegerField(default=None)
     saldo = models.IntegerField(default=None)
 
     class Meta:
