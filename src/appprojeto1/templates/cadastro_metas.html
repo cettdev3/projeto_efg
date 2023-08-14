@@ -2,6 +2,36 @@
 {% load static %}
 
 <style>
+   .spinner {
+  animation: spin 1s linear infinite;
+}
+
+#spinner-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* cor de fundo escuro */
+  z-index: 9999;
+}
+
+#spinner-container {
+  
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  
+  z-index: 9999;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+/* FIM DO SPINER ACIMA*/
       .modal-extra-wide .modal-dialog {
             max-width: 90%;
         }
@@ -176,6 +206,12 @@
     }
 }
 </style>
+
+<div id="spinner-background" style="display:none;">
+  <div id="spinner-container">
+    <i class="fa fa-spinner fa-spin spinner" style="color: #fff; font-size: 100px;"></i>
+  </div>
+</div>
 
 {% if 'ima' in permissoes.permission %}
 <div class="page-heading">
@@ -1660,14 +1696,26 @@ function replanejar_curso(id){
               type:"post",
               data: {'idCurso':id},
               headers: { "X-CSRFToken":  XCSRFToken },
+              beforeSend: function() {
+                  // exibe o spinner com fundo escuro enquanto aguarda a resposta
+                  $('#spinner-background').show();
+                },
               success: function(data) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Curso Replanejado',
                     text: 'O curso foi replanejado com sucesso!'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      location.reload();
+                    }
                   });
                   
                     
+              },
+              complete: function() {
+                // esconde o spinner com fundo escuro quando a resposta é recebida
+                $('#spinner-background').hide();
               }
           });
         }
