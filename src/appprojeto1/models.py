@@ -311,6 +311,7 @@ class Metas_efg(models.Model):
         default=None, null=True, blank=True, max_length=255)
     qualificacoes = models.CharField(
         default='', null=True, blank=True, max_length=255)
+    origem_replan = models.IntegerField(null=True)
     
 
 

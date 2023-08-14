@@ -18,6 +18,8 @@
         {% bootstrap_css %}
         <link rel="stylesheet" href={% static "assets/css/bootstrap.css" %} />
         <link rel="stylesheet" href={% static "assets/vendors/iconly/bold.css" %} />
+
+
         <link rel="stylesheet"
               href="{% static "assets/vendors/perfect-scrollbar/perfect-scrollbar.css" %}"/>
         <link rel="stylesheet"
@@ -196,6 +198,9 @@
         <!-- <script src={% static "assets/js/bootstrap.js" %}></script> -->
         <script src={% static "assets/js/app.js" %}></script>
         <script src={% static "assets/js/apagar_meta.js" %}></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
         {% block scripts %}
             <!-- retain the standard scripts that apply everywhere -->
             {{ form.media.js }}<!-- add the form specific media/scripts -->

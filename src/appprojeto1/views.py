@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from appprojeto1.models import Cadastrar_curso, Users_ids, Udepi_municipio, Edital, Curso_escola, Cursos, Eixos, Item_apoiado, Metas_tipo, Metas_descricoes, Metas_efg, Metas_escolas, Metas_modalidade, Metas_sinteticas, Metas_trimestre, Orcamento_plano_trabalho, Rubrica, Solicitacao, Unidades, User_permission, User
+from appprojeto1.models import Saldo_replanejamento, Cadastrar_curso, Users_ids, Udepi_municipio, Edital, Curso_escola, Cursos, Eixos, Item_apoiado, Metas_tipo, Metas_descricoes, Metas_efg, Metas_escolas, Metas_modalidade, Metas_sinteticas, Metas_trimestre, Orcamento_plano_trabalho, Rubrica, Solicitacao, Unidades, User_permission, User
 from DivisaoDeMetas.models import DivisaoDeMetasPorEscola
 from django.core import serializers
 from django.http import HttpResponse
@@ -42,7 +42,7 @@ import json
 from django.http import JsonResponse
 
 # DADOS DO SERVIDOR
-# host = 'https://processos.cett.dev.br/engine-rest/'
+#host = 'https://processos.cett.dev.br/engine-rest/'
 host = config.CAMUNDA_URL  # type: ignore
 processName = "SolicitarOfertaDeVagas"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
@@ -448,7 +448,7 @@ def load_modalidade(request):
         escola=escola_id, tipo=tipo_id, eixos=eixos_id, modalidade=modalidade_id, status="ATIVO").all().values()
 
     return render(request, 'ajax/ajax_load_curso.html', {'cursos': cursos})
-
+ 
 
 @login_required(login_url='/')
 def load_eixos(request):
@@ -736,7 +736,7 @@ def cadastrar_metas(request):
     perm_escolas = perm[0]['escola_id']
 
     tipo_curso = Metas_tipo.objects.all()
-
+    saldoReplanejado = Saldo_replanejamento.objects.all()
     modalidade = Metas_modalidade.objects.all()
     if perm_escolas != None:
         lancamentos = Metas_efg.objects.filter(escola=perm_escolas).all()
@@ -790,7 +790,7 @@ def cadastrar_metas(request):
                                                        'perm_escola': perm_escolas,
                                                        'btn_enviar_planejamento_reprovados': btn_enviar_planejamento_reprovados,
                                                        'btn_enviar_planejamento_aanalise': btn_enviar_planejamento_aanalise,
-                                                       'permissoes': get_permission(request)})
+                                                       'permissoes': get_permission(request),'saldoReplanejado':saldoReplanejado})
     else:
         return render(request, 'cadastro_metas.html', {"tipos": tipo_curso,
                                                        'escolas': escolas_cad,
@@ -807,121 +807,145 @@ def cadastrar_metas(request):
                                                        'municipios': municipios,
                                                        'perm_escola': perm_escolas,
                                                        'btn_enviar_planejamento': btn_enviar_planejamento,
-                                                       'permissoes': get_permission(request)})
+                                                       'permissoes': get_permission(request),'saldoReplanejado':saldoReplanejado})
 
 
 @login_required(login_url='/')
 def cad_metas(request):
-    # print(request.POST)
-    diretoria = request.POST['basicInput']
-    escola = request.POST['escola']
-    tipo_curso = request.POST['tipo']
-    nome_curso = request.POST['curso']
-    turno = request.POST['turno']
-    ano = request.POST['ano']
-    modalidade_oferta = request.POST['modalidade']
-    trimestre = request.POST['trimestre']
-    carga_horaria = request.POST['carga_horaria']
-    carga_horaria_total = request.POST['ch_total']
-    vagas_totais = request.POST['vagas_totais']
-    previsao_inicio = request.POST['data_p_inicio']
-    previsao_fim = request.POST['data_p_fim']
-    dias_semana = request.POST['dias_semana']
-    if request.POST['p_abertura_edital'] != "" and request.POST['p_fechamento_edital'] != "":
-        previsao_abertura_edital = request.POST['p_abertura_edital']
-        previsao_fechamento_edital = request.POST['p_fechamento_edital']
-    eixos = request.POST['eixo']
-    udepi = request.POST['municipio']
-    curso_tecnico = request.POST['curso_tecnico']
+    print(request.POST)
     try:
-        qualificacoes = request.POST['qualificacoes']
-    except:
-        qualificacoes = ''
-
-    meta_is_exist = Metas_efg.objects.filter(escola_id=escola, tipo_curso_id=tipo_curso,
-                                             modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso, previsao_inicio=previsao_inicio, previsao_fim=previsao_fim, turno=turno).values()
-    # print('-------------------------------------------------------\n\n\n\n' +
-    #       str(meta_is_exist))
-    if meta_is_exist:
-        messages.error(
-            request, '): Desculpe, mas já existe uma meta adicionada com estes dados!')
-        return redirect('/cadastrar-metas')
-    else:
+      
+        diretoria = request.POST['basicInput']
+        escola = request.POST['escola']
+        tipo_curso = request.POST['tipo']
+        nome_curso = request.POST['curso']
+        turno = request.POST['turno']
+        ano = request.POST['ano']
+        modalidade_oferta = request.POST['modalidade']
+        trimestre = request.POST['trimestre']
+        carga_horaria = request.POST['carga_horaria']
+        carga_horaria_total = request.POST['ch_total']
+        vagas_totais = request.POST['vagas_totais']
+        previsao_inicio = request.POST['data_p_inicio']
+        previsao_fim = request.POST['data_p_fim']
+        dias_semana = request.POST['dias_semana']
         if request.POST['p_abertura_edital'] != "" and request.POST['p_fechamento_edital'] != "":
-            cadmetas = Metas_efg.objects.create(
-                diretoria=diretoria,
-                escola_id=escola,
-                tipo_curso_id=tipo_curso,
-                curso_id=nome_curso,
-                turno=turno,
-                ano=ano,
-                eixo_id=eixos,
-                modalidade_id=modalidade_oferta,
-                trimestre=trimestre,
-                carga_horaria=carga_horaria,
-                vagas_totais=vagas_totais,
-                carga_horaria_total=carga_horaria_total,
-                previsao_inicio=previsao_inicio,
-                previsao_fim=previsao_fim,
-                dias_semana=dias_semana,
-                previsao_abertura_edital=previsao_abertura_edital,  # type: ignore
-                previsao_fechamento_edital=previsao_fechamento_edital,  # type: ignore
-                jus_reprovacao='',
-                udepi_id=udepi,
-                curso_tecnico=curso_tecnico,
-                qualificacoes=qualificacoes,
-                num_edital_id=0,
-            )
+            previsao_abertura_edital = request.POST['p_abertura_edital']
+            previsao_fechamento_edital = request.POST['p_fechamento_edital']
+        eixos = request.POST['eixo']
+        udepi = request.POST['municipio']
+        curso_tecnico = request.POST['curso_tecnico']
+        try:
+            qualificacoes = request.POST['qualificacoes']
+        except:
+            qualificacoes = ''
+
+        meta_is_exist = Metas_efg.objects.filter(escola_id=escola, tipo_curso_id=tipo_curso,
+                                                modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso, previsao_inicio=previsao_inicio, previsao_fim=previsao_fim, turno=turno).values()
+        # print('-------------------------------------------------------\n\n\n\n' +
+        #       str(meta_is_exist))
+        if meta_is_exist:
+            messages.error(
+                request, '): Desculpe, mas já existe uma meta adicionada com estes dados!')
+            return redirect('/cadastrar-metas')
         else:
-            cadmetas = Metas_efg.objects.create(
-                diretoria=diretoria,
-                escola_id=escola,
-                tipo_curso_id=tipo_curso,
-                curso_id=nome_curso,
-                turno=turno,
-                ano=ano,
-                eixo_id=eixos,
-                modalidade_id=modalidade_oferta,
-                trimestre=trimestre,
-                carga_horaria=carga_horaria,
-                vagas_totais=vagas_totais,
-                carga_horaria_total=carga_horaria_total,
-                previsao_inicio=previsao_inicio,
-                previsao_fim=previsao_fim,
-                dias_semana=dias_semana,
-                jus_reprovacao='',
-                udepi_id=udepi,
-                curso_tecnico=curso_tecnico,
-                qualificacoes=qualificacoes,
-                num_edital_id=0,
-            )
+            if request.POST['p_abertura_edital'] != "" and request.POST['p_fechamento_edital'] != "":
+                cadmetas = Metas_efg.objects.create(
+                    diretoria=diretoria,
+                    escola_id=escola,
+                    tipo_curso_id=tipo_curso,
+                    curso_id=nome_curso,
+                    turno=turno,
+                    ano=ano,
+                    eixo_id=eixos,
+                    modalidade_id=modalidade_oferta,
+                    trimestre=trimestre,
+                    carga_horaria=carga_horaria,
+                    vagas_totais=vagas_totais,
+                    carga_horaria_total=carga_horaria_total,
+                    previsao_inicio=previsao_inicio,
+                    previsao_fim=previsao_fim,
+                    dias_semana=dias_semana,
+                    previsao_abertura_edital=previsao_abertura_edital,  # type: ignore
+                    previsao_fechamento_edital=previsao_fechamento_edital,  # type: ignore
+                    jus_reprovacao='',
+                    udepi_id=udepi,
+                    curso_tecnico=curso_tecnico,
+                    qualificacoes=qualificacoes,
+                    num_edital_id=0,
+                )
+            else:
+                cadmetas = Metas_efg.objects.create(
+                    diretoria=diretoria,
+                    escola_id=escola,
+                    tipo_curso_id=tipo_curso,
+                    curso_id=nome_curso,
+                    turno=turno,
+                    ano=ano,
+                    eixo_id=eixos,
+                    modalidade_id=modalidade_oferta,
+                    trimestre=trimestre,
+                    carga_horaria=carga_horaria,
+                    vagas_totais=vagas_totais,
+                    carga_horaria_total=carga_horaria_total,
+                    previsao_inicio=previsao_inicio,
+                    previsao_fim=previsao_fim,
+                    dias_semana=dias_semana,
+                    jus_reprovacao='',
+                    udepi_id=udepi,
+                    curso_tecnico=curso_tecnico,
+                    qualificacoes=qualificacoes,
+                    num_edital_id=0,
+                )
 
-        # BUSCA OS DADOS DA META DE ACORDO COM OS FILTROS SETADOS NA META
-        atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(
-            escola=escola, tipo=tipo_curso, modalidade=modalidade_oferta, semestre=trimestre, ano=ano).values()
+            if 'btn-check-2-outlined' in request.POST:
+                idTurmaOrigem = int(request.POST['idOrigem'])
+                idSaldoReplanejado = int(request.POST['idSaldo'])
 
-        # ID DA META A QUAL DEVERÁ ATUALIZAR
-        id_filtro = atualiza_saldo[0]['id']
+                #ATUALIZA A TABELA DE TURMAS PARA INFORMAR QUAL FOI A ORIGEM DO REPLANEJAMENTO
+                turmasParaReplanejar = Metas_efg.objects.get(id=cadmetas.id)
+                turmasParaReplanejar.origem_replan = idTurmaOrigem
+                turmasParaReplanejar.save()
 
-        # CARGA HORÁRIA TOTAL DA META
-        cht_meta = carga_horaria_total
+                #OBTÉM O SALDO ATUAL DA NOVA TABELA
+                saldoReplanejamento = Saldo_replanejamento.objects.filter(id=idSaldoReplanejado).first()
+                saldoReplan = int(saldoReplanejamento.saldo)
+                novo_saldo =  saldoReplan - int(carga_horaria_total)
 
-        # CARGA HORÁRIA TOTAL DA DIVISÃO
-        cht_divisao = int(atualiza_saldo[0]['carga_horaria_total'])
+                #ATUALIZA O SALDO UTILIZADO NA TABELA DE SALDOS DE REPLANEJAMENTO
+                saldoReplanejamento.saldo = novo_saldo
+                saldoReplanejamento.save()
 
-        # CARGA HORÁRIA DISPONÍVEL DA META
-        cht_disponivel_divisao = int(atualiza_saldo[0]['carga_horaria'])
+                messages.success(request, 'A meta cadastrada com replanejamento foi realizada com sucesso!')
+                return redirect('/cadastrar-metas')
+            else:
+                # BUSCA OS DADOS DA META DE ACORDO COM OS FILTROS SETADOS NA META
+                atualiza_saldo = DivisaoDeMetasPorEscola.objects.filter(
+                    escola=escola, tipo=tipo_curso, modalidade=modalidade_oferta, semestre=trimestre, ano=ano).values()
 
-        # SALDO A DEBITAR
-        saldo_total = int(cht_disponivel_divisao) - int(cht_meta)
-        atualiza_saldo = DivisaoDeMetasPorEscola.objects.get(id=id_filtro)
+                # ID DA META A QUAL DEVERÁ ATUALIZAR
+                id_filtro = atualiza_saldo[0]['id']
 
-        atualiza_saldo.created_at = datetime.datetime.now()
-        atualiza_saldo.carga_horaria = saldo_total
-        atualiza_saldo.save()
-        messages.success(request, 'Meta cadastrada com sucesso!')
-        return redirect('/cadastrar-metas')
+                # CARGA HORÁRIA TOTAL DA META
+                cht_meta = carga_horaria_total
 
+                # CARGA HORÁRIA TOTAL DA DIVISÃO
+                cht_divisao = int(atualiza_saldo[0]['carga_horaria_total'])
+
+                # CARGA HORÁRIA DISPONÍVEL DA META
+                cht_disponivel_divisao = int(atualiza_saldo[0]['carga_horaria'])
+
+                # SALDO A DEBITAR
+                saldo_total = int(cht_disponivel_divisao) - int(cht_meta)
+                atualiza_saldo = DivisaoDeMetasPorEscola.objects.get(id=id_filtro)
+
+                atualiza_saldo.created_at = datetime.datetime.now()
+                atualiza_saldo.carga_horaria = saldo_total
+                atualiza_saldo.save()
+                messages.success(request, 'Meta cadastrada com sucesso!')
+                return redirect('/cadastrar-metas')
+    except:
+        pass
 
 @login_required(login_url='/')
 def apagar_meta(request):
@@ -1864,7 +1888,6 @@ def salvar_permissoes(request):
         messages.success(request, 'Permissão realizada com sucesso!')
         return redirect('/permissoes-usuarios')
 
-
 @login_required(login_url='/')
 def enviar_planejamento(request):
 
@@ -1994,3 +2017,34 @@ def buscar_siga_selecao(request):
     # print(json_results)
     # retornar a resposta em formato JSON
     return JsonResponse({'data': json_results})
+
+@login_required(login_url='/')
+def replanejar_curso(request):
+
+    idCurso = request.POST['idCurso']
+    turma = Metas_efg.objects.filter(id=int(idCurso)).values()
+    tipo = turma[0]['tipo_curso_id']
+    modalidade = turma[0]['modalidade_id']
+    ano = turma[0]['ano']
+    semestre = turma[0]['trimestre']
+    carga_horaria_total = turma[0]['carga_horaria_total']
+    
+    saldo_disponivel = Saldo_replanejamento.objects.filter(modalidade_id=modalidade,tipo_id=tipo,ano = ano, semestre = semestre).values()
+    if saldo_disponivel:
+        idSaldo = saldo_disponivel[0]['id']
+        saldoAntigo = saldo_disponivel[0]['saldo']
+        change_value = Saldo_replanejamento.objects.get(id=idSaldo)
+        change_value.saldo = int(carga_horaria_total) + int(saldoAntigo)
+        change_value.save()
+    else:
+        insertValue = Saldo_replanejamento.objects.create(saldo=carga_horaria_total,modalidade_id=modalidade,tipo_id=tipo,ano=ano,semestre=semestre)
+    
+    #OBTÉM A TURMA ATUAL E ATUALIZA O STATUS PARA REPLANEJADO
+    turmaReplanejada = Metas_efg.objects.get(id=int(idCurso))
+    turmaReplanejada.situacao = 5
+    turmaReplanejada.save()
+    return redirect('/cadastrar-metas')
+
+
+
+
