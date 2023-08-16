@@ -721,7 +721,7 @@ table button, btn_voltar{
     </div>
 
     <div class="card-body" style="overflow-x:auto;">
-      <table style="margin-top: 10px;">
+      <table style="margin-top: 10px;" id="myTable">
         <thead>
           <tr>
             <th scope="col">Escola</th>
@@ -805,27 +805,7 @@ table button, btn_voltar{
                     </ul>
                     
                 </div>
-                  <!-- <div class="dropdown" style="float: right; ">
-                    <button class="dropbtn btn icon btn-dark" id="dropdown-content{{ lancamento.id }}" id="dropdown-content{{ lancamento.id }}"><i class="fas fa-ellipsis-v"></i></button>
-                    <div class="dropdown-content" id="dropdown-content{{ lancamento.id }}">
-                      {% if lancamento.situacao <= 1 %}
-                      
-                      <a type="button"  style="color: #FFFFFF;"
-                      href="editar-meta/{{lancamento.id }}"
-                      class="icon btn-secondary"> <i class="bi bi-pencil">EDITAR</i> </a>
-                      {% endif %}
-                      <a style="color: #FFFFFF;" type="button" onclick='insereTexto("{{lancamento.id}}","{{lancamento.vagas_totais}}","{{lancamento.carga_horaria}}","{{lancamento.escola.id}}","{{lancamento.tipo_curso.id}}","{{lancamento.ano}}")' class="icon btn-danger" data-bs-toggle="modal"
-                      data-bs-target="#warning"><i class="bi bi-trash"> APAGAR</i>
-                      
-                      <a type="button"  style="color: #ffffff;"
-                      onclick="replanejar_curso('{{lancamento.id }}')"
-                   
-                      class="icon btn-warning"> <i class="bi bi-arrow-repeat"> REPLANEJAR</i> </a>
-                     
-                    </a>
-                    
-                    </div>
-                  </div> -->
+                 
                   {% endif %}
                  </td>
               <!---<a  class="deleteFromMeta btn icon btn-danger" href="apagar-meta/{{meta.id}}"><i class="bi bi-x"></i></a></td>-->
@@ -1827,7 +1807,7 @@ function filtra_buscas() {
         url: url4,
         data: { 'ano': ano, 'trimestre': trimestre, 'escola': escola, 'modalidade': modalidade, 'curso': curso, 'tipo': tipo },
         success: function (data) {
-            $("#myTable").html(data);
+            $("table").html(data);
         }
     });
 }
