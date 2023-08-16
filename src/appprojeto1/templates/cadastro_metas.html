@@ -2,6 +2,9 @@
 {% load static %}
 
 <style>
+  body {
+            overflow-x: hidden; /* Desativa o scroll horizontal */
+        }
 .spinner {
   animation: spin 1s linear infinite;
 }
@@ -76,6 +79,122 @@
   margin-bottom: 12px; /* Add some space below the input */
 }
 
+table {
+  
+  border: 1px solid #cacaca;
+border-collapse: collapse;
+text-align: left;
+width: 100%;
+align-items: center;
+font-family: 'Open Sans', sans-serif;
+}
+
+table thead th {
+
+padding: 10px;
+font-size: 12px;
+color: #000;
+font-weight: 600;
+}
+
+table tbody tr td {
+
+display: table-cell;
+font-weight: 400;
+padding: 12px;
+color: #363636;
+text-align: left;
+position: relative;
+}
+
+table tbody tr {
+
+border: 1px solid #cacaca;
+display: table-row;
+}
+
+table tbody tr:nth-child(odd) {
+
+background: #dddddd4a;
+}
+
+table tbody tr td button {
+
+display: inline-block;
+padding: 10px 15px;
+position: initial;
+transform: translate(0);
+width: auto;
+}
+
+table tbody tr td button {
+
+background: #4CAF50;
+border: none;
+border-radius: 20px;
+box-shadow: 0 4px 8px rgba(34, 34, 34, 0.2);
+color: #fff;
+font-weight: 700;;
+padding: 10px 0;
+width: 100%;
+}
+
+table thead {
+
+display: table-header-group;
+font-weight: 500;
+}
+
+
+table tbody tr td:before {
+
+display: none;
+}
+
+table tbody tr td button:hover, table tbody tr td button:focus {
+
+background: #0C504B;
+color: #ffffff;
+cursor: pointer;
+}
+
+@media all and (max-width: 800px) {
+
+table tbody tr td {
+
+    display: block;
+    text-align: center;
+}
+
+table tbody tr td:before {
+
+    content: attr(data-title);
+    position: absolute;
+    left: 15px;
+    display: block;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+table {
+
+    border: none;
+}
+
+table thead {
+
+    display: none;
+}
+
+table tbody tr {
+
+    margin-bottom: 10px;
+    display: block;
+    border: 1px solid #dad6eb;
+}
+
+
+}
 
 
 #myTable {
@@ -665,34 +784,32 @@
     </div>
 
     <div class="card-body" style="overflow-x:auto;">
-      <table id="myTable" class="myTable" >
+      <table style="margin-top: 10px;">
         <thead>
-            <tr>
-                <th scope="col">Diretoria</th>
-                <th scope="col">Escola</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Curso</th>
-                <th scope="col">Turno</th>
-                <th scope="col">Modalidade</th>
-                <th scope="col">Vagas Totais</th>
-                <th scope="col">Início/Fim</th>
-                <th scope="col">Carga Horária</th>
-                <th scope="col">Município</th>
-                <th scope="col">Status</th>
-                <th scope="col">Ação</th>
-            </tr>
+          <tr>
+            <th scope="col">Escola</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Curso</th>
+            <th scope="col">Turno</th>
+            <th scope="col">Modalidade</th>
+            <th scope="col">Vagas Totais</th>
+            <th scope="col">Início/Fim</th>
+            <th scope="col">Carga Horária</th>
+            <th scope="col">Município</th>
+            <th scope="col">Status</th>
+            <th scope="col">Ação</th>
+        </tr>
         </thead>
         <tbody>
           {% for lancamento in lancamentos %}
 
-            <tr>
-                <td>{{lancamento.diretoria}}</td>
+            <tr style="font-size: 10px; color: #363636;">
                 <td>{{lancamento.escola.escola}}</td>
                 <td>
                   {% if lancamento.origem_replan %}
                   <span class="custom-badge">
                   {{lancamento.tipo_curso.tipo}}
-                  <span class="badge-tooltip">REPLANEJADO DE {{ lancamento.get_origem_replan_data }}</span>
+                  <span class="badge-tooltip" style="text-align: center;">REPLANEJADO {{ lancamento.get_origem_replan_data }}</span>
                   </span>
                   {% else %}
                   {{lancamento.tipo_curso.tipo}}
@@ -717,6 +834,7 @@
                 <td><button class="btn icon btn-success" style="color:#FFFFFF;width: 150px; font-size: 10px; font-weight: bold;">APROVADO</button></td>
                 {% endif %}
                 <td>
+                
                   {% if lancamento.situacao != 5 %}
                   <div class="dropdown" style="float: right; ">
                     <button class="dropbtn btn icon btn-dark"><i class="fas fa-ellipsis-v"></i></button>
@@ -744,10 +862,10 @@
               <!---<a  class="deleteFromMeta btn icon btn-danger" href="apagar-meta/{{meta.id}}"><i class="bi bi-x"></i></a></td>-->
             </tr>
             {% endfor %}
-            
-           
+          
         </tbody>
-    </table>
+        
+      </table>
       </div>
 
       </div>
