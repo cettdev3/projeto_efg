@@ -23,6 +23,7 @@ from appprojeto1.forms import (
     ReprovaCursosForm
 )
 import pyodbc
+from django.shortcuts import render, get_object_or_404
 from appprojeto1.tables import AprovarCursosTable
 from appprojeto1.filters import AprovarCursosFilter, DashboardAprovarCursosFilter
 from django.urls import reverse_lazy, reverse
@@ -2045,6 +2046,14 @@ def replanejar_curso(request):
     turmaReplanejada.save()
     return redirect('/cadastrar-metas')
 
+@login_required(login_url='/')
+def buscar_saldo_replanejado(request):
 
+    idOrigem = request.GET['idOrigem']
+    turma = get_object_or_404(Metas_efg, id=idOrigem)
+    tipo_curso_id = turma.tipo_curso_id
+    modalidade_id = turma.modalidade_id
+    saldo_especifico = get_object_or_404(Saldo_replanejamento, modalidade_id=modalidade_id, tipo_id=tipo_curso_id)
+    return render(request, 'ajax/ajax_select_saldo_replanejado.html', {'saldo_especifico': saldo_especifico})
 
 

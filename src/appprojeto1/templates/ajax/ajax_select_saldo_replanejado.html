@@ -1,0 +1,57 @@
+
+            
+    <div class="col-md-12 form-group mb-0" >
+    <div class="cardBacklog">
+      <div class="containerBacklog">
+
+        <h4><b>{{saldo_especifico.saldo}}</b></h4>
+        <p>SALDO DISPONÍVEL</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 form-group" >
+    <div class="cardBacklog">
+      <div class="containerBacklog">
+
+        <h4><b>{{saldo_especifico.modalidade}}</b></h4>
+        <p>MODALIDADE</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 form-group" >
+    <div class="cardBacklog">
+      <div class="containerBacklog">
+
+        <h4><b>{{saldo_especifico.tipo}}</b></h4>
+        <p>TIPO</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 form-group" >
+    <div class="cardBacklog">
+      <div class="containerBacklog">
+
+        <h4><b>{{saldo_especifico.ano}}</b></h4>
+        <p>ANO</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 form-group" >
+    <div class="cardBacklog">
+      <div class="containerBacklog">
+
+        <h4><b>{{saldo_especifico.semestre}}º</b></h4>
+        <p>SEMESTRE</p>
+      </div>
+    </div>
+  </div>
+
+
+
+<select style="display: none;" class="form-control" id="saldoReplan" name="saldoReplan" required="">
+        <option selected data-saldo="{{saldo_especifico.saldo}}" value="{{saldo_especifico.id}}">SALDO:{{saldo_especifico.saldo}} | MODALIDADE: {{saldo_especifico.modalidade}} | TIPO: {{saldo_especifico.tipo}} | ANO: {{saldo_especifico.ano}} | SEMESTRE: {{saldo_especifico.semestre}}°</option>
+</select>
