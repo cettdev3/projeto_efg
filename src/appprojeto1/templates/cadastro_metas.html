@@ -688,7 +688,16 @@
             <tr>
                 <td>{{lancamento.diretoria}}</td>
                 <td>{{lancamento.escola.escola}}</td>
-                <td>{{lancamento.tipo_curso.tipo}}</td>
+                <td>
+                  {% if lancamento.origem_replan %}
+                  <span class="custom-badge">
+                  {{lancamento.tipo_curso.tipo}}
+                  <span class="badge-tooltip">REPLANEJADO DE {{ lancamento.get_origem_replan_data }}</span>
+                  </span>
+                  {% else %}
+                  {{lancamento.tipo_curso.tipo}}
+                  {% endif %}
+                </td>
                 <td>{{lancamento.curso.curso}}</td>
                 <td>{{lancamento.turno}}</td>
                 <td>{{lancamento.modalidade.modalidade}}</td>

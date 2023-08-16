@@ -313,7 +313,10 @@ class Metas_efg(models.Model):
         default='', null=True, blank=True, max_length=255)
     origem_replan = models.IntegerField(null=True)
     
-
+    def get_origem_replan_data(self):
+        if self.origem_replan:
+            turma_origem = Metas_efg.objects.get(pk=self.origem_replan)
+            return turma_origem.ano 
 
     def get_absolute_url(self):
         return reverse_lazy('AprovarCursosView')
