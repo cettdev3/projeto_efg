@@ -37,33 +37,42 @@
       color: #000000
     }
     .custom-badge {
-            position: relative;
-            display: inline-block;
-            padding: 6px 10px;
-            font-size: 10px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #007bff;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+    position: relative;
+    display: inline-block;
+    padding: 6px 10px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap; /* Evita que o texto quebre para uma nova linha */
+}
 
-        .badge-tooltip {
-            display: none;
-            position: absolute;
-            bottom: 100%; /* Exibir acima do badge */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 3px 6px;
-            font-size: 12px;
-            border-radius: 4px;
-        }
+.badge-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 100%; /* Exibir acima do badge */
+    left: 0; /* Alinhe a partir da borda esquerda do custom badge */
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 3px 6px;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap; /* Evita que o texto quebre para uma nova linha */
+    width: auto; /* Define a largura automaticamente com base no conteúdo */
 
-        .custom-badge:hover .badge-tooltip {
-            display: block;
-        }
+}
+
+.custom-badge:hover .badge-tooltip {
+    display: block;
+}
+
+
+
+
+
+
         </style>
     </head>
     <body>

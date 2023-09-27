@@ -746,7 +746,7 @@ table button, btn_voltar{
                   {% if lancamento.origem_replan %}
                   <span class="custom-badge">
                   {{lancamento.tipo_curso.tipo}}
-                  <span class="badge-tooltip" style="text-align: center;">REPLANEJADO DE {{ lancamento.get_origem_replan_data }}</span>
+                  <span class="badge-tooltip" style="text-align: center;">REPLANEJADO DE {{ lancamento.get_origem_replan_data.ano }} NO CURSO {{ lancamento.get_origem_replan_data.curso.curso }} </span>
                   </span>
                   {% else %}
                   {{lancamento.tipo_curso.tipo}}
