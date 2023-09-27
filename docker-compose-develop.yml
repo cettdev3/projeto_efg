@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+    database:
+        image: mariadb
+        restart: always
+        container_name: ${DB_HOST}
+        environment:
+            MARIADB_ROOT_PASSWORD: root
+            MARIADB_DATABASE: ${DB_DT_NAME}
+            MARIADB_USER: ${DB_USER}
+            MARIADB_PASSWORD: ${DB_PASS}
+        volumes:
+            - ./data:/var/lib/mysql
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: ${DB_ADM_HOST}
+        links:
+            - database
+        environment:
+            PMA_HOST: projeto_efg-database-1
+            PMA_PORT: 3306
+            PMA_ARBITRARY: 1
+        restart: always
+        labels:
+            #Enable Traefk 
+            - "traefik.enable=true"
+
+            - "traefik.http.services.${DB_ADM_HOST}.loadbalancer.server.port=80"
+            #http
+            - "traefik.http.routers.${DB_ADM_HOST}.service=${DB_ADM_HOST}@docker"
+            - "traefik.http.routers.${DB_ADM_HOST}.rule=Host(`pma.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+networks:
+    default:
+        external: true
+        name: proxy
