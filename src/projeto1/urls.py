@@ -100,6 +100,7 @@ urlpatterns = [
 
     path('', include('aprovaedital.urls')),
     path('', include('cadastrar_escola.urls')),
+     path('', include('retificacao_edital.urls')),
 
     #replanejamento
     path('ajax/ajax-replanejar-curso', replanejar_curso),
