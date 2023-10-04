@@ -436,6 +436,7 @@ def load_cursos(request):
     cursos = Cadastrar_curso.objects.filter(
         escola=escola_id, tipo=id_tipo_curso, modalidade=modalidade_id, eixos=eixos_id, status="ATIVO").all()
 
+
     return render(request, 'ajax/ajax_load_cursos.html', {'cursos': cursos})
 
 

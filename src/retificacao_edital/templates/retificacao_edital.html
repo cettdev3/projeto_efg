@@ -445,25 +445,297 @@ table button, btn_voltar{
       
     </div>
 </div>
-<div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog modal-xl" role="document">
-    <div class="modal-content" >
-      <div class="modal-header" >
-        <h5 class="modal-title" id="TituloModalCentralizado" style="color: #000;">Adicionar Turmas</h5>
-        <button type="button" class="close" onclick="hideModal()" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
-        </button>
+
+<div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4" id="exampleModalFullscreenLabel" style="color:#000">Adicionar Turmas para Retificação do Edital</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
+        <form
+        name="Form"
+        id="Form"
+        class="form-control"
+        method="post"
+        action="/cadmetas"
+      >
+        {% csrf_token %}
+
+
+        <div class="row">
+          <div class="col-md-12 form-group mb-0">
+            <div class="cardBacklog">
+              <div class="containerBacklog">
+     
+                <h4><b><span id="saldoDisponivel"></span></b></h4>
+                <p>SALDO DISPONÍVEL</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>DIRETORIA:</b></label>
+            <select class="form-control" id="basicInput" name="basicInput" required>
+              <option selected value="">---------</option>
+              <option value="DAC">DAC</option>
+              <option value="DDA">DDA</option>
+              <option value="DE">DE</option>
+            </select>
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>ESCOLA:</b></label>
+            
+            <input
+            type="text"
+            class="form-control"
+            id="escola_modal"
+            name="escola_modal"
+            disabled
+            
+          >
+          <input
+          type="text"
+          class="form-control"
+          id="escola_id_modal"
+          name="escola_id_modal"
+          disabled
+          style="display: none;"
+        >
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>MUNICÍPIO:</b></label>
+                <input
+                type="text"
+                class="form-control"
+                id="municipio_modal"
+                name="municipio_modal"
+                disabled
+                
+              >
+              <input
+              type="text"
+              class="form-control"
+              id="municiopio_id_modal"
+              name="municiopio_id_modal"
+ 
+              style="display: none;"
+            >
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>TIPO DE CURSO:</b></label>
+            <select class="form-control" id="tipo" name="tipo"> 
+              <option selected value="">---------</option>
+              {% for tipo in tipos %}
+              <option  value="{{tipo.id}}">{{tipo.tipo}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="eixo"><b>EIXOS:</b></label>
+            <select class="form-control" id="eixo" name="eixo"> 
+              <option selected value="">---------</option>
+              {% for eixo in eixos %}
+              <option value="{{eixo.eixo_id}}">{{eixo.nome}}</option>
+              {% endfor %}       
+            </select>
+          </div>
+
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>MODALIDADE:</b></label>
+            <select  class="form-control" id="modalidade" name="modalidade" required>
+              <option selected value="">---------</option>
+              {% for modalidade in modalidades %}
+              <option value="{{modalidade.id}}">{{modalidade.modalidade}}</option>
+             {% endfor %}
+            </select>
+          </div>
+
+
+          
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>CURSO:</b></label>
+            <select class="form-control" id="curso" name="curso" required>
+              <option selected value="">---------</option>
+              {% for curso in cursos %}
+              <option value="{{curso.id}}">{{curso.curso}}</option>
+              {% endfor %}         
+            </select>
+          </div>
+
+        
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>TURNO:</b></label>
+            <select class="form-control" id="turno" name="turno" required>
+              <option selected value="">---------</option>
+              <option value="VESPERTINO">VESPERTINO</option>
+              <option value="MATUTINO">MATUTINO</option>
+              <option value="NOTURNO">NOTURNO</option>
+              <option value="INTEGRAL">INTEGRAL</option>
+            </select>
+          </div>
+
+          <div class="col-md-4 form-group">
+            <label for="basicInput"><b>ANO:</b></label>
+            <select class="form-control" id="ano" name="ano" required>
+              <option selected value="">---------</option>
+              <option value="2021">2021</option>  
+              <option value="2022">2022</option> 
+              <option value="2023">2023</option> 
+              <option value="2024">2024</option> 
+              <option value="2025">2025</option>  
+            </select>
+          </div>
+
+            
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>SEMESTRE:</b></label>
+              <select class="form-control" id="trimestre" name="trimestre" required>
+                <option selected value="">---------</option>
+                <option value="1">1º Semestre</option>  
+                <option value="2">2º Semestre</option>  
+              </select>
+            </div>
+
+            <div class="col-md-4 form-group" id="ajax_carga_horaria">
+              <label for="basicInput"><b>CARGA HORÁRIA:</b></label>
+              <input
+                type="number"
+                class="form-control"
+                id="carga_horaria"
+                name="carga_horaria"
+                placeholder="Informe a carga horária:"
+                min="1"
+                value=""
+                oninput="calcular()"
+                required
+              >
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>VAGAS TOTAIS:</b></label>
+              <input
+                type="number"
+                class="form-control"
+                id="vagas_totais"
+                name="vagas_totais"
+                placeholder="Informe a quantidade de vagas:"
+                min="1"
+                value=""
+                oninput="calcular()"
+                required
+              >
+            </div>
+
+           
+
+            <div class="col-md-4 form-group" id="cht_ajax">
+              <label for="basicInput"><b>CARGA HORÁRIA TOTAL:</b></label>
+              <input
+                type="number"
+                class="form-control"
+                id="ch_total"
+                name="ch_total"
+                placeholder="Informe a carga horária:"
+                min="1"
+                value="0"
+                readonly
+                
+              >
+              <input style="display: none ;" id="limite" name="limite" value="0" >
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>DATA PREVISTA PARA INÍCIO:</b></label>
+              <input
+                type="date"
+                class="form-control"
+                id="data_p_inicio"
+                name="data_p_inicio"
+                required
+
+              >
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>DATA PREVISTA PARA FINALIZAR:</b></label>
+              <input
+                type="date"
+                class="form-control"
+                id="data_p_fim"
+                name="data_p_fim"
+                required
+
+              >
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>DIAS DA SEMANA:</b></label>
+              <input
+                type="text"
+                class="form-control"
+                id="dias_semana"
+                name="dias_semana"
+                required
+
+              >
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>CURSO TÉCNICO:</b></label>
+              <select class="form-control" id="curso_tecnico" name="curso_tecnico" required="">
+              <option selected="" value="">---------</option>
+              <option value="Aprendizado De Máquina">Aprendizado De Máquina</option>  
+              <option value="Técnico Em Desenvolvimento Web E Mobile">Técnico Em Desenvolvimento Web E Mobile</option>    
+              <option value="Empresas Digitais">Empresas Digitais</option>  
+              <option value="Marketing E Mídias Sociais">Marketing E Mídias Sociais</option>
+              <option value="Econômia Criativa">Econômia Criativa</option>
+              <option value="Capacitação Fora da Trilha">Capacitação Fora da Trilha</option>
+            </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>QUALIFICAÇÕES:</b></label>
+              <select class="form-control" id="qualificacoes" name="qualificacoes" required="">
+               
+             
+            </select>
+            </div>
+
+            
+            <div class="col-md-8 form-group">
+              <label for="basicInput"><b>Origem da Retificação:</b></label>
+              <select style="font-size: 12px;" class="form-control" id="origem_retificacao" name="origem_retificacao" required="">
+             
+            </select>
+            </div>
+            
+            <div class="col-md-4 form-group">
+              <label for="basicInput"><b>  </b></label>
+              <button c type="button" class="btn btn-primary form-control">Adicionar Novas Turmas</button>
+            </div>
+
+
+        </div>
+
+        </form>
       </div>
       <div class="modal-footer">
-        <button type="button"  onclick="hideModal()" class="btn btn-secondary">Fechar</button>
-        <button type="button" class="btn btn-primary">Salvar mudanças</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
+
+
   {% else %}
 <div class="alert alert-danger" role="alert">
   :'( Desculpe, mas você não tem permissões para acessar esta funcionalidade do sistema!
@@ -480,13 +752,328 @@ table button, btn_voltar{
 
 
 <script>
-function showModal(){
-  $("#ExemploModalCentralizado").modal('show')
+
+const curso_tecnico = document.getElementById("curso_tecnico");
+const qualificacoes = document.getElementById("qualificacoes");
+        
+curso_tecnico.addEventListener("change", function() {
+  // Limpa as opções existentes no Select2
+  qualificacoes.innerHTML = "";
+
+  // Obtém o valor selecionado no Select1
+  const cursoSelecionado = curso_tecnico.value;
+
+  // Define as opções do Select2 com base no curso selecionado
+  if (cursoSelecionado === "Aprendizado De Máquina") {
+    const option1 = document.createElement("option");
+    option1.value = "";
+    option1.textContent = "";
+    qualificacoes.appendChild(option1);
+
+    const option2 = document.createElement("option");
+    option2.value = "Fundamentos de Aprendizado de Máquina";
+    option2.textContent = "Fundamentos de Aprendizado de Máquina";
+    qualificacoes.appendChild(option2);
+
+    const option3 = document.createElement("option");
+    option3.value = "Tratamento e Análise de Dados";
+    option3.textContent = "Tratamento e Análise de Dados";
+    qualificacoes.appendChild(option3);
+
+    const option4 = document.createElement("option");
+    option4.value = "Reconhecimento de Padrões";
+    option4.textContent = "Reconhecimento de Padrões";
+    qualificacoes.appendChild(option4);
+
+    const option5 = document.createElement("option");
+    option5.value = "Aprendizado Profundo";
+    option5.textContent = "Aprendizado Profundo";
+    qualificacoes.appendChild(option5);
+
+    const option6 = document.createElement("option");
+    option6.value = "Aplicações de Aprendizagem de Máquina";
+    option6.textContent = "Aplicações de Aprendizagem de Máquina";
+    qualificacoes.appendChild(option6);
+
+  } else if (cursoSelecionado === "Técnico Em Desenvolvimento Web E Mobile") {
+    const option1 = document.createElement("option");
+    option1.value = "";
+    option1.textContent = "";
+    qualificacoes.appendChild(option1);
+
+    const option2 = document.createElement("option");
+    option2.value = "Programação de Computadores";
+    option2.textContent = "Programação de Computadores";
+    qualificacoes.appendChild(option2);
+
+    const option3 = document.createElement("option");
+    option3.value = "Desenvolvimento Web Front-End";
+    option3.textContent = "Desenvolvimento Web Front-End";
+    qualificacoes.appendChild(option3);
+
+    const option4 = document.createElement("option");
+    option4.value = "Desenvolvimento Web Back-End";
+    option4.textContent = "Desenvolvimento Web Back-End";
+    qualificacoes.appendChild(option4);
+
+    const option5 = document.createElement("option");
+    option5.value = "Auxiliar de Análise e Processo de Software";
+    option5.textContent = "Auxiliar de Análise e Processo de Software";
+    qualificacoes.appendChild(option5);
+
+    const option6 = document.createElement("option");
+    option6.value = "Desenvolvimento Mobile";
+    option6.textContent = "Desenvolvimento Mobile";
+    qualificacoes.appendChild(option6);
+
+  } else if (cursoSelecionado === "Empresas Digitais") {
+    const option1 = document.createElement("option");
+    option1.value = "";
+    option1.textContent = "";
+    qualificacoes.appendChild(option1);
+
+    const option2 = document.createElement("option");
+    option2.value = "E-commerce";
+    option2.textContent = "E-commerce";
+    qualificacoes.appendChild(option2);
+
+    const option3 = document.createElement("option");
+    option3.value = "Tecnologias e Inovação para Start ups";
+    option3.textContent = "Tecnologias e Inovação para Start ups";
+    qualificacoes.appendChild(option3);
+
+    const option4 = document.createElement("option");
+    option4.value = "Gestão do Negócio e Criação de Valor";
+    option4.textContent = "Gestão do Negócio e Criação de Valor";
+    qualificacoes.appendChild(option4);
+
+    const option5 = document.createElement("option");
+    option5.value = "Competências Empreendedoras";
+    option5.textContent = "Competências Empreendedoras";
+    qualificacoes.appendChild(option5);
+
+    const option6 = document.createElement("option");
+    option6.value = "Marketing Digital";
+    option6.textContent = "Marketing Digital";
+    qualificacoes.appendChild(option6);
+
+  
+  } else if (cursoSelecionado === "Marketing E Mídias Sociais") {
+    const option1 = document.createElement("option");
+    option1.value = "";
+    option1.textContent = "";
+    qualificacoes.appendChild(option1);
+
+    const option2 = document.createElement("option");
+    option2.value = "E-commerce";
+    option2.textContent = "E-commerce";
+    qualificacoes.appendChild(option2);
+
+    const option3 = document.createElement("option");
+    option3.value = "Mídias Sociais";
+    option3.textContent = "Mídias Sociais";
+    qualificacoes.appendChild(option3);
+
+    const option4 = document.createElement("option");
+    option4.value = "Experiência do Usuário/Consumidor (UX)";
+    option4.textContent = "Experiência do Usuário/Consumidor (UX)";
+    qualificacoes.appendChild(option4);
+
+    const option5 = document.createElement("option");
+    option5.value = "Criação de Conteúdo Digital";
+    option5.textContent = "Criação de Conteúdo Digital";
+    qualificacoes.appendChild(option5);
+
+    const option6 = document.createElement("option");
+    option6.value = "Assistente em Marketing";
+    option6.textContent = "Assistente em Marketing";
+    qualificacoes.appendChild(option6);
+    
+  } else if (cursoSelecionado === "Econômia Criativa") {
+    const option1 = document.createElement("option");
+    option1.value = "";
+    option1.textContent = "";
+    qualificacoes.appendChild(option1);
+
+    const option2 = document.createElement("option");
+    option2.value = "Empreendedorismo Criativo";
+    option2.textContent = "Empreendedorismo Criativo";
+    qualificacoes.appendChild(option2);
+
+    const option3 = document.createElement("option");
+    option3.value = "Serviços Criativos Especializados";
+    option3.textContent = "Serviços Criativos Especializados";
+    qualificacoes.appendChild(option3);
+
+    const option4 = document.createElement("option");
+    option4.value = "Produtos Criativos Especializados";
+    option4.textContent = "Produtos Criativos Especializados";
+    qualificacoes.appendChild(option4);
+
+    const option5 = document.createElement("option");
+    option5.value = "Economia Circular";
+    option5.textContent = "Economia Circular";
+    qualificacoes.appendChild(option5);
+
+    const option6 = document.createElement("option");
+    option6.value = "Tecnologias 4.0 e 5.0";
+    option6.textContent = "Tecnologias 4.0 e 5.0";
+    qualificacoes.appendChild(option6);
+
+    
+  
+  }else if (cursoSelecionado === "Capacitação Fora da Trilha") {
+const option1 = document.createElement("option");
+  option1.value = "";
+  option1.textContent = "";
+  if(qualificacao_view == ""){
+    option1.selected = true;
+  }
+  qualificacoes.appendChild(option1);
+
+  const option2 = document.createElement("option");
+  option2.value = "Capacitação Fora da Trilha";
+  option2.textContent = "Capacitação Fora da Trilha";
+  if(qualificacao_view == "Capacitação Fora da Trilha"){
+    option2.selected = true;
+  }
+  qualificacoes.appendChild(option2);
+
+}
+});
+
+function calcular() {
+    var n1 = parseInt(document.getElementById("carga_horaria").value, 10);
+    var n2 = parseInt(document.getElementById("vagas_totais").value, 10);
+    var resultado = n1 * n2;
+    document.getElementById("ch_total").value = parseInt(resultado);
 }
 
-function hideModal(){
-  $("#ExemploModalCentralizado").modal('hide')
+$("#tipo").change(function () {
+
+const url = "/ajax/ajax_load_cht";
+const url_cursos = "/ajax/ajax_load_cursos";
+const url_ch = '/ajax/ajax_load_carga_hr_curso'
+
+tipo_curso = $(this).val();
+escola = document.getElementById('escola_id_modal').value
+ano = document.getElementById('ano').value
+modalidade = document.getElementById('modalidade').value
+
+eixo = document.getElementById('eixo').value
+semestre = document.getElementById('trimestre').value
+
+var curso_selected = $('#curso option:selected').text()
+
+$.ajax({
+    url: url_cursos,
+    data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'eixo_id': eixo, 'modalidade_id': modalidade },
+    success: function (data) {
+        $("#curso").html(data);
+
+    }
+});
+});
+
+$("#modalidade").change(function () {
+
+const url = "/ajax/ajax_load_cht";
+const url_cursos = "/ajax/ajax_load_cursos";
+
+modalidade = $(this).val();
+eixo = document.getElementById('eixo').value
+escola = document.getElementById('escola_id_modal').value
+console.log(escola)
+tipo_curso = document.getElementById('tipo').value
+ano = document.getElementById('ano').value
+semestre = document.getElementById('trimestre').value
+
+console.log(eixo)
+$.ajax({
+    url: url_cursos,
+    data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'eixo_id': eixo, 'modalidade_id': modalidade, 'ano': ano },
+    success: function (data) {
+        $("#curso").html(data);
+
+    }
+});
+
+});
+
+$("#eixo").change(function () {
+    const url_cursos = "/ajax/ajax_load_cursos";
+
+    eixo = $(this).val();
+    tipo_curso = document.getElementById('tipo').value
+    modalidade = document.getElementById('modalidade').value
+    escola = document.getElementById('escola_id_modal').value
+    tipo_curso = document.getElementById('tipo').value
+    ano = document.getElementById('ano').value
+    semestre = document.getElementById('trimestre').value
+
+    $.ajax({
+        url: url_cursos,
+        data: { 'escola_id': escola, 'tipo_id': tipo_curso, 'eixo_id': eixo, 'modalidade_id': modalidade, 'ano': ano },
+        success: function (data) {
+            $("#curso").html(data);
+
+        }
+    });
+
+});
+
+function showModal(){
+  
+
+
+
+  var saldoDisponivelRetificado = document.getElementById('soma-cargas').innerText
+  if (saldoDisponivelRetificado == "0"){
+    Swal.fire({
+                    icon: 'error',
+                    title: 'Ops!',
+                    text: 'Por favor, selecione pelo menos uma turma para retificação!'
+                  });
+  }else{
+    const load_turmas = "/ajax/load-turmas-por-edital";
+
+    editalId = document.getElementById('editalid').value
+
+    $.ajax({
+        url: load_turmas,
+        data: { 'edital_id': editalId},
+        success: function (data) {
+            $("#origem_retificacao").html(data);
+
+        }
+    });
+    var saldoDisponivel  = document.getElementById('saldoDisponivel').innerText = saldoDisponivelRetificado
+
+    var escolaId = document.getElementById('escola_id').value
+    var municipioId = document.getElementById('municipio_id').value
+
+    var escola = document.getElementById('escola_text').value
+    var municipio = document.getElementById('municipio_text').value
+
+    const selectElement = document.getElementById('escola_id_modal');
+    const escolaInput = document.getElementById('escola_modal')
+    const municipio_modal = document.getElementById('municipio_modal')
+
+    const municipio_id = document .getElementById('municiopio_id_modal')
+
+    selectElement.value = escolaId;
+    escolaInput.value = escola
+    municipio_modal.value = municipio
+    municipio_id.value = municipioId
+
+    $("#ExemploModalCentralizado").modal('show')
+  }
+  
 }
+
+// function hideModal(){
+//   $("#ExemploModalCentralizado").modal('hide')
+// }
 
 function exportData(){
     /* Get the HTML data using Element by Id */

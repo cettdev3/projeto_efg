@@ -1,0 +1,14 @@
+{% for turmas in editais %}
+<option value="{{turmas.id}}">
+    {{turmas.diretoria}} | 
+                      {{turmas.escola.escola}} | 
+                      {{turmas.tipo_curso.tipo}} | 
+                      {{turmas.curso.curso}} | 
+                      {{turmas.turno}} | 
+                      {{turmas.modalidade.modalidade}} | VAGAS: 
+                      {{turmas.vagas_totais}} | 
+                      {{turmas.previsao_inicio|date:"d/m/Y"}} - {{turmas.previsao_fim|date:"d/m/Y"}} | CH: 
+                      {{turmas.carga_horaria}} | 
+                      {{turmas.udepi.municipio}}
+</option>
+{% endfor %}

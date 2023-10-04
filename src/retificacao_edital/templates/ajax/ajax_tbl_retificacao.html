@@ -1,7 +1,15 @@
 {% for lancamento in editais %}
 
             <tr style="font-size: 10px; color: #363636;">
-                <td>{{lancamento.escola.escola}}</td>
+                <td>{{lancamento.escola.escola}}
+                    <input type="text" style="display: none;" name="escola_text" id="escola_text" value="{{lancamento.escola.escola}}">
+                    <input type="text" style="display: none;" name="escola_id" id="escola_id" value="{{lancamento.escola.id}}">
+
+                    <input type="text" style="display: none;" name="municipio_text" id="municipio_text" value="{{lancamento.udepi}}">
+                    <input type="text" style="display: none;" name="municipio_id" id="municipio_id" value="{{lancamento.udepi.id}}">
+                    <input type="text" style="display: none;" name="editalid" id="editalid" value="{{lancamento.num_edital_id}}">
+                </td>
+             
                 <td>
                   {% if lancamento.origem_replan %}
                   <span class="custom-badge">
@@ -30,6 +38,7 @@
                 {%  else %}
                 <td><button class="btn icon btn-success" style="color:#FFFFFF;width: 100px; font-size: 10px; font-weight: bold;">APROVADO</button></td>
                 {% endif %}
+                
                 <td>
 
                     <input onclick="somaCh()" type="checkbox" name="retificar" class="checkbox-carga" data-carga="{{ lancamento.carga_horaria_total }}" value="{{lancamento.id}}">
@@ -37,8 +46,9 @@
               <!---<a  class="deleteFromMeta btn icon btn-danger" href="apagar-meta/{{meta.id}}"><i class="bi bi-x"></i></a></td>-->
             </tr>
             {% endfor %}
-          
+           
             <script>
+                
                 function somaCh() {
                     const checkboxes = document.querySelectorAll(".checkbox-carga");
                     const somacargas = document.getElementById("soma-cargas");
