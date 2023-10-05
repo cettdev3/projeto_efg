@@ -280,12 +280,9 @@ class Metas_efg(models.Model):
 
     id = models.AutoField(primary_key=True)
     diretoria = models.CharField(max_length=255, choices=DIRETORIAS, null=True)
-    escola = models.ForeignKey(
-        Metas_escolas, on_delete=models.CASCADE, null=True)
-    tipo_curso = models.ForeignKey(
-        Metas_tipo, on_delete=models.CASCADE, null=True)
-    curso = models.ForeignKey(
-        Cadastrar_curso, on_delete=models.CASCADE, null=True)
+    escola = models.ForeignKey(Metas_escolas, on_delete=models.CASCADE, null=True)
+    tipo_curso = models.ForeignKey(Metas_tipo, on_delete=models.CASCADE, null=True)
+    curso = models.ForeignKey(Cadastrar_curso, on_delete=models.CASCADE, null=True)
     turno = models.CharField(max_length=255, choices=TURNOS, null=True)
     ano = models.IntegerField()
     modalidade = models.ForeignKey(Metas_modalidade, on_delete=models.CASCADE)
@@ -300,17 +297,12 @@ class Metas_efg(models.Model):
     previsao_fechamento_edital = models.DateField(null=True, blank=True)
     data_registro = models.DateField(null=True, blank=True)
     eixo = models.ForeignKey(Eixos, on_delete=models.CASCADE, null=True)
-    udepi = models.ForeignKey(
-        Udepi_municipio, on_delete=models.CASCADE, null=True)
-    situacao = models.IntegerField(
-        default=0, choices=SITUACAO, null=True, blank=True)
+    udepi = models.ForeignKey(Udepi_municipio, on_delete=models.CASCADE, null=True)
+    situacao = models.IntegerField(default=0, choices=SITUACAO, null=True, blank=True)
     jus_reprovacao = models.TextField(default=None, null=True, blank=True)
-    num_edital = models.ForeignKey(
-        Edital, on_delete=models.CASCADE, default=None, null=True, blank=True)
-    curso_tecnico = models.CharField(
-        default=None, null=True, blank=True, max_length=255)
-    qualificacoes = models.CharField(
-        default='', null=True, blank=True, max_length=255)
+    num_edital = models.ForeignKey(Edital, on_delete=models.CASCADE)
+    curso_tecnico = models.CharField(default=None, null=True, blank=True, max_length=255)
+    qualificacoes = models.CharField(default='', null=True, blank=True, max_length=255)
     origem_replan = models.IntegerField(null=True)
     
     def get_origem_replan_data(self):

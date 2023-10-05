@@ -302,11 +302,11 @@ table button, btn_voltar{
     <div class="column">
       <div>
         <form
-          name="Form"
-          id="Form"
+          name="form_retifica"
+          id="form_retifica"
           class="form-control"
           method="post"
-          action="/aprova-edital"
+          
           
         >
           {% csrf_token %}
@@ -335,7 +335,7 @@ table button, btn_voltar{
   
               <div class="col-md-6 form-group">
                 <label for="basicInput"><b>ESCOLA:</b></label>
-                <input  type="text" class="form-control" id="escola" name="escola">
+                <input disabled  type="text" class="form-control" id="escola" name="escola">
               </div>
   
               <div class="col-md-2 form-group">
@@ -446,6 +446,7 @@ table button, btn_voltar{
     </div>
 </div>
 
+
 <div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" style="display: none;" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
@@ -455,13 +456,19 @@ table button, btn_voltar{
       </div>
       <div class="modal-body">
         <form
-        name="Form"
-        id="Form"
+        name="form_retifica_turma"
+        id="form_retifica_turma"
         class="form-control"
         method="post"
-        action="/cadmetas"
+        action="/ajax/retifica-turmas"
       >
         {% csrf_token %}
+        <input style="display: none;" type="text" name="ano_edital" id="ano_edital">
+        <input style="display: none;" type="text" name="editalOrigem" id="editalOrigem">
+        <input style="display: none;" type="text" name="data_inicial_edital" id="data_inicial_edital">
+        <input style="display: none;" type="text" name="data_fim_edital" id="data_fim_edital">
+        <input style="display: none;" type="text" name="data_ini_inscricao" id="data_ini_inscricao">
+        <input style="display: none;" type="text" name="data_fim_inscricao" id="data_fim_inscricao">
 
 
         <div class="row">
@@ -471,6 +478,7 @@ table button, btn_voltar{
      
                 <h4><b><span id="saldoDisponivel"></span></b></h4>
                 <p>SALDO DISPONÍVEL</p>
+                <input type="text" name="numeditalid" id="numeditalid" style="display: none;">
               </div>
             </div>
           </div>
@@ -501,7 +509,7 @@ table button, btn_voltar{
           class="form-control"
           id="escola_id_modal"
           name="escola_id_modal"
-          disabled
+          
           style="display: none;"
         >
           </div>
@@ -525,10 +533,10 @@ table button, btn_voltar{
               style="display: none;"
             >
           </div>
-
+          
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>TIPO DE CURSO:</b></label>
-            <select class="form-control" id="tipo" name="tipo"> 
+            <select required class="form-control" id="tipo" name="tipo"> 
               <option selected value="">---------</option>
               {% for tipo in tipos %}
               <option  value="{{tipo.id}}">{{tipo.tipo}}</option>
@@ -538,7 +546,7 @@ table button, btn_voltar{
 
           <div class="col-md-4 form-group">
             <label for="eixo"><b>EIXOS:</b></label>
-            <select class="form-control" id="eixo" name="eixo"> 
+            <select required class="form-control" id="eixo" name="eixo"> 
               <option selected value="">---------</option>
               {% for eixo in eixos %}
               <option value="{{eixo.eixo_id}}">{{eixo.nome}}</option>
@@ -549,7 +557,7 @@ table button, btn_voltar{
 
           <div class="col-md-4 form-group">
             <label for="basicInput"><b>MODALIDADE:</b></label>
-            <select  class="form-control" id="modalidade" name="modalidade" required>
+            <select class="form-control" id="modalidade" name="modalidade" required>
               <option selected value="">---------</option>
               {% for modalidade in modalidades %}
               <option value="{{modalidade.id}}">{{modalidade.modalidade}}</option>
@@ -650,7 +658,23 @@ table button, btn_voltar{
                 readonly
                 
               >
-              <input style="display: none ;" id="limite" name="limite" value="0" >
+
+            </div>
+
+            <div class="col-md-4 form-group" style="display: none;">
+              <label for="basicInput"><b>Saldo Restante:</b></label>
+              <input
+                type="number"
+                class="form-control"
+                id="saldo_restante"
+                name="saldo_restante"
+                placeholder="Informe a carga horária:"
+                min="1"
+                value="0"
+                readonly
+                
+              >
+
             </div>
 
             <div class="col-md-4 form-group">
@@ -691,7 +715,7 @@ table button, btn_voltar{
 
             <div class="col-md-4 form-group">
               <label for="basicInput"><b>CURSO TÉCNICO:</b></label>
-              <select class="form-control" id="curso_tecnico" name="curso_tecnico" required="">
+              <select class="form-control" id="curso_tecnico" name="curso_tecnico" required>
               <option selected="" value="">---------</option>
               <option value="Aprendizado De Máquina">Aprendizado De Máquina</option>  
               <option value="Técnico Em Desenvolvimento Web E Mobile">Técnico Em Desenvolvimento Web E Mobile</option>    
@@ -704,7 +728,7 @@ table button, btn_voltar{
 
             <div class="col-md-4 form-group">
               <label for="basicInput"><b>QUALIFICAÇÕES:</b></label>
-              <select class="form-control" id="qualificacoes" name="qualificacoes" required="">
+              <select class="form-control" id="qualificacoes" name="qualificacoes" required>
                
              
             </select>
@@ -713,14 +737,14 @@ table button, btn_voltar{
             
             <div class="col-md-8 form-group">
               <label for="basicInput"><b>Origem da Retificação:</b></label>
-              <select style="font-size: 12px;" class="form-control" id="origem_retificacao" name="origem_retificacao" required="">
+              <select style="font-size: 12px;" class="form-control" id="origem_retificacao" name="origem_retificacao" required>
              
             </select>
             </div>
             
             <div class="col-md-4 form-group">
               <label for="basicInput"><b>  </b></label>
-              <button c type="button" class="btn btn-primary form-control">Adicionar Novas Turmas</button>
+              <button onclick="adicionarTurma()"  type="button" class="btn btn-primary form-control">Adicionar Turma</button>
             </div>
 
 
@@ -753,9 +777,114 @@ table button, btn_voltar{
 
 <script>
 
+function enviaFormRetificacao(){
+
+const url = "/ajax/realiza-retificacao";
+var form = document.getElementById("form_retifica_turma");
+var formData = new FormData(form);  // Use FormData para incluir campos de arquivo
+
+var XCSRFToken = '{{ csrf_token }}';
+var formIsValid = true;
+
+
+
+// Percorra todos os elementos obrigatórios do formulário
+$("#form_retifica_turma [required]").each(function() {
+    if (!$(this).val()) {
+        console.log($(this))
+        formIsValid = false;
+        $(this).addClass("invalid-field");
+    } else {
+
+        $(this).removeClass("invalid-field");
+    }
+});
+
+if (formIsValid) {
+    $.ajax({
+        url: url,
+        type: "post",
+        data: formData,  // Use formData aqui
+        processData: false,  // Não processar dados
+        contentType: false,  // Não definir tipo de conteúdo
+        headers: { "X-CSRFToken": XCSRFToken },
+        success: function (data) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Turma Retificada!',
+                text: 'A turma foi retificada com sucesso!'
+            }).then((result) => {
+            // Ação a ser realizada após o botão "OK" ser clicado
+            if (result.isConfirmed) {
+                // Redirecionar ou atualizar a página aqui
+                window.location.href = 'retificar-edital';
+            }
+        });              
+        },
+        error: function (data) {
+            if (data.responseJSON && data.responseJSON.error_message) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ops!',
+                    text: data.responseJSON.error_message
+                });
+            }  
+        }
+    });
+} else {
+    Swal.fire({
+        icon: 'error',
+        title: 'Ops!',
+        text: 'Por favor, preencha todos os campos obrigatórios.'
+    });
+    btnDesignar.disabled = false;
+}
+}
+
+
+function adicionarTurma(){
+  const url_edital = "/ajax/load-edital-exist";
+  var saldoDisponivelRetificado = parseInt(document.getElementById('soma-cargas').innerText)
+  var ch_total = parseInt(document.getElementById('ch_total').value)
+  console.log(ch_total)
+
+  $.ajax({
+        url: url_edital,
+        data: { 'edital_id': editalId},
+        success: function (data) {
+          if(data.saldo_disponivel == null){
+
+            if (ch_total > saldoDisponivelRetificado ){
+              Swal.fire({
+                    icon: 'error',
+                    title: 'Ops!',
+                    text: 'Você não pode inserir uma turma com carga horária superior ao saldo disponível!'
+                  });
+            }else{
+              enviaFormRetificacao()
+            }
+
+          }else{
+            if (ch_total > data.saldo_disponivel ){
+              Swal.fire({
+                    icon: 'error',
+                    title: 'Ops!',
+                    text: 'Você não pode inserir uma turma com carga horária superior ao saldo disponível!'
+                  });
+            }else{
+              enviaFormRetificacao()
+            }
+          }
+
+        }
+    });
+
+}
+
 const curso_tecnico = document.getElementById("curso_tecnico");
 const qualificacoes = document.getElementById("qualificacoes");
-        
+
+
 curso_tecnico.addEventListener("change", function() {
   // Limpa as opções existentes no Select2
   qualificacoes.innerHTML = "";
@@ -943,10 +1072,14 @@ const option1 = document.createElement("option");
 });
 
 function calcular() {
+    var saldo_disponivel = parseInt(document.getElementById("saldoDisponivel").innerText);
     var n1 = parseInt(document.getElementById("carga_horaria").value, 10);
     var n2 = parseInt(document.getElementById("vagas_totais").value, 10);
     var resultado = n1 * n2;
     document.getElementById("ch_total").value = parseInt(resultado);
+    var saldo_restante = saldo_disponivel - parseInt(resultado)
+    document.getElementById('saldo_restante').value = saldo_restante
+
 }
 
 $("#tipo").change(function () {
@@ -1022,9 +1155,27 @@ $("#eixo").change(function () {
 
 });
 
+
+
 function showModal(){
   
+  // <input type="text" name="editalOrigem" id="editalOrigem">
+  //       <input type="text" name="data_iniedital" id="data_iniedital">
+  //       <input type="text" name="data_fim_edital" id="data_fim_edital">
+  //       <input type="text" name="data_ini_inscricao" id="data_ini_inscricao">
+  var m_edital = document.getElementById('edital').value
+  var m_ano = document.getElementById('ano').value
+  var m_data_inicial_edital = document.getElementById('data_ini_edit').value
+  var m_data_fim_edital = document.getElementById('data_fim_edit').value
+  var m_data_inicial_inscricao = document.getElementById('data_ini_insc').value
+  var m_data_final_inscricao = document.getElementById('data_fim_insc').value
 
+  document.getElementById('ano_edital').value = m_ano
+  document.getElementById('editalOrigem').value = m_edital
+  document.getElementById('data_inicial_edital').value = m_data_inicial_edital
+  document.getElementById('data_fim_edital').value = m_data_fim_edital
+  document.getElementById('data_ini_inscricao').value = m_data_inicial_inscricao
+  document.getElementById('data_fim_inscricao').value = m_data_final_inscricao
 
 
   var saldoDisponivelRetificado = document.getElementById('soma-cargas').innerText
@@ -1036,44 +1187,76 @@ function showModal(){
                   });
   }else{
     const load_turmas = "/ajax/load-turmas-por-edital";
+    const url_edital = "/ajax/load-edital-exist";
 
     editalId = document.getElementById('editalid').value
+
 
     $.ajax({
         url: load_turmas,
         data: { 'edital_id': editalId},
         success: function (data) {
+           
             $("#origem_retificacao").html(data);
 
         }
     });
-    var saldoDisponivel  = document.getElementById('saldoDisponivel').innerText = saldoDisponivelRetificado
 
-    var escolaId = document.getElementById('escola_id').value
-    var municipioId = document.getElementById('municipio_id').value
+    $.ajax({
+        url: url_edital,
+        data: { 'edital_id': editalId},
+        success: function (data) {
+          console.log(data)
+            if(data.saldo_disponivel == null){
+              var saldoDisponivel  = document.getElementById('saldoDisponivel').innerText = saldoDisponivelRetificado
+              document.getElementById('numeditalid').value = editalId
+              var escolaId = document.getElementById('escola_id').value
+              var municipioId = document.getElementById('municipio_id').value
 
-    var escola = document.getElementById('escola_text').value
-    var municipio = document.getElementById('municipio_text').value
+              var escola = document.getElementById('escola_text').value
+              var municipio = document.getElementById('municipio_text').value
 
-    const selectElement = document.getElementById('escola_id_modal');
-    const escolaInput = document.getElementById('escola_modal')
-    const municipio_modal = document.getElementById('municipio_modal')
+              const selectElement = document.getElementById('escola_id_modal');
+              const escolaInput = document.getElementById('escola_modal')
+              const municipio_modal = document.getElementById('municipio_modal')
 
-    const municipio_id = document .getElementById('municiopio_id_modal')
+              const municipio_id = document .getElementById('municiopio_id_modal')
 
-    selectElement.value = escolaId;
-    escolaInput.value = escola
-    municipio_modal.value = municipio
-    municipio_id.value = municipioId
+              selectElement.value = escolaId;
+              escolaInput.value = escola
+              municipio_modal.value = municipio
+              municipio_id.value = municipioId
+            }else{
+              var saldoDisponivel  = document.getElementById('saldoDisponivel').innerText = data.saldo_disponivel
+              
+              var escolaId = document.getElementById('escola_id').value
+              var municipioId = document.getElementById('municipio_id').value
+
+              var escola = document.getElementById('escola_text').value
+              var municipio = document.getElementById('municipio_text').value
+
+              const selectElement = document.getElementById('escola_id_modal');
+              const escolaInput = document.getElementById('escola_modal')
+              const municipio_modal = document.getElementById('municipio_modal')
+
+              const municipio_id = document .getElementById('municiopio_id_modal')
+
+              selectElement.value = escolaId;
+              escolaInput.value = escola
+              municipio_modal.value = municipio
+              municipio_id.value = municipioId
+            }
+              
+
+        }
+    });
+    
 
     $("#ExemploModalCentralizado").modal('show')
   }
   
 }
 
-// function hideModal(){
-//   $("#ExemploModalCentralizado").modal('hide')
-// }
 
 function exportData(){
     /* Get the HTML data using Element by Id */
@@ -1137,7 +1320,6 @@ function exportData(){
 
   $("#edital").change(function(){
     const url = "/ajax/ajax-load-turmas-v2";
-    // const url_table = "/ajax/ajax_load_turmas_edital_filtro";
     var url_turmas = "/ajax/ajax-load-turmas-edital";
     edital_id = document.getElementById('edital').value
 
