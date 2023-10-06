@@ -82,17 +82,6 @@ class Turmas_Retificadas(models.Model):
     qualificacoes = models.CharField(default='', null=True, blank=True, max_length=255)
     origem_replan = models.ForeignKey(Metas_efg,on_delete=models.CASCADE, default=None, null=True, blank=True)
     
-    def get_origem_replan_data(self):
-        if self.origem_replan:
-            turma_origem = Turmas_Retificadas.objects.get(pk=self.origem_replan)
-
-            return turma_origem
-
-    def get_absolute_url(self):
-        return reverse_lazy('AprovarCursosView')
-
-    def __str__(self):
-        return self.curso
 
     class Meta:
         managed = True

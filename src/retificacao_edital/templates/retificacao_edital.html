@@ -436,7 +436,23 @@ table button, btn_voltar{
             
           </tbody>
         </table>
-        <button  onclick="showModal()" style="margin-top: 10px; float: right;" type="button" class="btn btn-secondary">Adicionar Turmas</button>
+        <div class="row">
+          <div class="col-md-3 form-group"></div>
+    
+           
+          <div class="col-md-3 form-group">
+           
+          </div>
+          <div class="col-md-3 form-group">
+            <button  onclick="redefineRetificacao()" style="margin-top: 10px; float: right; width: 100%;" type="button" class="btn btn-danger">Redefinir Retificação</button>
+          </div>
+          <div class="col-md-3 form-group">
+            <button  onclick="showModal()" style="margin-top: 10px; float: right; width: 100%;" type="button" class="btn btn-secondary">Adicionar Turmas</button>
+          </div>
+        
+        </div>
+        
+        
    
       </div>
        
@@ -446,6 +462,66 @@ table button, btn_voltar{
     </div>
 </div>
 
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Edital e Turmas Retificadas
+</h4>
+    
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="cold-md-12" style="text-align: right;">
+    
+       </div>
+
+       <div class="cold-md-12">
+        <table id="myTable" class="myTable">
+          <thead>
+            <tr>
+              <th scope="col">Escola</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Curso</th>
+              <th scope="col">Turno</th>
+              <th scope="col">Modalidade</th>
+              <th scope="col">Vagas Totais</th>
+              <th scope="col">Início/Fim</th>
+              <th scope="col">Carga Horária</th>
+              <th scope="col">Município</th>
+              <th scope="col">Status</th>
+              <th scope="col">Ação</th>
+          </tr>
+       
+          </thead>
+          <tbody id="tbl_turmas_retificadas">
+            
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-md-3 form-group"></div>
+    
+           
+        
+          <div class="col-md-3 form-group">
+         
+          </div>
+          <div class="col-md-3 form-group">
+         
+          </div>
+          <div class="col-md-3 form-group">
+            <button id="btnEnviaAprova" onclick="redefineRetificacao()" style="margin-top: 10px; float: right; width: 100%; display: none;" type="button" class="btn btn-success">Enviar P/ Aprovação</button>
+          </div>
+        </div>
+        
+        
+   
+      </div>
+       
+       
+      </div>
+      
+    </div>
+</div>
 
 <div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" style="display: none;" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
@@ -776,6 +852,96 @@ table button, btn_voltar{
 
 
 <script>
+
+function removerTurma(id){
+  var url = 'ajax/remove-turmas-retificadas'
+
+  Swal.fire({
+  title: 'Remover Turma Retificada',
+  text: 'Tem certeza de que deseja redefinir remover esta turma retificada?',
+  icon: 'question',
+  showCancelButton: true,
+  confirmButtonText: 'Sim',
+  cancelButtonText: 'Não'
+}).then((result) => {
+    if (result.isConfirmed) {
+        // Ação a ser executada se o usuário confirmar
+        // Por exemplo, você pode enviar uma solicitação AJAX aqui
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: { 'turma_id': id },
+            success: function (data) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Turma Retificada Removida!',
+                text: 'A turma retificada foi removida com sucesso!!'
+            }).then((result) => {
+            // Ação a ser realizada após o botão "OK" ser clicado
+            if (result.isConfirmed) {
+                // Redirecionar ou atualizar a página aqui
+                window.location.href = 'retificar-edital';
+            }
+        });              
+        },
+            error: function (xhr, textStatus, errorThrown) {
+              Swal.fire({
+                    icon: 'error',
+                    title: 'Ops!',
+                    text: 'Não foi possível remover a turma!'
+                  });
+            }
+        });
+    } 
+});
+
+}
+
+function redefineRetificacao(){
+  edital_selected = document.getElementById('edital').value
+  var url = 'ajax/redefinir-retificacao'
+  if (edital_selected){
+    Swal.fire({
+    title: 'Redefinir Retificação',
+    text: 'Tem certeza de que deseja redefinir a retificação? Todas as turmas e o edital relacionado a este serão excluídos!',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sim',
+    cancelButtonText: 'Não'
+}).then((result) => {
+    if (result.isConfirmed) {
+        // Ação a ser executada se o usuário confirmar
+        // Por exemplo, você pode enviar uma solicitação AJAX aqui
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: { 'editalId': edital_selected },
+            success: function (data) {
+              Swal.fire({
+                    icon: 'success',
+                    title: 'Retificação Redefinida!',
+                    text: 'A retificação foi redefinida com sucesso!'
+                  });
+            },
+            error: function (xhr, textStatus, errorThrown) {
+              Swal.fire({
+                    icon: 'error',
+                    title: 'Ops!',
+                    text: 'Não foi possível redefinir as retificações!'
+                  });
+            }
+        });
+    } 
+});
+
+  }else{
+    Swal.fire({
+                    icon: 'error',
+                    title: 'Ops!',
+                    text: 'Selecione um edital para redefinir a retificação!'
+                  });
+  }
+}
 
 function enviaFormRetificacao(){
 
@@ -1155,14 +1321,8 @@ $("#eixo").change(function () {
 
 });
 
-
-
 function showModal(){
-  
-  // <input type="text" name="editalOrigem" id="editalOrigem">
-  //       <input type="text" name="data_iniedital" id="data_iniedital">
-  //       <input type="text" name="data_fim_edital" id="data_fim_edital">
-  //       <input type="text" name="data_ini_inscricao" id="data_ini_inscricao">
+
   var m_edital = document.getElementById('edital').value
   var m_ano = document.getElementById('ano').value
   var m_data_inicial_edital = document.getElementById('data_ini_edit').value
@@ -1321,6 +1481,7 @@ function exportData(){
   $("#edital").change(function(){
     const url = "/ajax/ajax-load-turmas-v2";
     var url_turmas = "/ajax/ajax-load-turmas-edital";
+    var url_turmas_retificadas = "/ajax/ajax-load-turmas-retificadas"
     edital_id = document.getElementById('edital').value
 
     $.ajax({
@@ -1339,6 +1500,16 @@ function exportData(){
           success: function(data){
               $("#tbl_metas_editais").html(data);
 
+          }
+      });
+
+      $.ajax({
+          url : url_turmas_retificadas,
+          data: {'editalId': edital_id,},
+          success: function(data){
+              $("#tbl_turmas_retificadas").html(data);
+              var botao = document.getElementById("btnEnviaAprova");
+              botao.style.display = "block";
           }
       });
 

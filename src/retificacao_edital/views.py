@@ -40,8 +40,11 @@ def load_turmas_edital(request):
 @login_required(login_url='/')
 def load_turmas_retificadas(request):
     editalId = request.GET['editalId']
-    turmas_retificadas = Turmas_Retificadas.objects.filter(num_edital_id = editalId)
+    turmas_retificadas = Editais_Retificados.objects.filter(edital_origem_id = editalId).first()
+    editalRetificado = turmas_retificadas.id
+    turmas_retificadas = Turmas_Retificadas.objects.filter(num_edital_id = editalRetificado)
     return render(request, 'ajax/ajax_tbl_turmas_retificadas.html', {'turmas_retificadas':turmas_retificadas})
+
 
 @login_required(login_url='/')
 def load_turmas_edital_retificacao(request):
@@ -57,7 +60,7 @@ def load_edital_exist(request):
     editalId = request.GET['edital_id']
     editais_retificados = Editais_Retificados.objects.filter(edital_origem_id=editalId).first()
     if editais_retificados:
-        saldo_disponivel = editais_retificados['saldo_disponivel']
+        saldo_disponivel = editais_retificados.saldo_disponivel
     else:
         saldo_disponivel = None
     return JsonResponse({'saldo_disponivel': saldo_disponivel})
@@ -100,8 +103,48 @@ def retifica_turma_edital(request):
         qualificacoes = request.POST['qualificacoes']
         origem_replan = request.POST['origem_retificacao']
 
-        edital = Editais_Retificados.objects.create(num_edital = 0, ano = edital_ano,dt_ini_edit = edital_data_inicial_edital, dt_fim_edit = edital_data_fim_edital, dt_ini_insc = edital_data_ini_inscricao, dt_fim_insc = edital_data_fim_inscricao, escola_id =  escola, edital_origem_id = edital_id,saldo_disponivel = saldo_restante)
+        #VERIFICA SE O EDITAL JA EXISTE
+        edital = Editais_Retificados.objects.filter(edital_origem_id = edital_id).first()
+        if edital:
+            edital.saldo_disponivel = saldo_restante
+            edital.save()
+        else:
+            edital = Editais_Retificados.objects.create(num_edital = 0, ano = edital_ano,dt_ini_edit = edital_data_inicial_edital, dt_fim_edit = edital_data_fim_edital, dt_ini_insc = edital_data_ini_inscricao, dt_fim_insc = edital_data_fim_inscricao, escola_id =  escola, edital_origem_id = edital_id,saldo_disponivel = saldo_restante,satus = 0)
         
         turma = Turmas_Retificadas.objects.create(num_edital_id = edital.id ,diretoria = diretoria, escola_id = escola, tipo_curso_id = tipo_curso , curso_id = curso, turno = turno, ano = ano,modalidade_id = modalidade, trimestre = trimestre, vagas_totais = vagas_totais, carga_horaria = carga_horaria, carga_horaria_total = carga_horaria_total, previsao_inicio = previsao_inicio, previsao_fim = previsao_fim, dias_semana = dias_semana, eixo_id = eixo,udepi_id = udepi, curso_tecnico = curso_tecnico, qualificacoes = qualificacoes, origem_replan_id = origem_replan )
     return JsonResponse({"success_message": "Solicitação Realizada!"}) 
-    
+
+@login_required(login_url='/')
+def redefinir_retificacao(request):
+    with transaction.atomic():
+        editalId = request.GET['editalId']
+
+        #PEGA O EDITAL QUE PERTENCE AO ID
+        edital = Editais_Retificados.objects.filter(edital_origem_id = editalId).first()
+        
+        #obtenho turmas relacionada a este edital
+        turmas = Turmas_Retificadas.objects.filter(num_edital_id = edital.id).all()
+        turmas.delete()
+
+        #remove o edital
+        edital = Editais_Retificados.objects.filter(id = edital.id) 
+        edital.delete()
+
+        return JsonResponse({"success_message": "Solicitação Realizada!"})
+
+
+@login_required(login_url='/')
+def remover_turma_retificada(request):
+    with transaction.atomic():
+        turma_id = request.GET['turma_id']
+        turma = Turmas_Retificadas.objects.get(id=turma_id)
+        edital_id = turma.num_edital_id
+        saldo_devolver = turma.carga_horaria_total
+        turma.delete()
+
+        edital = Editais_Retificados.objects.get(id=edital_id)
+        saldo_atual = edital.saldo_disponivel
+        novo_saldo = saldo_atual + saldo_devolver
+        edital.saldo_disponivel = novo_saldo
+        edital.save()
+        return JsonResponse({"success_message": "Solicitação Realizada!"}) 
