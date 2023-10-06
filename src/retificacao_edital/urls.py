@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import remover_turma_retificada,load_turmas_retificadas,retificar_edital,load_turmas_edital,load_turmas_edital_retificacao,load_edital_exist,retifica_turma_edital,redefinir_retificacao
+from .views import remover_turma_retificada,load_turmas_retificadas,retificar_edital,load_turmas_edital,load_turmas_edital_retificacao,load_edital_exist,retifica_turma_edital,redefinir_retificacao,verifica_saldo_disponivel,enviar_edital_aprovacao
 
 urlpatterns = [
     path('retificar-edital', retificar_edital),
@@ -10,4 +10,6 @@ urlpatterns = [
     path('ajax/realiza-retificacao', retifica_turma_edital),
     path('ajax/redefinir-retificacao', redefinir_retificacao),
     path('ajax/remove-turmas-retificadas', remover_turma_retificada),
+    path('ajax/ajax-verifica-saldo-retificacao', verifica_saldo_disponivel),
+    path('ajax/envia-retificacao-aprovacao', enviar_edital_aprovacao),
 ]

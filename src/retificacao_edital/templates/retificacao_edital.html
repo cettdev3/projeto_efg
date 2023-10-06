@@ -435,7 +435,9 @@ table button, btn_voltar{
           <tbody id="tbl_metas_editais">
             
           </tbody>
+          
         </table>
+       
         <div class="row">
           <div class="col-md-3 form-group"></div>
     
@@ -444,14 +446,13 @@ table button, btn_voltar{
            
           </div>
           <div class="col-md-3 form-group">
-            <button  onclick="redefineRetificacao()" style="margin-top: 10px; float: right; width: 100%;" type="button" class="btn btn-danger">Redefinir Retificação</button>
+            <button id="btn_redefinir"  onclick="redefineRetificacao()" style="margin-top: 10px; float: right; width: 100%; display: block;" type="button" class="btn btn-danger">Redefinir Retificação</button>
           </div>
           <div class="col-md-3 form-group">
-            <button  onclick="showModal()" style="margin-top: 10px; float: right; width: 100%;" type="button" class="btn btn-secondary">Adicionar Turmas</button>
+            <button id="btn_add"  onclick="showModal()" style="margin-top: 10px; float: right; width: 100%; display: block;" type="button" class="btn btn-secondary">Adicionar Turmas</button>
           </div>
         
         </div>
-        
         
    
       </div>
@@ -494,26 +495,17 @@ table button, btn_voltar{
        
           </thead>
           <tbody id="tbl_turmas_retificadas">
-            
+          
           </tbody>
+          
         </table>
-        <div class="row">
-          <div class="col-md-3 form-group"></div>
-    
-           
+       
         
-          <div class="col-md-3 form-group">
-         
-          </div>
-          <div class="col-md-3 form-group">
-         
-          </div>
-          <div class="col-md-3 form-group">
-            <button id="btnEnviaAprova" onclick="redefineRetificacao()" style="margin-top: 10px; float: right; width: 100%; display: none;" type="button" class="btn btn-success">Enviar P/ Aprovação</button>
+        <div class="row">
+          <div class="col-md-12 form-group">
+            <button id="btnEnviaAprova" onclick="enviarParaAprovacao()" style="margin-top: 10px; float: right; width: 100%; display: none;" type="button" class="btn btn-success">Enviar P/ Aprovação</button>
           </div>
         </div>
-        
-        
    
       </div>
        
@@ -852,6 +844,61 @@ table button, btn_voltar{
 
 
 <script>
+
+function enviarParaAprovacao(){
+  edital_id = document.getElementById("edital").value
+  const url = "/ajax/ajax-verifica-saldo-retificacao";
+  const url_aprovacao = "/ajax/envia-retificacao-aprovacao";
+  $.ajax({
+          url : url,
+          data: {'edital_id': edital_id,},
+          success: function(data){
+              if(data.saldo_disponivel > 0){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ops!',
+                    text: 'Não foi possível enviar para aprovação! O e dital possuí déficit de carga horária!'
+                  });
+              }else{
+                Swal.fire({
+                  title: 'Enviar Edital',
+                  text: 'Tem certeza de que deseja enviar este edital e esta(s) turmas para aprovação?',
+                  icon: 'question',
+                  showCancelButton: true,
+                  confirmButtonText: 'Sim',
+                  cancelButtonText: 'Não'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                      $.ajax({
+                          url : url_aprovacao,
+                          data: {'edital_id': edital_id,},
+                          success: function(data){
+                            Swal.fire({
+                              icon: 'success',
+                              title: 'Edital em Aprovação!',
+                              text: 'O Edital foi enviado para aprovação!'
+                            }).then((result) => {
+                                // Ação a ser realizada após o botão "OK" ser clicado
+                                if (result.isConfirmed) {
+                                    // Redirecionar ou atualizar a página aqui
+                                    window.location.href = 'retificar-edital';
+                                }
+                            });  ;
+                           
+
+                          }
+                      });
+                        
+                    } 
+                });
+
+
+                
+              }
+          }
+      });
+
+}
 
 function removerTurma(id){
   var url = 'ajax/remove-turmas-retificadas'
@@ -1509,7 +1556,12 @@ function exportData(){
           success: function(data){
               $("#tbl_turmas_retificadas").html(data);
               var botao = document.getElementById("btnEnviaAprova");
+              var botao_add = document.getElementById("btn_add");
+              var botao_remove = document.getElementById("btn_redefinir");
+              botao_add.display = "block";
+              botao_remove.display = "block";
               botao.style.display = "block";
+              
           }
       });
 
