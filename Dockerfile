@@ -1,11 +1,14 @@
-FROM python:3.8-buster
+ARG IMAGE_NAME
+ARG IMAGE_TAG
+
+FROM $IMAGE_NAME:$IMAGE_TAG
 
 ENV LANG pt_BR.UTF-8
 ENV LC_ALL pt_BR.UTF-8
 ENV LANGUAGE pt_BR.UTF-8
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONFAULTHANDLER=1
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONFAULTHANDLER 1
+ENV PYTHONUNBUFFERED 1
 
 ARG APP_USER_NAME
 ARG APP_UID
@@ -29,14 +32,14 @@ RUN sed -i '/pt_BR.UTF-8/s/^#//g' /etc/locale.gen \
     && dpkg-reconfigure --frontend noninteractive locales \
     && update-locale LANG=pt_BR.UTF-8 LANGUAGE=pt_BR.UTF-8 LC_ALL=pt_BR.UTF-8
 
-ENV PIPENV_VENV_IN_PROJECT=True
-ENV PIPENV_SITE_PACKAGES=True
-ENV PATH="/home/$APP_USER_NAME/$APP_NAME/.venv/bin:$PATH"
+ENV PIPENV_VENV_IN_PROJECT True
+ENV PIPENV_SITE_PACKAGES True
+ENV PATH "/home/$APP_USER_NAME/$APP_NAME/.venv/bin:$PATH"
 
-ADD Pipfile.lock ./
 ADD Pipfile ./
+ADD Pipfile.lock ./
 
-RUN pipenv install --system
+RUN if [ -s Pipfile.lock ]; then pipenv install --system; else pipenv lock && pipenv install --system; fi
 
 USER $APP_USER_NAME
 

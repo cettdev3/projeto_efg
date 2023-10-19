@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    container_name: ${DB_ADM_HOST:-phpmyadmin}
+    # user: ${DB_ADM_OS_UID:-5050}:${DB_ADM_OS_GID:-5050}
+    env_file:
+      - phpmyadmin.env
+    labels:
+      #Enable Traefk 
+      - "traefik.enable=true"
+
+      - "traefik.http.services.${DB_ADM_HOST}.loadbalancer.server.port=${DB_ADM_PORT}"
+      #http
+      - "traefik.http.routers.${DB_ADM_HOST}.service=${DB_ADM_HOST}@docker"
+      - "traefik.http.routers.${DB_ADM_HOST}.rule=Host(`${DB_ADM_DNS_NAME}.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
