@@ -162,7 +162,7 @@ def enviar_edital_aprovacao(request):
     with transaction.atomic():
         turma_id = request.GET['edital_id']
         edital_retificado = Editais_Retificados.objects.filter(edital_origem_id = turma_id).first()
-        edital_retificado.status = 2
+        edital_retificado.status = 0
         edital_retificado.save()
 
         Turmas_Retificadas.objects.filter(num_edital_id=edital_retificado.id).update(situacao=2)
