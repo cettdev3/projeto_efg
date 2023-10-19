@@ -1,3 +1,4 @@
+from django.db import connection
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from appprojeto1.models import Edital
@@ -118,19 +119,20 @@ def retifica_turma_edital(request):
             edital.saldo_disponivel = saldo_restante
             edital.save()
         else:
-            prox_edital = Edital.objects.raw(
-                f"""
+            with connection.cursor() as cursor:
+                cursor.execute(f"""
                     SELECT COALESCE(MAX(num_edital) + 1, 1) AS prox_edital
                     FROM (
                     SELECT
-                        num_edital, ano
+                        num_edital, ano, escola_id
                     FROM edital_ensino UNION ALL
                     SELECT
-                        num_edital, ano
+                        num_edital, ano, escola_id
                     FROM editais_retificados
                     ) tb
                     WHERE ano = {edital_ano} AND escola_id = {escola}
-                """.format(edital_ano, escola))[0].prox_edital
+                """.format(edital_ano, escola))
+                prox_edital = cursor.fetchone()[0]
 
             edital = Editais_Retificados.objects.create(
                 num_edital=prox_edital,
@@ -142,7 +144,7 @@ def retifica_turma_edital(request):
                 escola_id=escola,
                 edital_origem_id=edital_id,
                 saldo_disponivel=saldo_restante,
-                satus=0
+                status=0
             )
 
         turma = Turmas_Retificadas.objects.create(
