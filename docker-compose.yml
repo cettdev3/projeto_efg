@@ -69,8 +69,20 @@ services:
       - .env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${DJ_HOST}.rule=Host(`${APP_NAME}.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
-      - "traefik.http.services.${DJ_HOST}.loadbalancer.server.port=${DJ_PORT}"
+      - "traefik.docker.network=backend"
+      - "traefik.constraint-label-stack=${COMPOSE_PROJECT_NAME}"
+
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${DJ_PORT}"
+      #http
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_http.service=${COMPOSE_PROJECT_NAME}@docker"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_http.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_http.middlewares=https_redirect"
+      #https
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_https.service=${COMPOSE_PROJECT_NAME}@docker"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_https.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_https.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_https.tls.certresolver=letsencryptresolver"
     volumes:
       - ./src:/home/${APP_USER_NAME}/${APP_NAME}
       - ./${DJ_BACKUP}:/home/${APP_USER_NAME}/${APP_NAME}/backup
