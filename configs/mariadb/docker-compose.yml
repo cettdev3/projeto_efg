@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  mariadb:
+    image: mariadb:${DB_TAG:-latest}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping --silent --user=root --password=${DB_PASS}"
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    container_name: ${DB_HOST}
+    user: ${DB_OS_UID:-999}:${DB_OS_GID:-999}
+    env_file:
+      - mariadb.env
+    volumes:
+      - type: bind
+        source: ${APP_HOME_PATH}/${DB_DATA:-mariadb}
+        target: /var/lib/mysql
+        read_only: false
+        bind:
+          create_host_path: true
+      # - type: bind
+      #   source: ${APP_HOME_PATH}/${DB_DATA:-mariadb}
+      #   target: /var/run/mysql
+      #   read_only: false
+      #   bind:
+      #     create_host_path: true
+      - type: bind
+        source: ${APP_HOME_PATH}/${DB_LOG:-mariadb}
+        target: /var/log/mysql
+        read_only: false
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /usr/share/zoneinfo/America/Sao_Paulo
+        target: /etc/localtime
+        read_only: true
+        bind:
+          create_host_path: false
