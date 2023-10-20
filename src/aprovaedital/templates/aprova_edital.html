@@ -316,11 +316,11 @@ table button, btn_voltar{
             <div class="col-md-12 form-group">
               <label for="basicInput"><b>EDITAL</b>:</label>
               <select class="form-control" id="edital" name="edital">
-                <option value="">------</option>
+                <option value="" >------</option>
                 
                 {% for meta in metas %}
 
-                <option value="{{meta.num_edital_id}}">{{meta.num_edital}} | {{meta.escola.escola}} | {{meta.tipo}} | {{meta.modalidade}} | {{meta.ano}}</option>
+                <option value="{{meta.num_edital_id}}" tipo_edital="{{meta.tipo_edital}}">{{meta.num_edital}} | {{meta.escola.escola}} | {{meta.tipo}} | {{meta.modalidade}} | {{meta.ano}}</option>
                 <span id="idEdital">{{meta.num_edital_id}}</span>
                 {% endfor %}
               </select>
@@ -631,12 +631,20 @@ function exportData(){
     // const url_table = "/ajax/ajax_load_turmas_edital_filtro";
 
     edital_id = document.getElementById('edital').value
+    var selectElement = document.getElementById('edital');
+    if (selectElement) {
+      var selectedOption = selectElement.options[selectElement.selectedIndex];
 
-
-    
+      // Verifique se uma opção está selecionada
+      if (selectedOption) {
+        // Obtenha o valor do atributo tipo_edital da opção selecionada
+        var tipoEdital = selectedOption.getAttribute('tipo_edital');
+        console.log(tipoEdital)
+    }
+  }
     $.ajax({
           url : url,
-          data: {'id': edital_id,},
+          data: {'id': edital_id,'tipoEdital':tipoEdital},
           success: function(data){
               $("#painel_edital").html(data);
               $("#aprovar").show();

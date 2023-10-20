@@ -320,7 +320,7 @@ table button, btn_voltar{
                 
                 {% for meta in editais %}
 
-                <option value="{{meta.num_edital_id}}">{{meta.num_edital}} | {{meta.escola.escola}} | {{meta.tipo}} | {{meta.modalidade}} | {{meta.ano}}</option>
+                <option value="{{meta.num_edital_id}}" tipo_edital = '{{meta.tipo_edital}}'>{{meta.num_edital}} | {{meta.escola.escola}} | {{meta.tipo}} | {{meta.modalidade}} | {{meta.ano}}</option>
                 <span id="idEdital">{{meta.num_edital_id}}</span>
                 {% endfor %}
               </select>
@@ -1533,7 +1533,7 @@ function exportData(){
 
     $.ajax({
           url : url,
-          data: {'id': edital_id,},
+          data: {'id': edital_id,'tipoEdital':'retificacao'},
           success: function(data){
               $("#painel_edital").html(data);
               $("#aprovar").show();

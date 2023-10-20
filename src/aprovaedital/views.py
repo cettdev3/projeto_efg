@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from appprojeto1.models import User, User_permission,Edital,Users_ids
+from retificacao_edital.models import Editais_Retificados
 from django.contrib import messages
 from django.db.models import Q
 from requests.auth import HTTPBasicAuth
@@ -75,6 +76,7 @@ def getInstance(processName, taskDefinition,request):
                         return False
                 else:
                     return False
+
 def getUserlogin(request):
     username = request.user
     id_user = User.objects.filter(username=username).values()
@@ -95,8 +97,191 @@ def aprova_edital(request):
         btn_enviar = False
     else:
         btn_enviar = True
-    metas = Edital.objects.raw("Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is not NULL and status= 0  group by Turmas_planejado_orcado.num_edital_id")
-    metas_gerais = Edital.objects.raw('Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is not NULL  group by Turmas_planejado_orcado.num_edital_id')
+    metas = Edital.objects.raw("""
+                                SELECT
+                                DISTINCT 'normal' AS tipo_edital,
+                                tpo.id,
+                                tpo.diretoria,
+                                tpo.turno,
+                                tpo.trimestre,
+                                tpo.vagas_totais,
+                                tpo.carga_horaria,
+                                tpo.carga_horaria_total,
+                                tpo.previsao_inicio,
+                                tpo.previsao_fim,
+                                tpo.dias_semana,
+                                tpo.previsao_abertura_edital,
+                                tpo.previsao_fechamento_edital,
+                                tpo.data_registro,
+                                tpo.situacao,
+                                tpo.jus_reprovacao,
+                                tpo.curso_id,
+                                tpo.eixo_id,
+                                tpo.escola_id,
+                                tpo.modalidade_id,
+                                tpo.num_edital_id,
+                                tpo.tipo_curso_id,
+                                tpo.udepi_id,
+                                tpo.curso_tecnico,
+                                tpo.qualificacoes,
+                                edt.num_edital,
+                                edt.ano,
+                                edt.dt_ini_edit,
+                                edt.dt_fim_edit,
+                                edt.dt_ini_insc,
+                                edt.dt_fim_insc,
+                                edt.status,
+                                edt.pdf,
+                                edt.motivo,
+                                edt.escola_id,
+                                edt.user_change_id,
+                                tcur.tipo,
+                                mdl.modalidade
+                            FROM Turmas_planejado_orcado tpo
+                            INNER JOIN edital_ensino edt ON tpo.num_edital_id = edt.id
+                            INNER JOIN tipo_curso tcur ON tpo.tipo_curso_id = tcur.id
+                            INNER JOIN modalidade mdl ON tpo.modalidade_id = mdl.id
+                            WHERE dt_ini_edit IS NOT NULL AND STATUS=0
+                            GROUP BY tpo.num_edital_id UNION ALL
+                            SELECT
+                                DISTINCT 'retificacao' AS tipo_edital,
+                                tret.id,
+                                tret.diretoria,
+                                tret.turno,
+                                tret.trimestre,
+                                tret.vagas_totais,
+                                tret.carga_horaria,
+                                tret.carga_horaria_total,
+                                tret.previsao_inicio,
+                                tret.previsao_fim,
+                                tret.dias_semana,
+                                tret.previsao_abertura_edital,
+                                tret.previsao_fechamento_edital,
+                                tret.data_registro,
+                                tret.situacao,
+                                tret.jus_reprovacao,
+                                tret.curso_id,
+                                tret.eixo_id,
+                                tret.escola_id,
+                                tret.modalidade_id,
+                                tret.num_edital_id,
+                                tret.tipo_curso_id,
+                                tret.udepi_id,
+                                tret.curso_tecnico,
+                                tret.qualificacoes,
+                                edtr.num_edital,
+                                edtr.ano,
+                                edtr.dt_ini_edit,
+                                edtr.dt_fim_edit,
+                                edtr.dt_ini_insc,
+                                edtr.dt_fim_insc,
+                                edtr.status,
+                                edtr.pdf,
+                                edtr.motivo,
+                                edtr.escola_id,
+                                edtr.user_change_id,
+                                tcur.tipo,
+                                mdl.modalidade
+                            FROM turmas_retificadas tret
+                            INNER JOIN editais_retificados edtr ON tret.num_edital_id = edtr.id
+                            INNER JOIN tipo_curso tcur ON tret.tipo_curso_id = tcur.id
+                            INNER JOIN modalidade mdl ON tret.modalidade_id = mdl.id
+                            WHERE dt_ini_edit IS NOT NULL AND STATUS=0
+                            GROUP BY tret.num_edital_id
+                               """)
+    metas_gerais = Edital.objects.raw("""
+                                SELECT
+                                DISTINCT 'normal' AS tipo_edital,
+                                tpo.id,
+                                tpo.diretoria,
+                                tpo.turno,
+                                tpo.trimestre,
+                                tpo.vagas_totais,
+                                tpo.carga_horaria,
+                                tpo.carga_horaria_total,
+                                tpo.previsao_inicio,
+                                tpo.previsao_fim,
+                                tpo.dias_semana,
+                                tpo.previsao_abertura_edital,
+                                tpo.previsao_fechamento_edital,
+                                tpo.data_registro,
+                                tpo.situacao,
+                                tpo.jus_reprovacao,
+                                tpo.curso_id,
+                                tpo.eixo_id,
+                                tpo.escola_id,
+                                tpo.modalidade_id,
+                                tpo.num_edital_id,
+                                tpo.tipo_curso_id,
+                                tpo.udepi_id,
+                                tpo.curso_tecnico,
+                                tpo.qualificacoes,
+                                edt.num_edital,
+                                edt.ano,
+                                edt.dt_ini_edit,
+                                edt.dt_fim_edit,
+                                edt.dt_ini_insc,
+                                edt.dt_fim_insc,
+                                edt.status,
+                                edt.pdf,
+                                edt.motivo,
+                                edt.escola_id,
+                                edt.user_change_id,
+                                tcur.tipo,
+                                mdl.modalidade
+                            FROM Turmas_planejado_orcado tpo
+                            INNER JOIN edital_ensino edt ON tpo.num_edital_id = edt.id
+                            INNER JOIN tipo_curso tcur ON tpo.tipo_curso_id = tcur.id
+                            INNER JOIN modalidade mdl ON tpo.modalidade_id = mdl.id
+                            WHERE dt_ini_edit IS NOT NULL
+                            GROUP BY tpo.num_edital_id UNION ALL
+                            SELECT
+                                DISTINCT 'retificacao' AS tipo_edital,
+                                tret.id,
+                                tret.diretoria,
+                                tret.turno,
+                                tret.trimestre,
+                                tret.vagas_totais,
+                                tret.carga_horaria,
+                                tret.carga_horaria_total,
+                                tret.previsao_inicio,
+                                tret.previsao_fim,
+                                tret.dias_semana,
+                                tret.previsao_abertura_edital,
+                                tret.previsao_fechamento_edital,
+                                tret.data_registro,
+                                tret.situacao,
+                                tret.jus_reprovacao,
+                                tret.curso_id,
+                                tret.eixo_id,
+                                tret.escola_id,
+                                tret.modalidade_id,
+                                tret.num_edital_id,
+                                tret.tipo_curso_id,
+                                tret.udepi_id,
+                                tret.curso_tecnico,
+                                tret.qualificacoes,
+                                edtr.num_edital,
+                                edtr.ano,
+                                edtr.dt_ini_edit,
+                                edtr.dt_fim_edit,
+                                edtr.dt_ini_insc,
+                                edtr.dt_fim_insc,
+                                edtr.status,
+                                edtr.pdf,
+                                edtr.motivo,
+                                edtr.escola_id,
+                                edtr.user_change_id,
+                                tcur.tipo,
+                                mdl.modalidade
+                            FROM turmas_retificadas tret
+                            INNER JOIN editais_retificados edtr ON tret.num_edital_id = edtr.id
+                            INNER JOIN tipo_curso tcur ON tret.tipo_curso_id = tcur.id
+                            INNER JOIN modalidade mdl ON tret.modalidade_id = mdl.id
+                            WHERE dt_ini_edit IS NOT NULL
+                            GROUP BY tret.num_edital_id
+                               """)
+    # metas_gerais = Edital.objects.raw('Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is not NULL  group by Turmas_planejado_orcado.num_edital_id')
    
 
 
@@ -104,31 +289,37 @@ def aprova_edital(request):
 
 def ajax_load_edital_v2(request):
     edital_id = request.GET['id']
-    lancamentos = Edital.objects.filter(id=edital_id).select_related('escola').all()
+    tipo_edital = request.GET['tipoEdital']
+    if tipo_edital == 'normal':
+        lancamentos = Edital.objects.filter(id=edital_id).select_related('escola').all()
+    else:
+        lancamentos = Editais_Retificados.objects.filter(id=edital_id).select_related('escola').all()
+
+        
     edital = lancamentos[0]
-    path_edital = request.get_full_path()
-    print(path_edital)
     
-    return render(request, 'ajax_load_edital_v2.html', {'edital': edital})
+    path_edital = request.get_full_path()
+ 
+    return render(request, 'ajax_load_edital_v2.html', {'edital': edital,'tipo_edital':tipo_edital})
 
 def aprovar_edital_gerado(request):
     idEdital = request.POST['edital']
     num_edital = int(request.POST['n_edital'])
-  
+    tipo_edital = request.POST['tipo_edital']
     aprovacao = int(request.POST['ap'])
-    edital = Edital.objects.filter(num_edital = num_edital).values()
+    edital = Edital.objects.filter(num_edital = num_edital).values() if tipo_edital == 'normal' else Editais_Retificados.objects.filter(num_edital = num_edital).values()
     print('----------------------------')
     print(edital[0])
 
     if aprovacao == 3:
         idtbledital = edital[0]['id']
-        atualiza_status = Edital.objects.get(id = idEdital)
+        atualiza_status = Edital.objects.get(id = idEdital)  if tipo_edital == 'normal' else Editais_Retificados.objects.get(id = idEdital)
         atualiza_status.status = 3
         atualiza_status.user_change_id = request.user.id
         atualiza_status.save()
 
-        todosEditais = Edital.objects.filter(~Q(status=3)| Q(status=4)).values()
-        print(len(todosEditais))
+        todosEditais = Edital.objects.filter(~Q(status=3)| Q(status=4)).values() if tipo_edital == 'normal' else Editais_Retificados.objects.filter(~Q(status=3)| Q(status=4)).values()
+
         # todosEditais = todosEditais[0]
         if len(todosEditais) > 0:
             messages.success(request, 'Edital foi aprovado com sucesso!')
@@ -140,7 +331,7 @@ def aprovar_edital_gerado(request):
         
     elif aprovacao == 1:
         motivo = request.POST['motivo']
-        cria_status = Edital.objects.get(id = idEdital)
+        cria_status = Edital.objects.get(id = idEdital) if tipo_edital == 'normal' else Editais_Retificados.objects.get(id = idEdital)
         cria_status.status = 1
         cria_status.motivo = motivo
         cria_status.dt_ini_edit = None

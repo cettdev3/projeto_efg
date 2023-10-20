@@ -6,6 +6,13 @@ from appprojeto1.models import Metas_efg,Metas_escolas,Metas_tipo,Metas_modalida
 from retificacao_edital.models import Editais_Retificados,Turmas_Retificadas
 from django.http import JsonResponse
 from django.db import transaction
+from requests.auth import HTTPBasicAuth
+import requests as req
+import json
+import pycamunda.processdef
+import requests.auth
+import pycamunda.task
+
 
 def getUserlogin(request):
     username = request.user
@@ -21,7 +28,7 @@ def get_permission(request):
 @login_required(login_url='/')
 def retificar_edital(request):
 
-    editais =  metas = Edital.objects.raw("Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is not NULL and status= 0  group by Turmas_planejado_orcado.num_edital_id")
+    editais = Edital.objects.raw("Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is not NULL and status= 0  group by Turmas_planejado_orcado.num_edital_id")
     escolas = Metas_escolas.objects.filter(tipo=0).all()
     tipo_curso = Metas_tipo.objects.all()
     modalidade = Metas_modalidade.objects.all()
@@ -159,12 +166,18 @@ def verifica_saldo_disponivel(request):
 
 @login_required(login_url='/')
 def enviar_edital_aprovacao(request):
+    url = 'https://processos.cett.dev.br/engine-rest'
+    start_instance = pycamunda.processdef.StartInstance(url=url, key='ElaborarEdital')
+    start_instance.auth = requests.auth.HTTPBasicAuth(username='dmartins', password='CETT@2022')
     with transaction.atomic():
         turma_id = request.GET['edital_id']
         edital_retificado = Editais_Retificados.objects.filter(edital_origem_id = turma_id).first()
         edital_retificado.status = 0
         edital_retificado.save()
-
+        print(request.session['rede'])
+        start_instance.add_variable(name='tipo_edital', value='retificacao')
+        start_instance.add_variable(name='nomeRede', value= request.session['rede'])
+        process_instance = start_instance() 
         Turmas_Retificadas.objects.filter(num_edital_id=edital_retificado.id).update(situacao=2)
 
 
