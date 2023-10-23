@@ -17,6 +17,9 @@ services:
     depends_on:
       setup-deploy:
         condition: service_completed_successfully
+    networks:
+      - default
+      - ssh
 
   django-deploy:
     container_name: ${COMPOSE_HOST_PREFIX}-django-${DP_NAME}
@@ -100,3 +103,6 @@ networks:
   backend:
     external: true
     name: backend
+  ssh:
+    external: true
+    name: ssh-network
