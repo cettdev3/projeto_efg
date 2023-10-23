@@ -103,11 +103,11 @@ WSGI_APPLICATION = 'projeto1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': config.DB_DT_NAME,  # type: ignore
-        'USER': config.DB_USER,  # type: ignore
-        'HOST': config.DB_HOST,  # type: ignore
-        'PASSWORD': config.DB_PASS,  # type: ignore
-        'PORT': config.DB_PORT,  # type: ignore
+        'NAME': config.CAMUNDA_DOMAINS_DB,  # type: ignore
+        'USER': config.CAMUNDA_DOMAINS_USER,  # type: ignore
+        'HOST': config.CAMUNDA_DOMAINS_HOST,  # type: ignore
+        'PASSWORD': config.CAMUNDA_DOMAINS_PASS,  # type: ignore
+        'PORT': config.CAMUNDA_DOMAINS_PORT,  # type: ignore
 
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES,TRADITIONAL,NO_AUTO_VALUE_ON_ZERO'",
