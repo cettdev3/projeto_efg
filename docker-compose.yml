@@ -29,7 +29,7 @@ services:
         condition: service_started
     env_file:
       - .env
-    command: --folder-scripts=deploy  --disable
+    command: --folder-scripts=deploy
 
   app:
     container_name: ${DJ_HOST}
