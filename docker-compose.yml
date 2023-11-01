@@ -1,111 +1,113 @@
 version: '3'
 
+name: ${PROJECT_NAME}-${APP_NAME}
+
 services:
-  setup-deploy:
-    container_name: ${COMPOSE_HOST_PREFIX}-setup-${DP_NAME}
-    extends:
-      file: ./${APP_CONFIG_DIR}/docker-compose.yml
-      service: deploy
-    env_file:
-      - .env
-    command: --folder-scripts=setup
+    setup-deploy:
+        container_name: ${COMPOSE_HOST_PREFIX}-setup-${DP_NAME}
+        extends:
+            file: ./${APP_CONFIG_DIR}/docker-compose.yml
+            service: deploy
+        env_file:
+            - .env
+        command: --folder-scripts=setup
 
-  database:
-    extends:
-      file: ./${APP_CONFIG_DIR}/${DB_NAME}/docker-compose.yml
-      service: ${DB_NAME}
-    depends_on:
-      setup-deploy:
-        condition: service_completed_successfully
-    networks:
-      - default
-      - ssh
+    database:
+        extends:
+            file: ./${APP_CONFIG_DIR}/${DB_NAME}/docker-compose.yml
+            service: ${DB_NAME}
+        depends_on:
+            setup-deploy:
+                condition: service_completed_successfully
+        networks:
+            - default
+            - ssh
 
-  django-deploy:
-    container_name: ${COMPOSE_HOST_PREFIX}-django-${DP_NAME}
-    image: ${DJ_IMAGE_NAME}:${DJ_IMAGE_TAG}
-    extends:
-      file: ./${APP_CONFIG_DIR}/docker-compose.yml
-      service: deploy
-    depends_on:
-      database:
-        condition: service_started
-    env_file:
-      - .env
-    command: --folder-scripts=deploy
+    django-deploy:
+        container_name: ${COMPOSE_HOST_PREFIX}-django-${DP_NAME}
+        image: ${DJ_IMAGE_NAME}:${DJ_IMAGE_TAG}
+        extends:
+            file: ./${APP_CONFIG_DIR}/docker-compose.yml
+            service: deploy
+        depends_on:
+            database:
+                condition: service_started
+        env_file:
+            - .env
+        command: --folder-scripts=deploy
 
-  app:
-    container_name: ${DJ_HOST}
-    restart: always
-    depends_on:
-      database:
-        condition: service_started
-      django-deploy:
-        condition: service_completed_successfully
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-      args:
-        IMAGE_NAME: ${DJ_IMAGE_NAME}
-        IMAGE_TAG: ${DJ_IMAGE_TAG}
-        APP_USER_NAME: ${APP_USER_NAME}
-        APP_NAME: ${APP_NAME}
-        APP_UID: ${APP_UID}
-        APP_GID: ${APP_GID}
-    environment:
-        DJANGO_DEBUG: ${DJANGO_DEBUG}
-        CAMUNDA_URL: ${CAMUNDA_URL}
-        DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-        EFG_DOMAINS_HOST: ${EFG_DOMAINS_HOST}
-        EFG_DOMAINS_PORT: ${EFG_DOMAINS_PORT}
-        EFG_DOMAINS_USER: ${EFG_DOMAINS_USER}
-        EFG_DOMAINS_DB: ${EFG_DOMAINS_DB}
-        EFG_DOMAINS_PASS: ${EFG_DOMAINS_PASS}
-        COTEC_DOMAINS_HOST: ${COTEC_DOMAINS_HOST}
-        COTEC_DOMAINS_PORT: ${COTEC_DOMAINS_PORT}
-        COTEC_DOMAINS_USER: ${COTEC_DOMAINS_USER}
-        COTEC_DOMAINS_DB: ${COTEC_DOMAINS_DB}
-        COTEC_DOMAINS_PASS: ${COTEC_DOMAINS_PASS}
-        PRIMARY_DOMAIN_NAME: ${PRIMARY_DOMAIN_NAME}
-    env_file:
-      - ./${APP_CONFIG_DIR}/${DJ_NAME}/${DJ_NAME}.env
-      - .env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=backend"
-      - "traefik.constraint-label-stack=${COMPOSE_PROJECT_NAME}"
+    app:
+        container_name: ${DJ_HOST}
+        restart: always
+        depends_on:
+            database:
+                condition: service_started
+            django-deploy:
+                condition: service_completed_successfully
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+            args:
+                IMAGE_NAME: ${DJ_IMAGE_NAME}
+                IMAGE_TAG: ${DJ_IMAGE_TAG}
+                APP_USER_NAME: ${APP_USER_NAME}
+                APP_NAME: ${APP_NAME}
+                APP_UID: ${APP_UID}
+                APP_GID: ${APP_GID}
+        environment:
+            DJANGO_DEBUG: ${DJANGO_DEBUG}
+            CAMUNDA_URL: ${CAMUNDA_URL}
+            DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+            EFG_DOMAINS_HOST: ${EFG_DOMAINS_HOST}
+            EFG_DOMAINS_PORT: ${EFG_DOMAINS_PORT}
+            EFG_DOMAINS_USER: ${EFG_DOMAINS_USER}
+            EFG_DOMAINS_DB: ${EFG_DOMAINS_DB}
+            EFG_DOMAINS_PASS: ${EFG_DOMAINS_PASS}
+            COTEC_DOMAINS_HOST: ${COTEC_DOMAINS_HOST}
+            COTEC_DOMAINS_PORT: ${COTEC_DOMAINS_PORT}
+            COTEC_DOMAINS_USER: ${COTEC_DOMAINS_USER}
+            COTEC_DOMAINS_DB: ${COTEC_DOMAINS_DB}
+            COTEC_DOMAINS_PASS: ${COTEC_DOMAINS_PASS}
+            PRIMARY_DOMAIN_NAME: ${PRIMARY_DOMAIN_NAME}
+        env_file:
+            - ./${APP_CONFIG_DIR}/${DJ_NAME}/${DJ_NAME}.env
+            - .env
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=backend"
+            - "traefik.constraint-label-stack=${COMPOSE_HOST_PREFIX}"
 
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${DJ_PORT}"
-      #http
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_http.service=${COMPOSE_PROJECT_NAME}@docker"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_http.entrypoints=web"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_http.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_http.middlewares=https_redirect"
-      #https
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_https.service=${COMPOSE_PROJECT_NAME}@docker"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_https.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_https.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_https.tls.certresolver=letsencryptresolver"
-    volumes:
-      - ./src:/home/${APP_USER_NAME}/${APP_NAME}
-      - ./${DJ_BACKUP}:/home/${APP_USER_NAME}/${APP_NAME}/backup
-      - ./${DJ_UPLOAD}:/home/${APP_USER_NAME}/${APP_NAME}/upload
-      - ./${DJ_MEDIA}:/home/${APP_USER_NAME}/${APP_NAME}/media
-      - ${ACS_DOCS_PATH}/Ensino/gerarEdital/Editais:/home/${APP_USER_NAME}/${APP_NAME}/static/editais:rw
-      - ${ACS_DOCS_PATH}/Ensino/gerarEdital/EFG/Editais:/home/${APP_USER_NAME}/${APP_NAME}/static/EFG/editais:rw
-      - ${ACS_DOCS_PATH}/Ensino/gerarEdital/COTEC/Editais:/home/${APP_USER_NAME}/${APP_NAME}/static/COTEC/editais:rw
-      - /usr/share/zoneinfo/America/Sao_Paulo:/etc/localtime:ro
-    networks:
-      - default
-      - backend
+            - "traefik.http.services.${COMPOSE_HOST_PREFIX}.loadbalancer.server.port=${DJ_PORT}"
+            #http
+            - "traefik.http.routers.${COMPOSE_HOST_PREFIX}_http.service=${COMPOSE_HOST_PREFIX}@docker"
+            - "traefik.http.routers.${COMPOSE_HOST_PREFIX}_http.entrypoints=web"
+            - "traefik.http.routers.${COMPOSE_HOST_PREFIX}_http.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.${COMPOSE_HOST_PREFIX}_http.middlewares=https_redirect"
+            #https
+            - "traefik.http.routers.${COMPOSE_HOST_PREFIX}_https.service=${COMPOSE_HOST_PREFIX}@docker"
+            - "traefik.http.routers.${COMPOSE_HOST_PREFIX}_https.rule=Host(`efg-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`) || Host(`cotec-index.${PRIMARY_DOMAIN_NAME}`)&&PathPrefix(`/`)"
+            - "traefik.http.routers.${COMPOSE_HOST_PREFIX}_https.entrypoints=websecure"
+            - "traefik.http.routers.${COMPOSE_HOST_PREFIX}_https.tls.certresolver=letsencryptresolver"
+        volumes:
+            - ./src:/home/${APP_USER_NAME}/${APP_NAME}
+            - ./${DJ_BACKUP}:/home/${APP_USER_NAME}/${APP_NAME}/backup
+            - ./${DJ_UPLOAD}:/home/${APP_USER_NAME}/${APP_NAME}/upload
+            - ./${DJ_MEDIA}:/home/${APP_USER_NAME}/${APP_NAME}/media
+            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/Editais:/home/${APP_USER_NAME}/${APP_NAME}/static/editais:rw
+            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/EFG/Editais:/home/${APP_USER_NAME}/${APP_NAME}/static/EFG/editais:rw
+            - ${ACS_DOCS_PATH}/Ensino/gerarEdital/COTEC/Editais:/home/${APP_USER_NAME}/${APP_NAME}/static/COTEC/editais:rw
+            - /usr/share/zoneinfo/America/Sao_Paulo:/etc/localtime:ro
+        networks:
+            - default
+            - backend
 
 networks:
-  default:
-    external: false
-    name: ${COMPOSE_PROJECT_NAME}-network
-  backend:
-    external: true
-    name: backend
-  ssh:
-    external: true
-    name: ssh-network
+    default:
+        external: false
+        name: ${COMPOSE_HOST_PREFIX}-network
+    backend:
+        external: true
+        name: backend
+    ssh:
+        external: true
+        name: ssh-network

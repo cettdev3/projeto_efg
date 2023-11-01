@@ -92,7 +92,7 @@ def retifica_turma_edital(request):
     with transaction.atomic():
         # CRIA O EDITAL
         edital_id = request.POST['editalOrigem']
-        edital_ano = request.POST['ano']
+        edital_ano = request.POST['ano_edital']
         edital_data_inicial_edital = request.POST['data_inicial_edital']
         edital_data_fim_edital = request.POST['data_fim_edital']
         edital_data_ini_inscricao = request.POST['data_ini_inscricao']
