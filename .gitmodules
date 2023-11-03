@@ -1,0 +1,3 @@
+[submodule "configs/mariadb"]
+	path = configs/mariadb
+	url = http://repo.cett.dev.br/bootstrap/devops/mariadb.git
