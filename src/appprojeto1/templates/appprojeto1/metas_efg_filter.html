@@ -1,9 +1,14 @@
 {% extends "index.html" %}
 {% load crispy_forms_tags %}
-{% load django_tables2%}
+{% load django_tables2 %}
 {% load render_table from django_tables2 %}
 {% block styles %}
     <style>
+        .prevent-select {
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and IE 11 */
+            user-select: none; /* Standard syntax */
+        }
         [style*="--aspect-ratio"] > :first-child {
             width: 100%;
         }
@@ -54,47 +59,130 @@
             }
         }
 
-</style>
-{% endblock %}
-
-{% block title %} Oferta de cursos {% endblock %}
+    </style>
+{% endblock styles %}
+{% block title %}
+    Oferta de cursos
+{% endblock title %}
 {% block content %}
-<div class="page-heading">
-    <h3>Oferta de cursos</h3>
-</div>
-<div class="d-flex flex-column align-items-stretch embed-responsive embed-responsive-21by9" style="--aspect-ratio: 16/9;">
-    <iframe id="embeded_dashboard" type="text/html" src="{% url 'DashboardAprovarCursosView' %}" class="embed-responsive-item" frameborder="0"/></iframe>
-</div>
-
-<div class="card">
-    <div class="card-header">
-        <div class="d-md-flex justify-content-between">
-            <h4 class="card-title">
-                Aprovar cursos
-            </h4>
-            <div class="d-flex justify-content-end gap-1">
-                <a class="btn btn-primary" href="{% export_url 'xlsx' %}">
-                    <i class="fas fa-file-export "></i>
-                    <spam>
-                        Exportar
-                    </spam>
-                </a>
-            </div>
-        </div>
-        <br>
-        {% crispy filter.form filter.form.helper %}
+    <div class="page-heading">
+        <h3>Oferta de cursos</h3>
     </div>
-    <form method="post">
-        <div class="card-body">
-            <div class="table-responsive">
-                {% render_table table %}
+    {% comment %} <div class="d-flex flex-column align-items-stretch embed-responsive embed-responsive-21by9" style="--aspect-ratio: 16/9">
+        <iframe id="embeded_dashboard" type="text/html" src="{% url 'DashboardAprovarCursosView' %}" class="embed-responsive-item" frameborder="0" /></iframe>
+    </div> {% endcomment %}
+    <div class="card">
+        <div class="card-header">
+            <div class="d-md-flex justify-content-between">
+                <h4 class="card-title">Aprovar cursos</h4>
+                <div class="d-flex justify-content-end gap-1">
+                    <a class="btn btn-primary" href="{% export_url 'xlsx' %}">
+                        <i class="fas fa-file-export "></i>
+                        <spam>
+                        Exportar
+                        </spam>
+                    </a>
+                </div>
+            </div>
+            <br>
+            <div class="d-xl-flex gap-5">
+                <div class="flex-fill">{% crispy filter.form filter.form.helper %}</div>
+                <div class="col-xl-4">
+                    <h4 class="d-flex justify-content-between card-title form-control">
+                        <spam> VAGAS TOTAIS </spam>
+                        <spam> {{ filter.vagas_totais_sum|floatformat:"0g" }} </spam>
+                    </h4>
+                    <h4 class="d-flex justify-content-between card-title form-control">
+                        <spam> CARGA HORÁRIA TOTAL </spam>
+                        <spam> {{ filter.carga_horaria_total_sum|floatformat:"0g" }} </spam>
+                    </h4>
+                    <h4 class="d-flex justify-content-between card-title form-control">
+                        <spam> RECURSO PLANEJADO </spam>
+                        <spam> R$ {{ filter.recurso_planejado_sum|floatformat:"2g" }} </spam>
+                    </h4>
+                    <h4 class="d-flex justify-content-between card-title form-control">
+                        <spam> CARGA HORÁRIA DISPONPIVEL </spam>
+                        <spam> {{ filter.saldo_de_horas_sum|floatformat:"0g" }} </spam>
+                    </h4>
+                </div>
             </div>
         </div>
-        <div class="card-footer">
-            {% crispy form %}
-        </div>
-    </form>
-</div>
+        <form method="post">
+            <div class="card-body">
+                <div class="table-responsive">{% render_table table %}</div>
+            </div>
+            <div class="card-footer">{% crispy form %}</div>
+        </form>
+    </div>
 {% endblock content %}
 {% block scripts %}
+    <script language="JavaScript">
+        function toggleAll(source) {
+            const table = document.querySelector('table');
+            const checkboxes = table.querySelectorAll('td input[type="checkbox"]');
+
+            for(let i in checkboxes)
+                checkboxes[i].checked = source.checked;
+            buttonAprovar(!source.checked);
+        }
+
+        function toggle(source) {
+            const table = document.querySelector('table');
+            const headerCheckbox = table.querySelectorAll('th input[type="checkbox"]');
+            const checkboxes = table.querySelectorAll('td input[type="checkbox"]');
+
+            let count = 0;
+            let length = checkboxes.length;
+            for (let i = 0; i < length; i++) {
+                if (checkboxes[i].checked === true)
+                    count++;
+            }
+
+            buttonAprovar(count === 0);
+            headerCheckbox[0].checked = count === length;
+        }
+        
+        function buttonAprovar(disabled) {
+            const button = document.querySelector('#aprovar_selecionados');
+            button.disabled = disabled;
+            
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const id_escola = $('#id_escola').val();
+            const id_modalidade = $('#id_modalidade').val();
+            
+            if (id_escola !== '' && id_modalidade !== '') {
+                populateDependentLists(source);
+            } else {
+                $('#id_curso').empty();
+                $('#id_curso').append('<option value="">---------</option>');
+                $('#id_curso').prop('disabled', true);
+            }
+        })
+        
+        function populateDependentLists(source) {
+            const id_escola = $('#id_escola').val();
+            const id_modalidade = $('#id_modalidade').val();
+            const id_tipo_curso = $('#id_tipo_curso').val();
+
+            $.ajax({
+                url: '/ajax/get_cursos/',
+                type: 'GET',
+                data: {
+                    'id_escola': id_escola,
+                    'id_modalidade': id_modalidade,
+                    'id_tipo_curso': id_tipo_curso
+                },
+                success: function (data) {
+                    $('#id_curso').empty();
+                    $('#id_curso').append('<option value="">---------</option>');
+                    data.length === 0 ? $('#id_curso').prop('disabled', true) : $('#id_curso').prop('disabled', false);
+                    $.each(data, function (key, value) {
+                        $('#id_curso').append('<option value="' + value.id + '">' + value.curso + '</option>');
+                    });
+                }
+            });
+        }
+    </script>
 {% endblock scripts %}

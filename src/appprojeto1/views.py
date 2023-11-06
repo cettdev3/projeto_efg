@@ -44,7 +44,7 @@ from django.http import JsonResponse
 
 # DADOS DO SERVIDOR
 host = 'https://processos.cett.dev.br/engine-rest/'
-#host = config.CAMUNDA_URL  # type: ignore
+# host = config.CAMUNDA_URL  # type: ignore
 processName = "SolicitarOfertaDeVagas"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
@@ -420,7 +420,7 @@ def load_ch(request):
     # print(str(escola)+'|'+str(curso_selected)+'|'+str(escola) +
     #       '|'+str(tipocurso)+'|'+str(modalidade)+'|'+str(eixo))
     carga_horaria = Cadastrar_curso.objects.filter(
-        escola=escola, tipo=tipocurso, eixos=eixo, modalidade=modalidade, curso=curso_selected).aggregate(
+        escola=escola, tipo=tipocurso, eixos=eixo, modalidade=modalidade, id=curso_selected).aggregate(
             carga_horaria__sum=Sum('carga_horaria')
     )['carga_horaria__sum']
     return render(request, 'ajax/ajax_load_carga_hr_curso.html', {'carga_hr': carga_horaria})
@@ -436,7 +436,6 @@ def load_cursos(request):
     cursos = Cadastrar_curso.objects.filter(
         escola=escola_id, tipo=id_tipo_curso, modalidade=modalidade_id, eixos=eixos_id, status="ATIVO").all()
 
-
     return render(request, 'ajax/ajax_load_cursos.html', {'cursos': cursos})
 
 
@@ -450,7 +449,7 @@ def load_modalidade(request):
         escola=escola_id, tipo=tipo_id, eixos=eixos_id, modalidade=modalidade_id, status="ATIVO").all().values()
 
     return render(request, 'ajax/ajax_load_curso.html', {'cursos': cursos})
- 
+
 
 @login_required(login_url='/')
 def load_eixos(request):
@@ -599,7 +598,7 @@ def load_funcoes_rp(request):
     #     rp = float(total_horas) * 8.34  # type: ignore
     # else:
     #     rp = rp = float(total_horas) * 3.56
-        # print('Resultado do Recurso Planejado' + str(rp))
+    # print('Resultado do Recurso Planejado' + str(rp))
 
     return render(request, 'ajax/ajax_load_recurso_planejado.html', {'rp': total_horas})
 
@@ -792,7 +791,7 @@ def cadastrar_metas(request):
                                                        'perm_escola': perm_escolas,
                                                        'btn_enviar_planejamento_reprovados': btn_enviar_planejamento_reprovados,
                                                        'btn_enviar_planejamento_aanalise': btn_enviar_planejamento_aanalise,
-                                                       'permissoes': get_permission(request),'saldoReplanejado':saldoReplanejado})
+                                                       'permissoes': get_permission(request), 'saldoReplanejado': saldoReplanejado})
     else:
         return render(request, 'cadastro_metas.html', {"tipos": tipo_curso,
                                                        'escolas': escolas_cad,
@@ -809,14 +808,14 @@ def cadastrar_metas(request):
                                                        'municipios': municipios,
                                                        'perm_escola': perm_escolas,
                                                        'btn_enviar_planejamento': btn_enviar_planejamento,
-                                                       'permissoes': get_permission(request),'saldoReplanejado':saldoReplanejado})
+                                                       'permissoes': get_permission(request), 'saldoReplanejado': saldoReplanejado})
 
 
 @login_required(login_url='/')
 def cad_metas(request):
     print(request.POST)
     try:
-      
+
         diretoria = request.POST['basicInput']
         escola = request.POST['escola']
         tipo_curso = request.POST['tipo']
@@ -843,7 +842,7 @@ def cad_metas(request):
             qualificacoes = ''
 
         meta_is_exist = Metas_efg.objects.filter(escola_id=escola, tipo_curso_id=tipo_curso,
-                                                modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso, previsao_inicio=previsao_inicio, previsao_fim=previsao_fim, turno=turno).values()
+                                                 modalidade_id=modalidade_oferta, ano=ano, trimestre=trimestre, udepi=udepi, curso_id=nome_curso, previsao_inicio=previsao_inicio, previsao_fim=previsao_fim, turno=turno).values()
         # print('-------------------------------------------------------\n\n\n\n' +
         #       str(meta_is_exist))
         if meta_is_exist:
@@ -904,21 +903,23 @@ def cad_metas(request):
                 idTurmaOrigem = int(request.POST['idOrigem'])
                 idSaldoReplanejado = int(request.POST['idSaldo'])
 
-                #ATUALIZA A TABELA DE TURMAS PARA INFORMAR QUAL FOI A ORIGEM DO REPLANEJAMENTO
+                # ATUALIZA A TABELA DE TURMAS PARA INFORMAR QUAL FOI A ORIGEM DO REPLANEJAMENTO
                 turmasParaReplanejar = Metas_efg.objects.get(id=cadmetas.id)
                 turmasParaReplanejar.origem_replan = idTurmaOrigem
                 turmasParaReplanejar.save()
 
-                #OBTÉM O SALDO ATUAL DA NOVA TABELA
-                saldoReplanejamento = Saldo_replanejamento.objects.filter(id=idSaldoReplanejado).first()
+                # OBTÉM O SALDO ATUAL DA NOVA TABELA
+                saldoReplanejamento = Saldo_replanejamento.objects.filter(
+                    id=idSaldoReplanejado).first()
                 saldoReplan = int(saldoReplanejamento.saldo)
-                novo_saldo =  saldoReplan - int(carga_horaria_total)
+                novo_saldo = saldoReplan - int(carga_horaria_total)
 
-                #ATUALIZA O SALDO UTILIZADO NA TABELA DE SALDOS DE REPLANEJAMENTO
+                # ATUALIZA O SALDO UTILIZADO NA TABELA DE SALDOS DE REPLANEJAMENTO
                 saldoReplanejamento.saldo = novo_saldo
                 saldoReplanejamento.save()
 
-                messages.success(request, 'A meta cadastrada com replanejamento foi realizada com sucesso!')
+                messages.success(
+                    request, 'A meta cadastrada com replanejamento foi realizada com sucesso!')
                 return redirect('/cadastrar-metas')
             else:
                 # BUSCA OS DADOS DA META DE ACORDO COM OS FILTROS SETADOS NA META
@@ -935,11 +936,13 @@ def cad_metas(request):
                 cht_divisao = int(atualiza_saldo[0]['carga_horaria_total'])
 
                 # CARGA HORÁRIA DISPONÍVEL DA META
-                cht_disponivel_divisao = int(atualiza_saldo[0]['carga_horaria'])
+                cht_disponivel_divisao = int(
+                    atualiza_saldo[0]['carga_horaria'])
 
                 # SALDO A DEBITAR
                 saldo_total = int(cht_disponivel_divisao) - int(cht_meta)
-                atualiza_saldo = DivisaoDeMetasPorEscola.objects.get(id=id_filtro)
+                atualiza_saldo = DivisaoDeMetasPorEscola.objects.get(
+                    id=id_filtro)
 
                 atualiza_saldo.created_at = datetime.datetime.now()
                 atualiza_saldo.carga_horaria = saldo_total
@@ -948,6 +951,7 @@ def cad_metas(request):
                 return redirect('/cadastrar-metas')
     except:
         pass
+
 
 @login_required(login_url='/')
 def apagar_meta(request):
@@ -1492,13 +1496,20 @@ class AprovarCursosView(
     table_pagination = False
     filterset_class = AprovarCursosFilter
     formhelper_class = AprovarCursosFilterFormHelper
-    exclude_columns = ('actions', )
+    exclude_columns = ('actions', 'situacao', )
     form_class = AprovarCursosSubmitFormView
     success_url = reverse_lazy('AprovarCursosView')
 
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
+
+        if 'aprovar_selecionados' in self.request.POST:
+            id_list = form.data.getlist('checkbox')
+
+            for id in range(0, len(id_list)):
+                Metas_efg.objects.filter(
+                    pk=id_list[id]).update(situacao=3, jus_reprovacao='')
 
         if 'aprovar' in self.request.POST:
 
@@ -1696,6 +1707,39 @@ class DashboardAprovarCursosView(
 
 
 @login_required(login_url='/')
+def get_cursos(request):
+    filtro = {}
+    if request.GET.get('id_escola'):
+        filtro['escola'] = request.GET.get('id_escola')
+    else:
+        filtro['escola'] = None
+    if request.GET.get('id_modalidade'):
+        filtro['modalidade'] = request.GET.get('id_modalidade')
+    else:
+        filtro['modalidade'] = None
+    if request.GET.get('id_tipo_curso'):
+        filtro['tipo'] = request.GET.get('id_tipo_curso')
+    if request.GET.get('id_eixo'):
+        filtro['eixos'] = request.GET.get('id_eixo')
+
+    cursos = Cadastrar_curso.objects.filter(**filtro).values(
+        'id', 'curso').order_by('curso')
+    return JsonResponse(list(cursos), safe=False)
+
+
+@login_required(login_url='/')
+def get_eixos(request):
+    filtro = {}
+    if request.GET.get('id_escola'):
+        filtro['escola'] = request.GET.get('id_escola')
+    else:
+        filtro['escola'] = None
+
+    eixos = Eixos.objects.filter(**filtro).values('eixo_id', 'nome')
+    return JsonResponse(list(eixos), safe=False)
+
+
+@login_required(login_url='/')
 def verifica_turmas_edital(request):
 
     metas = Edital.objects.raw("Select DISTINCT * from Turmas_planejado_orcado INNER JOIN edital_ensino ON Turmas_planejado_orcado.num_edital_id = edital_ensino.id INNER JOIN tipo_curso ON Turmas_planejado_orcado.tipo_curso_id = tipo_curso.id INNER JOIN modalidade ON Turmas_planejado_orcado.modalidade_id = modalidade.id where dt_ini_edit is NULL group by Turmas_planejado_orcado.num_edital_id")
@@ -1890,6 +1934,7 @@ def salvar_permissoes(request):
         messages.success(request, 'Permissão realizada com sucesso!')
         return redirect('/permissoes-usuarios')
 
+
 @login_required(login_url='/')
 def enviar_planejamento(request):
 
@@ -2020,6 +2065,7 @@ def buscar_siga_selecao(request):
     # retornar a resposta em formato JSON
     return JsonResponse({'data': json_results})
 
+
 @login_required(login_url='/')
 def replanejar_curso(request):
 
@@ -2030,8 +2076,9 @@ def replanejar_curso(request):
     ano = turma[0]['ano']
     semestre = turma[0]['trimestre']
     carga_horaria_total = turma[0]['carga_horaria_total']
-    
-    saldo_disponivel = Saldo_replanejamento.objects.filter(modalidade_id=modalidade,tipo_id=tipo,ano = ano, semestre = semestre).values()
+
+    saldo_disponivel = Saldo_replanejamento.objects.filter(
+        modalidade_id=modalidade, tipo_id=tipo, ano=ano, semestre=semestre).values()
     if saldo_disponivel:
         idSaldo = saldo_disponivel[0]['id']
         saldoAntigo = saldo_disponivel[0]['saldo']
@@ -2039,13 +2086,15 @@ def replanejar_curso(request):
         change_value.saldo = int(carga_horaria_total) + int(saldoAntigo)
         change_value.save()
     else:
-        insertValue = Saldo_replanejamento.objects.create(saldo=carga_horaria_total,modalidade_id=modalidade,tipo_id=tipo,ano=ano,semestre=semestre)
-    
-    #OBTÉM A TURMA ATUAL E ATUALIZA O STATUS PARA REPLANEJADO
+        insertValue = Saldo_replanejamento.objects.create(
+            saldo=carga_horaria_total, modalidade_id=modalidade, tipo_id=tipo, ano=ano, semestre=semestre)
+
+    # OBTÉM A TURMA ATUAL E ATUALIZA O STATUS PARA REPLANEJADO
     turmaReplanejada = Metas_efg.objects.get(id=int(idCurso))
     turmaReplanejada.situacao = 5
     turmaReplanejada.save()
     return redirect('/cadastrar-metas')
+
 
 @login_required(login_url='/')
 def buscar_saldo_replanejado(request):
@@ -2054,7 +2103,6 @@ def buscar_saldo_replanejado(request):
     turma = get_object_or_404(Metas_efg, id=idOrigem)
     tipo_curso_id = turma.tipo_curso_id
     modalidade_id = turma.modalidade_id
-    saldo_especifico = get_object_or_404(Saldo_replanejamento, modalidade_id=modalidade_id, tipo_id=tipo_curso_id)
+    saldo_especifico = get_object_or_404(
+        Saldo_replanejamento, modalidade_id=modalidade_id, tipo_id=tipo_curso_id)
     return render(request, 'ajax/ajax_select_saldo_replanejado.html', {'saldo_especifico': saldo_especifico})
-
-

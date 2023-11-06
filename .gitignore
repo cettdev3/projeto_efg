@@ -21,6 +21,7 @@ db.sqlite3-journal
 */static/CACHE
 /data/
 /logs/
+/log/
 /backup/
 */backup/
 /upload/

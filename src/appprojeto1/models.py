@@ -241,7 +241,8 @@ class Edital(models.Model):
     status = models.CharField(max_length=255)
     pdf = models.CharField(max_length=255, null=True, blank=True)
     motivo = models.CharField(max_length=255, blank=False, null=True)
-    user_change = models.ForeignKey(User,on_delete = models.DO_NOTHING,null=True)
+    user_change = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+
     def __str__(self):
         return self.num_edital
 
@@ -304,7 +305,7 @@ class Metas_efg(models.Model):
     curso_tecnico = models.CharField(default=None, null=True, blank=True, max_length=255)
     qualificacoes = models.CharField(default='', null=True, blank=True, max_length=255)
     origem_replan = models.IntegerField(null=True)
-    
+
     def get_origem_replan_data(self):
         if self.origem_replan:
             turma_origem = Metas_efg.objects.get(pk=self.origem_replan)
@@ -347,8 +348,8 @@ class Users_ids(models.Model):
 
 class Saldo_replanejamento(models.Model):
     id = models.AutoField(primary_key=True)
-    tipo = models.ForeignKey(Metas_tipo,on_delete=models.DO_NOTHING)
-    modalidade =  models.ForeignKey(Metas_modalidade,on_delete=models.DO_NOTHING)
+    tipo = models.ForeignKey(Metas_tipo, on_delete=models.DO_NOTHING)
+    modalidade = models.ForeignKey(Metas_modalidade, on_delete=models.DO_NOTHING)
     ano = models.IntegerField(default=None)
     semestre = models.IntegerField(default=None)
     saldo = models.IntegerField(default=None)

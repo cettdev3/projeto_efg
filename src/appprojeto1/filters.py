@@ -22,6 +22,69 @@ class AprovarCursosFilter(FilterSet):
             'num_edital',
         )
 
+    @property
+    def vagas_totais_sum(self):
+
+        vagas_totais_sum = self.qs.aggregate(
+            Sum('vagas_totais'))['vagas_totais__sum']
+
+        if vagas_totais_sum == None:
+            vagas_totais_sum = 0
+
+        return vagas_totais_sum
+
+    @property
+    def carga_horaria_total_sum(self):
+
+        carga_horaria_total_sum = self.qs.aggregate(
+            Sum('carga_horaria_total'))['carga_horaria_total__sum']
+
+        if carga_horaria_total_sum == None:
+            carga_horaria_total_sum = 0
+
+        return carga_horaria_total_sum
+
+    @property
+    def recurso_planejado_sum(self):
+
+        try:
+            recurso_planejado_sum = round(self.qs.aggregate(
+                carga_horaria_total__sum=Sum(
+                    Case(
+                        When(
+                            modalidade_id=1,
+                            then=F('carga_horaria_total') * 8.34
+                        ),
+                        default=F('carga_horaria_total') * 3.56
+                    )
+                )
+            )['carga_horaria_total__sum'])
+        except:
+            recurso_planejado_sum = 0
+
+        if recurso_planejado_sum == None:
+            recurso_planejado_sum = 0
+
+        return recurso_planejado_sum
+
+    @property
+    def saldo_de_horas_sum(self):
+        data = self.data.copy()
+        filters = {}
+        for key, value in data.items():
+            if len(value) >= 1 and key != 'csrfmiddlewaretoken':
+                key = 'tipo' if key == 'tipo_curso' else key
+                key = 'semestre' if key == 'trimestre' else key
+                if key == 'curso':
+                    continue
+                filters[key] = value
+        saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.filter(
+            **filters
+        ).aggregate(
+            carga_horaria__sum=Sum('carga_horaria')
+        )['carga_horaria__sum']
+        return saldo_de_horas_sum
+
 
 class DashboardAprovarCursosFilter(FilterSet):
     ano = AllValuesFilter()

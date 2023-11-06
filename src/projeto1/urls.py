@@ -49,6 +49,8 @@ urlpatterns = [
     path('ajax/ajax_load_cht', load_cht, name='ajax_load_funcoes_cht'),
     path('ajax/ajax_load_carga_hr_curso', load_ch,
          name='ajax_load_carga_hr_curso'),
+    path('ajax/get_cursos/', views.get_cursos, name='get_cursos'),
+    path('ajax/get_eixos/', views.get_eixos, name='get_eixos'),
     path('realizar-solicitacao', realizar_solicitacao),
     path('cadastrar-metas', cadastrar_metas, name='cadastrar_metas'),
     path('cadmetas', cad_metas),

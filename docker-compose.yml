@@ -14,8 +14,8 @@ services:
 
     database:
         extends:
-            file: ./${APP_CONFIG_DIR}/${DB_NAME}/docker-compose.yml
-            service: ${DB_NAME}
+            file: ./${APP_CONFIG_DIR}/${DATABASE_IMAGE}/docker-compose.yml
+            service: ${DATABASE_IMAGE}
         depends_on:
             setup-deploy:
                 condition: service_completed_successfully
