@@ -151,8 +151,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             const id_escola = $('#id_escola').val();
             const id_modalidade = $('#id_modalidade').val();
+            const id_curso = $('#id_curso').val();
 
-            
             if (id_escola !== '' && id_modalidade !== '') {
                 populateDependentLists();
             } else {
@@ -166,6 +166,7 @@
             const id_escola = $('#id_escola').val();
             const id_modalidade = $('#id_modalidade').val();
             const id_tipo_curso = $('#id_tipo_curso').val();
+            const id_curso = $('#id_curso').val();
 
             $.ajax({
                 url: '/ajax/get_cursos/',
@@ -182,6 +183,9 @@
                     $.each(data, function (key, value) {
                         $('#id_curso').append('<option value="' + value.id + '">' + value.curso + '</option>');
                     });
+                    if (id_curso !== '') {
+                        $('#id_curso').val(id_curso);
+                    }
                 }
             });
         }
