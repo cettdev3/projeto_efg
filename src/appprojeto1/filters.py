@@ -1,4 +1,9 @@
-from django_filters import FilterSet, AllValuesFilter, ModelChoiceFilter, ChoiceFilter
+from django_filters import (
+    FilterSet,
+    AllValuesFilter,
+    ModelChoiceFilter,
+    ChoiceFilter
+)
 from appprojeto1.models import Metas_efg, Metas_escolas, Cadastrar_curso
 from DivisaoDeMetas.models import DivisaoDeMetasPorEscola
 from appprojeto1.forms import DashboardAprovarCursosFilterModelForm
@@ -28,7 +33,7 @@ class AprovarCursosFilter(FilterSet):
         vagas_totais_sum = self.qs.aggregate(
             Sum('vagas_totais'))['vagas_totais__sum']
 
-        if vagas_totais_sum == None:
+        if vagas_totais_sum is None:
             vagas_totais_sum = 0
 
         return vagas_totais_sum
@@ -39,7 +44,7 @@ class AprovarCursosFilter(FilterSet):
         carga_horaria_total_sum = self.qs.aggregate(
             Sum('carga_horaria_total'))['carga_horaria_total__sum']
 
-        if carga_horaria_total_sum == None:
+        if carga_horaria_total_sum is None:
             carga_horaria_total_sum = 0
 
         return carga_horaria_total_sum
@@ -59,10 +64,10 @@ class AprovarCursosFilter(FilterSet):
                     )
                 )
             )['carga_horaria_total__sum'])
-        except:
+        except Exception:
             recurso_planejado_sum = 0
 
-        if recurso_planejado_sum == None:
+        if recurso_planejado_sum is None:
             recurso_planejado_sum = 0
 
         return recurso_planejado_sum
@@ -75,7 +80,7 @@ class AprovarCursosFilter(FilterSet):
             if len(value) >= 1 and key != 'csrfmiddlewaretoken':
                 key = 'tipo' if key == 'tipo_curso' else key
                 key = 'semestre' if key == 'trimestre' else key
-                if key == 'curso':
+                if key == 'curso' or key == 'situacao':
                     continue
                 filters[key] = value
         saldo_de_horas_sum = DivisaoDeMetasPorEscola.objects.filter(
@@ -110,7 +115,7 @@ class DashboardAprovarCursosFilter(FilterSet):
         vagas_totais_sum = self.qs.aggregate(
             Sum('vagas_totais'))['vagas_totais__sum']
 
-        if vagas_totais_sum == None:
+        if vagas_totais_sum is None:
             vagas_totais_sum = 0
 
         return vagas_totais_sum
@@ -121,7 +126,7 @@ class DashboardAprovarCursosFilter(FilterSet):
         carga_horaria_total_sum = self.qs.aggregate(
             Sum('carga_horaria_total'))['carga_horaria_total__sum']
 
-        if carga_horaria_total_sum == None:
+        if carga_horaria_total_sum is None:
             carga_horaria_total_sum = 0
 
         return carga_horaria_total_sum
@@ -141,10 +146,10 @@ class DashboardAprovarCursosFilter(FilterSet):
                     )
                 )
             )['carga_horaria_total__sum'])
-        except:
+        except Exception:
             recurso_planejado_sum = 0
 
-        if recurso_planejado_sum == None:
+        if recurso_planejado_sum is None:
             recurso_planejado_sum = 0
 
         return recurso_planejado_sum
