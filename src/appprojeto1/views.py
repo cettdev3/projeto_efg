@@ -814,9 +814,8 @@ def cadastrar_metas(request):
 @login_required(login_url='/')
 def cad_metas(request):
     print(request.POST)
-    # try:
-    if True:
-        
+    try:
+
         diretoria = request.POST['basicInput']
         escola = request.POST['escola']
         tipo_curso = request.POST['tipo']
@@ -950,8 +949,8 @@ def cad_metas(request):
                 atualiza_saldo.save()
                 messages.success(request, 'Meta cadastrada com sucesso!')
                 return redirect('/cadastrar-metas')
-    # except:
-    #     pass
+    except:
+        pass
 
 
 @login_required(login_url='/')
