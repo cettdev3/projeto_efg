@@ -64,7 +64,7 @@ class AprovarCursosSubmitFormView(Form):
         super(AprovarCursosSubmitFormView, self).__init__(*args, **kwargs)
 
         ApprovalList = set(
-            Metas_efg.objects.all(
+            Metas_efg.objects.filter(
                 situacao__in=[0, 1, 2, 3]
                 ).values_list('situacao', flat=True))
 
