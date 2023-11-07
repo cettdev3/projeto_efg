@@ -151,9 +151,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             const id_escola = $('#id_escola').val();
             const id_modalidade = $('#id_modalidade').val();
+
             
             if (id_escola !== '' && id_modalidade !== '') {
-                populateDependentLists(source);
+                populateDependentLists();
             } else {
                 $('#id_curso').empty();
                 $('#id_curso').append('<option value="">---------</option>');
