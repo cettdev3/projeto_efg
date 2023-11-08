@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     const id_escola = document.getElementById('id_escola');
-
-    console.log(id_escola)
     populateDependentLists(id_escola);
 })
 
@@ -13,9 +11,7 @@ function populateDependentLists(source) {
     const id_curso = $('#id_curso').val();
 
     if (source.id === 'id_escola' || source.id === 'id_tipo_curso' || source.id === 'id_modalidade') {
-        console.log('Populando Eixo')
         popularEixo(id_escola, id_eixo);
-        console.log('Populando curso')
         popularCurso(id_escola, id_tipo_curso, id_modalidade, id_eixo, id_curso);
     }
 
