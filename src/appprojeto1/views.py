@@ -43,8 +43,8 @@ import json
 from django.http import JsonResponse
 
 # DADOS DO SERVIDOR
-host = 'https://processos.cett.dev.br/engine-rest/'
-# host = config.CAMUNDA_URL  # type: ignore
+# host = 'https://processos.cett.dev.br/engine-rest/'
+host = config.CAMUNDA_URL  # type: ignore
 processName = "SolicitarOfertaDeVagas"
 autentication = HTTPBasicAuth('dmartins', 'CETT@2022')
 
@@ -604,6 +604,44 @@ def load_funcoes_rp(request):
 
 
 @login_required(login_url='/')
+def load_funcoes_chd(request):
+    ano = request.GET['ano']
+    semestre = request.GET['trimestre']
+    escola = request.GET['escola']
+    modalidade = request.GET['modalidade']
+    tipo = request.GET['tipo']
+
+    filters = {}
+
+    if ano:
+        filters['ano'] = ano
+    if semestre:
+        filters['semestre'] = semestre
+    if escola:
+        filters['escola'] = escola
+    if modalidade:
+        filters['modalidade'] = modalidade
+    if tipo:
+        filters['tipo'] = tipo
+    total_horas = DivisaoDeMetasPorEscola.objects.filter(
+        **filters
+    ).aggregate(
+        carga_horaria__sum=Sum('carga_horaria')
+    )['carga_horaria__sum']
+
+    # vagas = select_vagas_horas(ano,trimestre,escola,modalidade,curso,tipo,'vagas_totais')
+    # total_horas = int(horas) * int(vagas)
+
+    # if modalidade == "1":
+    #     rp = float(total_horas) * 8.34  # type: ignore
+    # else:
+    #     rp = rp = float(total_horas) * 3.56
+    # print('Resultado do Recurso Planejado' + str(rp))
+
+    return render(request, 'ajax/ajax_load_carga_hr_disponivel.html', {'chd': total_horas})
+
+
+@login_required(login_url='/')
 def load_funcoes_tabela(request):
     # print(request.GET)
     ano = request.GET['ano']
@@ -739,7 +777,7 @@ def cadastrar_metas(request):
     tipo_curso = Metas_tipo.objects.all()
     saldoReplanejado = Saldo_replanejamento.objects.all()
     modalidade = Metas_modalidade.objects.all()
-    if perm_escolas != None:
+    if perm_escolas is not None:
         lancamentos = Metas_efg.objects.filter(escola=perm_escolas).all()
         btn_enviar_planejamento = Metas_efg.objects.filter(
             escola_id=int(perm_escolas)).values()

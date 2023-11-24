@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from appprojeto1 import views
-from appprojeto1.views import Logout_Users, load_ch,buscar_saldo_replanejado, verifica_turmas_edital, load_municipios, cadastrar_udepi, Autenticar, apaga_orcamento, apagar_curso_escola, cad_curso_escola, cad_novo_curso, cadastrar_curso, cadastro_curso_escola, del_curso, editar_curso, editar_curso_escola, editar_orcamento, load_cht, load_cursos, load_eixos, load_funcoes_gerencia_cursos, load_funcoes_gerencia_eixo, load_funcoes_rp, load_funcoes_tabela, load_funcoes_total_horas, load_funcoes_vagas, apagar_meta, apagar_meta_sintetica, cad_metas, cad_metas_sintetica, cad_orcamento, cadastrar_meta_sintetica, load_funcoes_filter, cadastrar_metas, editar_meta, editar_metas_sintetica, editarmetas, load_funcoes_rubrica, load_modalidade, orcamento_plano_trabalho, realizar_solicitacao, view_eixos, view_geral, view_index, load_funcoes, ajax_load_turmas_edital, ajax_load_turmas_edital_filtro, atualiza_edital, gerenciar_usuarios, salvar_permissoes, enviar_planejamento, load_funcoes_permissoes, cadastrar_usuario,buscar_siga_selecao,replanejar_curso
+from appprojeto1.views import Logout_Users, load_ch, buscar_saldo_replanejado, verifica_turmas_edital, load_municipios, cadastrar_udepi, Autenticar, apaga_orcamento, apagar_curso_escola, cad_curso_escola, cad_novo_curso, cadastrar_curso, cadastro_curso_escola, del_curso, editar_curso, editar_curso_escola, editar_orcamento, load_cht, load_cursos, load_eixos, load_funcoes_gerencia_cursos, load_funcoes_gerencia_eixo, load_funcoes_rp, load_funcoes_tabela, load_funcoes_total_horas, load_funcoes_vagas, apagar_meta, apagar_meta_sintetica, cad_metas, cad_metas_sintetica, cad_orcamento, cadastrar_meta_sintetica, load_funcoes_filter, cadastrar_metas, editar_meta, editar_metas_sintetica, editarmetas, load_funcoes_rubrica, load_modalidade, orcamento_plano_trabalho, realizar_solicitacao, view_eixos, view_geral, view_index, load_funcoes, ajax_load_turmas_edital, ajax_load_turmas_edital_filtro, atualiza_edital, gerenciar_usuarios, salvar_permissoes, enviar_planejamento, load_funcoes_permissoes, cadastrar_usuario, buscar_siga_selecao, replanejar_curso
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -45,6 +45,8 @@ urlpatterns = [
          name='ajax_load_funcoes_filter'),
     path('ajax/ajax_load_tabela', load_funcoes_tabela,
          name='ajax_load_funcoes_tabela'),
+    path('ajax/ajax_load_carga_hr_disponivel', views.load_funcoes_chd,
+         name='ajax_load_carga_hr_disponivel'),
     path('ajax/ajax_load_cursos', load_cursos, name='ajax_load_funcoes_cursos'),
     path('ajax/ajax_load_cht', load_cht, name='ajax_load_funcoes_cht'),
     path('ajax/ajax_load_carga_hr_curso', load_ch,
@@ -85,7 +87,8 @@ urlpatterns = [
     path('dash_aprovar/', views.DashboardAprovarCursosView.as_view(),
          name='DashboardAprovarCursosView'),
     path('aprova-cursos/<int:pk>/edit/',
-         views.AprovarCursosUpdateView.as_view(), name='AprovarCursosUpdateView'),
+         views.AprovarCursosUpdateView.as_view(),
+         name='AprovarCursosUpdateView'),
     path('reprova-cursos/', views.ReprovaCursosUpdateView.as_view(),
          name='ReprovaCursosUpdateView'),
     path('verifica-turmas-edital', verifica_turmas_edital,
@@ -102,11 +105,10 @@ urlpatterns = [
 
     path('', include('aprovaedital.urls')),
     path('', include('cadastrar_escola.urls')),
-     path('', include('retificacao_edital.urls')),
+    path('', include('retificacao_edital.urls')),
 
-    #replanejamento
+    # replanejamento
     path('ajax/ajax-replanejar-curso', replanejar_curso),
     path('ajax/buscar-saldo-replanejado', buscar_saldo_replanejado),
 
 ]
-

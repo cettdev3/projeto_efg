@@ -352,7 +352,7 @@ table button, btn_voltar{
   <h3>Cadastrar Metas Analíticas - EFG</h3>
 </div>
 
-<form name="filter" id="filter" method="post" action="/realizar-solicitacao" data-funcoes-url2="{% url 'ajax_load_funcoes_filter' %}" hidden>
+<form name="filter" id="filter" method="post" action="/realizar-solicitacao" data-funcoes-url2="{% url 'ajax_load_funcoes_filter' %}">
     <div class="row">
     
     <div class="col-sm-6">
@@ -437,19 +437,33 @@ table button, btn_voltar{
             <h4  style="text-align:left; background-color:#363636;color: #ddd; font-size: 15px; "  class="card-title form-control">
             <div class="row">
                 <div class="col-sm-6"><b>CARGA HORÁRIA TOTAL</b></div>
-                <div class="col-sm-6" style="text-align: right ;"><span id="tl_total_horas" name="tl_total_horas">...</span></div>
+                <div class="col-sm-6" style="text-align: right;"><span id="tl_total_horas" name="tl_total_horas">...</span></div>
                 
             </div>
             
             </h4>
-            <h4  style="text-align:left; background-color:#363636;color: #ddd; font-size: 15px; "  class="card-title form-control">
+            <h4 style="text-align:left; background-color:#363636;color: #ddd; font-size: 15px;"
+                class="card-title form-control">
                 <div class="row">
-                <div class="col-sm-6"><b>RECURSO PLANEJADO</b></div>
-                <div class="col-sm-6" style="text-align: right ;"><span id="tl_rp" name="tl_rp">...</span></div>
-                
+                    <div class="col-sm-6">
+                        <b>RECURSO PLANEJADO</b>
+                    </div>
+                    <div class="col-sm-6" style="text-align: right;">
+                        <span id="tl_rp" name="tl_rp">...</span>
+                    </div>
                 </div>
-                
-                </h4>
+            </h4>
+            <h4 style="text-align:left; background-color:#363636;color: #ddd; font-size: 15px;"
+                class="card-title form-control">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <b>CARGA HORÁRIA DISPONPIVEL</b>
+                    </div>
+                    <div class="col-sm-6" style="text-align: right;">
+                        <span id="chd" name="chd">...</span>
+                    </div>
+                </div>
+            </h4>
         </div>
         </div>
     </div>
@@ -457,15 +471,6 @@ table button, btn_voltar{
     </div>
 
 </form>
-
-<div class="d-flex flex-column align-items-stretch embed-responsive embed-responsive-21by9"
-        style="--aspect-ratio: 16/9">
-    <iframe id="embeded_dashboard"
-            type="text/html"
-            src="{% url 'DashboardAprovarCursosView' %}"
-            class="embed-responsive-item"
-            frameborder="0" /></iframe>
-</div>
 
 <div class="card">
   <div class="card-header">
@@ -1766,6 +1771,8 @@ function filtra_buscas() {
     const url2 = "/ajax/ajax_load_recurso_planejado";
     const url3 = "/ajax/ajax_load_total_horas";
     const url4 = "/ajax/ajax_load_tabela";
+    const url5 = "/ajax/ajax_load_carga_hr_disponivel";
+
     let ano = document.getElementById("filtro_ano").value
     let trimestre = document.getElementById("filtro_trimestre").value
     let escola = document.getElementById("filtro_escola").value
@@ -1803,6 +1810,14 @@ function filtra_buscas() {
         data: { 'ano': ano, 'trimestre': trimestre, 'escola': escola, 'modalidade': modalidade, 'curso': curso, 'tipo': tipo },
         success: function (data) {
             $("table").html(data);
+        }
+    });
+
+    $.ajax({
+        url: url5,
+        data: { 'ano': ano, 'trimestre': trimestre, 'escola': escola, 'modalidade': modalidade, 'curso': curso, 'tipo': tipo },
+        success: function (data) {
+            $("#chd").html(data);
         }
     });
 }
