@@ -66,7 +66,7 @@ class AprovarCursosSubmitFormView(Form):
         ApprovalList = set(
             Metas_efg.objects.filter(
                 situacao__in=[0, 1, 2, 3]
-                ).values_list('situacao', flat=True))
+            ).values_list('situacao', flat=True))
 
         ApprovalLen = len(ApprovalList)
 
