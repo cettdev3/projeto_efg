@@ -1,18 +1,17 @@
 from email.policy import default
 from django import forms
-from django.utils.safestring import mark_safe
-import django_tables2 as tables
+
 
 class DatePickerInput(forms.DateInput):
-    input_type = 'date'
+    input_type = "date"
 
-        
+
 class TimePickerInput(forms.TimeInput):
-    input_type = 'time'
+    input_type = "time"
 
 
 class DateTimePickerInput(forms.DateTimeInput):
-    input_type = 'datetime'
+    input_type = "datetime"
 
 
 class DependentSelect(forms.widgets.Select):
@@ -25,9 +24,9 @@ class DependentSelect(forms.widgets.Select):
 
         default_options = {}
 
-        options = kwargs.get('options', {})
+        options = kwargs.get("options", {})
         default_options.update(options)
         for key, val in default.items():
-            attrs['data-' + key] = val
+            attrs["data-" + key] = val
 
         super().__init__(attrs)

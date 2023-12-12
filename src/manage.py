@@ -4,9 +4,10 @@ import os
 import sys
 from projeto1.middlewares import set_db_for_router
 
+
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'projeto1.settings')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "projeto1.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -22,8 +23,9 @@ def main():
     #         db = param[1]
     #         set_db_for_router(db)
     #         del sys.argv[index]
-    
+
     execute_from_command_line(sys.argv)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

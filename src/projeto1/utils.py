@@ -16,5 +16,5 @@ def tenant_db_from_the_request(request):
 def get_tenants_map():
     return {
         f"efg-index.{config.PRIMARY_DOMAIN_NAME}": "efg",  # type: ignore
-        f"cotec-index.{config.PRIMARY_DOMAIN_NAME}": "cotec"  # type: ignore
+        f"cotec-index.{config.PRIMARY_DOMAIN_NAME}": "cotec",  # type: ignore
     }

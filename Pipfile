@@ -16,13 +16,15 @@ django-filter = "*"
 django-bootstrap-v5 = "*"
 django-bootstrap-icons = "*"
 django-fontawesome-5 = "*"
-tablib = {extras = ["xlsx"], version = "*"}
+tablib = {extras = ["xlsx"] }
 pycamunda = "*"
 pyyaml = "*"
 pyodbc = "*"
 django = "==4.1"
+django-stubs = "*"
 
 [dev-packages]
-autopep8 = "*"
-pylama = "*"
 djlint = "*"
+ruff = "*"
+mypy = "*"
+mypy-extensions = "*"

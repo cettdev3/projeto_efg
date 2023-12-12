@@ -22,31 +22,73 @@
     "workspaceFolder": "/home/vscode/app",
     "customizations": {
         "vscode": {
+            "settings": {
+                "terminal.integrated.profiles.linux": {
+                    "bash": {
+                        "path": "bash",
+                        "icon": "terminal-bash"
+                    },
+                    "zsh": {
+                        "path": "zsh"
+                    },
+                    "fish": {
+                        "path": "fish"
+                    },
+                    "tmux": {
+                        "path": "tmux",
+                        "icon": "terminal-tmux"
+                    },
+                    "pwsh": {
+                        "path": "pwsh",
+                        "icon": "terminal-powershell"
+                    }
+                },
+                "terminal.integrated.defaultProfile.linux": "zsh",
+                "python.languageServer": "Pylance",
+                "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python",
+                "python.terminal.activateEnvironment": true,
+                "python.analysis.autoSearchPaths": true,
+                "python.analysis.indexing": true,
+                "python.analysis.autoImportCompletions": true,
+                "python.analysis.completeFunctionParens": true,
+                "GitHooks.hooksDirectory": "${containerWorkspaceFolder}/.git/hooks",
+                    "GitHooks.predefinedHooks": [
+                        "post-checkout",
+                        "applypatch-msg",
+                        "commit-msg",
+                        "fsmonitor-watchman",
+                        "post-update",
+                        "pre-applypatch",
+                        "pre-commit",
+                        "pre-merge-commit",
+                        "pre-push",
+                        "pre-rebase",
+                        "pre-receive",
+                        "prepare-commit-msg",
+                        "push-to-checkout",
+                        "update"
+                    ]
+            },
             "extensions": [
-                "AnbuselvanRocky.bootstrap5-vscode",
-                "batisteo.vscode-django",
-                "donjayamanne.python-extension-pack",
-                "ecmel.vscode-html-css",
-                "EditorConfig.EditorConfig",
-                "monosans.djlint",
-                "ms-python.python",
-                "ms-python.autopep8",
-                "ms-python.flake8",
-                "ms-azuretools.vscode-docker",
-                "ms-vsliveshare.vsliveshare",
-                "vector-of-bool.gitflow",
-                "yy0931.vscode-sqlite3-editor",
-                "yy0931.vscode-sqlite3-editor",
-                "yzhang.markdown-all-in-one",
-                "mikestead.dotenv",
+                "MS-CEINTL.vscode-language-pack-pt-BR",
                 "GitHub.copilot",
-                "GitLab.gitlab-workflow",
                 "mhutchie.git-graph",
-                "codezombiech.gitignore"
+                "lakshmikanthayyadevara.githooks",
+                "ms-vscode-remote.vscode-remote-extensionpack",
+                "ms-azuretools.vscode-docker",
+                "ms-python.python",
+                "donjayamanne.python-extension-pack",
+                "charliermarsh.ruff",
+                "ms-python.isort",
+                // "ms-python.mypy-type-checker",
+                "mikestead.dotenv",
+                "EditorConfig.EditorConfig",
+                "mhutchie.git-graph",
+                "yzhang.markdown-all-in-one",
+                "ms-python.vscode-pylance"
             ]
         }
-    },
-    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    },    // Use 'forwardPorts' to make a list of ports inside the container available locally.
     "forwardPorts": [
         8000,
         "database:3306",
@@ -71,5 +113,18 @@
     "postCreateCommand": "if [ -s Pipfile.lock ]; then pipenv install --system; else pipenv lock && pipenv install --system; fi",
     // Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
     "remoteUser": "vscode",
-    "updateRemoteUserUID": true
+    "updateRemoteUserUID": true,
+    "features": {
+        "ghcr.io/devcontainers-contrib/features/pipenv:2": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers-contrib/features/ruff:1": {
+            "version": "latest"
+        },
+        "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {
+            "plugins": "ssh-agent npm",
+            "omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions",
+            "username": "vscode"
+        }
+    }
 }

@@ -1,7 +1,3 @@
 {
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.autopep8"
-    },
-    "python.formatting.provider": "none",
     "GitHooks.hooksDirectory": "/home/gpcortes/projects/projeto_efg/.git/hooks"
 }

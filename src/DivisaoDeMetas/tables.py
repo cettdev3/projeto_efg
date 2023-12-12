@@ -4,38 +4,32 @@ from DivisaoDeMetas.models import DivisaoDeMetasPorEscola
 
 
 class DivisaoDeMetasTable(tables.Table):
-
     actions = TemplateColumn(
-        template_name='DivisaoDeMetas/buttons/actions.html',
-        verbose_name='Ações',
+        template_name="DivisaoDeMetas/buttons/actions.html",
+        verbose_name="Ações",
         orderable=False,
         extra_context={
-            'actions': {
-                'edit': { 
-                    'text': 'Editar',
-                    'icon': 'edit',
-                    'route_url': 'DivisaoDeMetasUpdateView',
+            "actions": {
+                "edit": {
+                    "text": "Editar",
+                    "icon": "edit",
+                    "route_url": "DivisaoDeMetasUpdateView",
                 },
-                'delete': {
-                    'text': 'Excluir',
-                    'icon': 'trash',
-                    'route_url': 'DivisaoDeMetasDeleteView',
-                }
+                "delete": {
+                    "text": "Excluir",
+                    "icon": "trash",
+                    "route_url": "DivisaoDeMetasDeleteView",
+                },
             }
-        }
+        },
     )
 
     class Meta:
         model = DivisaoDeMetasPorEscola
 
-        exclude = (
-            'id',
-            'created_at',
-            'updated_at'
-        )
+        exclude = ("id", "created_at", "updated_at")
 
-        sequence = (
-        )
+        sequence = ()
 
         attrs = {
             "class": "table table-striped table-hover",

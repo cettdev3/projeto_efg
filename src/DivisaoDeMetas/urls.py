@@ -18,14 +18,25 @@ from django.urls import path
 from DivisaoDeMetas import views
 
 urlpatterns = [
-    path('', views.DivisaoDeMetasView.as_view(),
-         name='DivisaoDeMetasList'),
-    path('<int:pk>/detail/', views.DivisaoDeMetasDetailView.as_view(),
-         name='DivisaoDeMetasDetailView'),
-    path('add/', views.DivisaoDeMetasCreateView.as_view(),
-         name='DivisaoDeMetasCreateView'),
-    path('<int:pk>/edit/', views.DivisaoDeMetasUpdateView.as_view(),
-         name='DivisaoDeMetasUpdateView'),
-    path('<int:pk>/delete/', views.DivisaoDeMetasDeleteView.as_view(),
-         name='DivisaoDeMetasDeleteView'),
+    path("", views.DivisaoDeMetasView.as_view(), name="DivisaoDeMetasList"),
+    path(
+        "<int:pk>/detail/",
+        views.DivisaoDeMetasDetailView.as_view(),
+        name="DivisaoDeMetasDetailView",
+    ),
+    path(
+        "add/",
+        views.DivisaoDeMetasCreateView.as_view(),
+        name="DivisaoDeMetasCreateView",
+    ),
+    path(
+        "<int:pk>/edit/",
+        views.DivisaoDeMetasUpdateView.as_view(),
+        name="DivisaoDeMetasUpdateView",
+    ),
+    path(
+        "<int:pk>/delete/",
+        views.DivisaoDeMetasDeleteView.as_view(),
+        name="DivisaoDeMetasDeleteView",
+    ),
 ]

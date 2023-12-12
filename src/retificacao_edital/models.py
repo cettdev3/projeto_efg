@@ -1,7 +1,18 @@
 from django.db import models
-from appprojeto1.models import Metas_escolas,Metas_tipo,Cadastrar_curso,Metas_modalidade,Eixos,Udepi_municipio,Edital,Metas_efg
+from appprojeto1.models import (
+    Metas_escolas,
+    Metas_tipo,
+    Cadastrar_curso,
+    Metas_modalidade,
+    Eixos,
+    Udepi_municipio,
+    Edital,
+    Metas_efg,
+)
 from django.contrib.auth.models import User
-from django.urls import reverse_lazy
+
+
+
 # Create your models here.
 class Editais_Retificados(models.Model):
     id = models.AutoField(primary_key=True)
@@ -15,8 +26,8 @@ class Editais_Retificados(models.Model):
     status = models.CharField(max_length=255)
     pdf = models.CharField(max_length=255, null=True, blank=True)
     motivo = models.CharField(max_length=255, blank=False, null=True)
-    user_change = models.ForeignKey(User,on_delete = models.DO_NOTHING,null=True)
-    edital_origem = models.ForeignKey(Edital,on_delete = models.DO_NOTHING,null=True)
+    user_change = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
+    edital_origem = models.ForeignKey(Edital, on_delete=models.DO_NOTHING, null=True)
     saldo_disponivel = models.IntegerField(default=0)
 
     def __str__(self):
@@ -24,35 +35,35 @@ class Editais_Retificados(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'editais_retificados'
+        db_table = "editais_retificados"
 
 
 class Turmas_Retificadas(models.Model):
     SITUACAO = (
-        (0, 'Aguardando Análise'),
-        (1, 'Reprovado'),
-        (2, 'Em Análise'),
-        (3, 'Aprovado'),
-        (4, 'Edital gerado'),
-        (5, 'Replanejado'),
+        (0, "Aguardando Análise"),
+        (1, "Reprovado"),
+        (2, "Em Análise"),
+        (3, "Aprovado"),
+        (4, "Edital gerado"),
+        (5, "Replanejado"),
     )
 
     DIRETORIAS = (
-        ('DAC', 'DAC'),
-        ('DDA', 'DDA'),
-        ('DE', 'DE'),
+        ("DAC", "DAC"),
+        ("DDA", "DDA"),
+        ("DE", "DE"),
     )
 
     SEMESTRES = (
-        (1, '1º SEMESTRE'),
-        (2, '2º SEMESTRE'),
+        (1, "1º SEMESTRE"),
+        (2, "2º SEMESTRE"),
     )
 
     TURNOS = (
-        ('MATUTINO', 'MATUTINO'),
-        ('VESPERTINO', 'VESPERTINO'),
-        ('NOTURNO', 'NOTURNO'),
-        ('INTEGRAL', 'INTEGRAL')
+        ("MATUTINO", "MATUTINO"),
+        ("VESPERTINO", "VESPERTINO"),
+        ("NOTURNO", "NOTURNO"),
+        ("INTEGRAL", "INTEGRAL"),
     )
 
     id = models.AutoField(primary_key=True)
@@ -77,12 +88,21 @@ class Turmas_Retificadas(models.Model):
     udepi = models.ForeignKey(Udepi_municipio, on_delete=models.CASCADE, null=True)
     situacao = models.IntegerField(default=0, choices=SITUACAO, null=True, blank=True)
     jus_reprovacao = models.TextField(default=None, null=True, blank=True)
-    num_edital = models.ForeignKey(Editais_Retificados, on_delete=models.CASCADE, default=None, null=True, blank=True)
-    curso_tecnico = models.CharField(default=None, null=True, blank=True, max_length=255)
-    qualificacoes = models.CharField(default='', null=True, blank=True, max_length=255)
-    origem_replan = models.ForeignKey(Metas_efg,on_delete=models.CASCADE, default=None, null=True, blank=True)
-    
+    num_edital = models.ForeignKey(
+        Editais_Retificados,
+        on_delete=models.CASCADE,
+        default=None,
+        null=True,
+        blank=True,
+    )
+    curso_tecnico = models.CharField(
+        default=None, null=True, blank=True, max_length=255
+    )
+    qualificacoes = models.CharField(default="", null=True, blank=True, max_length=255)
+    origem_replan = models.ForeignKey(
+        Metas_efg, on_delete=models.CASCADE, default=None, null=True, blank=True
+    )
 
     class Meta:
         managed = True
-        db_table = 'turmas_retificadas'
+        db_table = "turmas_retificadas"

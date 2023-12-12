@@ -14,7 +14,7 @@ class Cursos(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'qualificacoes'
+        db_table = "qualificacoes"
 
 
 class Solicitacao(models.Model):
@@ -27,17 +27,16 @@ class Solicitacao(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'appprojeto1_solicitacao'
+        db_table = "appprojeto1_solicitacao"
 
 
 class Metas_escolas(models.Model):
-
     TIPO = (
-        (0, 'EFG'),
-        (1, 'COTEC'),
-        (2, 'UDEPI'),
-        (3, 'CVT'),
-        (4, 'Salas de Extensão'),
+        (0, "EFG"),
+        (1, "COTEC"),
+        (2, "UDEPI"),
+        (3, "CVT"),
+        (4, "Salas de Extensão"),
     )
 
     id = models.AutoField(primary_key=True)
@@ -52,8 +51,8 @@ class Metas_escolas(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'escolas'
-        ordering = ('escola',)
+        db_table = "escolas"
+        ordering = ("escola",)
 
 
 class Eixos(models.Model):
@@ -68,11 +67,10 @@ class Eixos(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'eixos'
+        db_table = "eixos"
 
 
 class Metas_tipo(models.Model):
-
     id = models.AutoField(primary_key=True)
     tipo = models.CharField(max_length=255)
 
@@ -81,7 +79,7 @@ class Metas_tipo(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'tipo_curso'
+        db_table = "tipo_curso"
 
 
 class Metas_modalidade(models.Model):
@@ -93,7 +91,7 @@ class Metas_modalidade(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'modalidade'
+        db_table = "modalidade"
 
 
 class Metas_trimestre(models.Model):
@@ -105,7 +103,7 @@ class Metas_trimestre(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'trimestre'
+        db_table = "trimestre"
 
 
 class Metas_descricoes(models.Model):
@@ -117,7 +115,7 @@ class Metas_descricoes(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'descricao'
+        db_table = "descricao"
 
 
 class Metas_sinteticas(models.Model):
@@ -135,7 +133,7 @@ class Metas_sinteticas(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'Metas_sinteticas_efg'
+        db_table = "Metas_sinteticas_efg"
 
 
 class Rubrica(models.Model):
@@ -144,7 +142,7 @@ class Rubrica(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'rubrica'
+        db_table = "rubrica"
 
 
 class Item_apoiado(models.Model):
@@ -154,7 +152,7 @@ class Item_apoiado(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'item_apoiado'
+        db_table = "item_apoiado"
 
 
 class Unidades(models.Model):
@@ -163,7 +161,7 @@ class Unidades(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'unidade'
+        db_table = "unidade"
 
 
 class Curso_escola(models.Model):
@@ -174,7 +172,7 @@ class Curso_escola(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'curso_escola'
+        db_table = "curso_escola"
 
 
 class Cadastrar_curso(models.Model):
@@ -195,8 +193,8 @@ class Cadastrar_curso(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'cursos'
-        ordering = ('curso',)
+        db_table = "cursos"
+        ordering = ("curso",)
 
 
 class Orcamento_plano_trabalho(models.Model):
@@ -213,7 +211,7 @@ class Orcamento_plano_trabalho(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'planejamento_trabalho'
+        db_table = "planejamento_trabalho"
 
 
 class Udepi_municipio(models.Model):
@@ -226,7 +224,7 @@ class Udepi_municipio(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'udepi_municipio'
+        db_table = "udepi_municipio"
 
 
 class Edital(models.Model):
@@ -248,35 +246,35 @@ class Edital(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'edital_ensino'
+        db_table = "edital_ensino"
 
 
 class Metas_efg(models.Model):
     SITUACAO = (
-        (0, 'Aguardando Análise'),
-        (1, 'Reprovado'),
-        (2, 'Em Análise'),
-        (3, 'Aprovado'),
-        (4, 'Edital gerado'),
-        (5, 'Replanejado'),
+        (0, "Aguardando Análise"),
+        (1, "Reprovado"),
+        (2, "Em Análise"),
+        (3, "Aprovado"),
+        (4, "Edital gerado"),
+        (5, "Replanejado"),
     )
 
     DIRETORIAS = (
-        ('DAC', 'DAC'),
-        ('DDA', 'DDA'),
-        ('DE', 'DE'),
+        ("DAC", "DAC"),
+        ("DDA", "DDA"),
+        ("DE", "DE"),
     )
 
     SEMESTRES = (
-        (1, '1º SEMESTRE'),
-        (2, '2º SEMESTRE'),
+        (1, "1º SEMESTRE"),
+        (2, "2º SEMESTRE"),
     )
 
     TURNOS = (
-        ('MATUTINO', 'MATUTINO'),
-        ('VESPERTINO', 'VESPERTINO'),
-        ('NOTURNO', 'NOTURNO'),
-        ('INTEGRAL', 'INTEGRAL')
+        ("MATUTINO", "MATUTINO"),
+        ("VESPERTINO", "VESPERTINO"),
+        ("NOTURNO", "NOTURNO"),
+        ("INTEGRAL", "INTEGRAL"),
     )
 
     id = models.AutoField(primary_key=True)
@@ -302,8 +300,10 @@ class Metas_efg(models.Model):
     situacao = models.IntegerField(default=0, choices=SITUACAO, null=True, blank=True)
     jus_reprovacao = models.TextField(default=None, null=True, blank=True)
     num_edital = models.ForeignKey(Edital, on_delete=models.CASCADE)
-    curso_tecnico = models.CharField(default=None, null=True, blank=True, max_length=255)
-    qualificacoes = models.CharField(default='', null=True, blank=True, max_length=255)
+    curso_tecnico = models.CharField(
+        default=None, null=True, blank=True, max_length=255
+    )
+    qualificacoes = models.CharField(default="", null=True, blank=True, max_length=255)
     origem_replan = models.IntegerField(null=True)
 
     def get_origem_replan_data(self):
@@ -313,26 +313,25 @@ class Metas_efg(models.Model):
             return turma_origem
 
     def get_absolute_url(self):
-        return reverse_lazy('AprovarCursosView')
+        return reverse_lazy("AprovarCursosView")
 
     def __str__(self):
         return self.curso
 
     class Meta:
         managed = True
-        db_table = 'Turmas_planejado_orcado'
+        db_table = "Turmas_planejado_orcado"
 
 
 class User_permission(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     permission = models.CharField(max_length=255)
-    escola = models.ForeignKey(
-        Metas_escolas, on_delete=models.DO_NOTHING, null=True)
+    escola = models.ForeignKey(Metas_escolas, on_delete=models.DO_NOTHING, null=True)
 
     class Meta:
         managed = True
-        db_table = 'user_permission'
+        db_table = "user_permission"
 
 
 class Users_ids(models.Model):
@@ -344,7 +343,8 @@ class Users_ids(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'users_siga_selecao'
+        db_table = "users_siga_selecao"
+
 
 class Saldo_replanejamento(models.Model):
     id = models.AutoField(primary_key=True)
@@ -356,4 +356,4 @@ class Saldo_replanejamento(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'saldo_replanejamento'
+        db_table = "saldo_replanejamento"
