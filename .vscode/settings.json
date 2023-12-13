@@ -1,3 +1,4 @@
 {
-    "GitHooks.hooksDirectory": "/home/gpcortes/projects/projeto_efg/.git/hooks"
+    "GitHooks.hooksDirectory": "/home/gpcortes/projects/projeto_efg/.git/hooks",
+    "git.autofetch": true
 }

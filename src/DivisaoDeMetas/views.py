@@ -16,6 +16,7 @@ from django.views.generic.base import ContextMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from appprojeto1.views import get_permission
+from appprojeto1.models import Metas_efg
 
 
 class DivisaoDeMetasContextMixin(ContextMixin):
@@ -101,16 +102,14 @@ class DivisaoDeMetasUpdateView(
             messages.error(self.request, "O saldo não pode ser menor que zero.")
             return super().form_invalid(form)
 
-        form.save()
         messages.success(self.request, "Meta atualizada.")
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['carga_horaria_total_atual'] = self.object.carga_horaria_total
         context["form"] = DivisaoDeMetasForm(
             instance=self.object,
-            initial={"carga_horaria_total_atual": self.object.carga_horaria_total},
+            initial={"carga_horaria_total_atual": self.get_object().carga_horaria_total},
         )
         return context
 
@@ -121,3 +120,22 @@ class DivisaoDeMetasDeleteView(
     login_url = "/"
     form_class = DivisaoDeMetasFormDelete
     model = DivisaoDeMetasPorEscola
+
+    def form_valid(self, form):
+        metas_sinteticas = Metas_efg.objects.filter(
+            escola=self.object.escola,
+            ano=self.object.ano,
+            trimestre=self.object.semestre,
+            tipo_curso=self.object.tipo,
+            modalidade=self.object.modalidade,
+        )
+
+        if metas_sinteticas:
+            messages.error(
+                self.request,
+                "Não é possível excluir a divisão de metas, pois existem metas sintéticas cadastradas.",
+            )
+            return super().form_invalid(form)
+        
+        messages.success(self.request, "Divisão da meta foi excluída.")
+        return super().form_valid(form)

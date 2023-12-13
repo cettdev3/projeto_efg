@@ -1030,6 +1030,20 @@ def cad_metas(request):
                     num_edital_id=0,
                 )
             else:
+                divisao_de_metas = DivisaoDeMetasPorEscola.objects.filter(
+                    escola=escola,
+                    tipo=tipo_curso,
+                    modalidade=modalidade_oferta,
+                    semestre=trimestre,
+                    ano=ano,
+                ).count()
+
+                if divisao_de_metas == 0:
+                    messages.error(
+                        request,
+                        "Desculpe, mas não existe divisão de metas para esta escola!",
+                    )
+                    return redirect("/cadastrar-metas")
                 cadmetas = Metas_efg.objects.create(
                     diretoria=diretoria,
                     escola_id=escola,

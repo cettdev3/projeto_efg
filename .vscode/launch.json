@@ -21,7 +21,6 @@
                 "runserver"
             ],
             "django": true
-            
         }
-]
+    ]
 }

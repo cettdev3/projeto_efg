@@ -1,4 +1,3 @@
-from crispy_forms.layout import Layout, Submit
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Button, Div
 from crispy_forms.bootstrap import FormActions, StrictButton
