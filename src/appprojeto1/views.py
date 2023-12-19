@@ -997,7 +997,7 @@ def cad_metas(request):
         if meta_is_exist:
             messages.error(
                 request,
-                "): Desculpe, mas já existe uma meta adicionada com estes dados!",
+                "Desculpe, mas já existe uma meta adicionada com estes dados!",
             )
             return redirect("/cadastrar-metas")
         else:
@@ -1188,8 +1188,10 @@ def editar_meta(request, codigo):
     dia_semana = pega_eixos[0]["dias_semana"]
     idEdit = pega_eixos[0]["id"]
     jus_reprovacao = pega_eixos[0]["jus_reprovacao"]
-    curso_tecnico = pega_eixos[0]["curso_tecnico"]
-    qualificacoes = pega_eixos[0]["qualificacoes"]
+    # curso_tecnico = pega_eixos[0]["curso_tecnico"]
+    # qualificacoes = pega_eixos[0]["qualificacoes"]
+    curso_tecnico = ""
+    qualificacoes = ""
     tipos_cursos = Metas_tipo.objects.all()
 
     escolas = Metas_escolas.objects.filter(tipo=0)
@@ -1270,8 +1272,11 @@ def editarmetas(request):
     # previsao_fim = converter_data(previsao_fim)
     dias_semana = request.POST["dias_semana"]
 
-    curso_tecnico = request.POST["curso_tecnico"]
-    qualificacao = request.POST["qualificacoes"]
+    # curso_tecnico = request.POST["curso_tecnico"]
+    # qualificacao = request.POST["qualificacoes"]
+
+    curso_tecnico = ""
+    qualificacao = ""
 
     editmetas = Metas_efg.objects.get(id=id_)
     editmetas.udepi_id = municipio  # type: ignore

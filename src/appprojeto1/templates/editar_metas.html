@@ -294,7 +294,7 @@
             >
           </div>
 
-          <div class="col-md-4 form-group">
+          <div class="col-md-4 form-group" hidden>
             <label for="basicInput"><b>CURSO TÉCNICO:</b></label>
             <select class="form-control" id="curso_tecnico" name="curso_tecnico" required="">
             <option selected="" value="">---------</option>
@@ -307,7 +307,7 @@
           </select>
           </div>
 
-          <div class="col-md-4 form-group">
+          <div class="col-md-4 form-group" hidden>
             <label for="basicInput"><b>QUALIFICAÇÕES:</b></label>
             <select class="form-control" id="qualificacoes" name="qualificacoes" required="">
               <option value="">---------</option>
@@ -321,20 +321,16 @@
             {% endif %}
           </div>
 
-          <div class="col-md-4 form-group">
-            <a style="width: 100%;" href="/cadastrar-metas" class="btn btn-secondary" >Voltar</a>
-          </div>
-          
-          <div class="col-md-4 form-group">
-            <button style="width: 100%;" type="button" id="valida_form" onclick="validaForm()" class="btn btn-success">Atualizar Metas</button>
-          </div>
-         
-
-
-
-         
         </div>
-        
+        <div class="row"> 
+            <div class="col-md-4 form-group">
+                <a style="width: 100%;" href="/cadastrar-metas" class="btn btn-secondary" >Voltar</a>
+            </div>
+            
+            <div class="col-md-4 form-group">
+                <button style="width: 100%;" type="button" id="valida_form" onclick="validaForm()" class="btn btn-success">Atualizar Metas</button>
+            </div>
+        </div>        
   
       </form>
       </div>
