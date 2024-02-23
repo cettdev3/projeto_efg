@@ -166,7 +166,7 @@ def aprova_edital(request):
                                 edt.ano,
                                 edt.dt_ini_edit,
                                 edt.dt_fim_edit,
-                                edt.dt_ini_insc,F
+                                edt.dt_ini_insc,
                                 edt.dt_fim_insc,
                                 edt.status,
                                 edt.pdf,
